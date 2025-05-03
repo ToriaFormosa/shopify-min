@@ -1,3 +1,4 @@
+// prettier-ignore
 class PredictiveSearch extends SearchForm {
 	constructor() {
 		super();
@@ -11,6 +12,7 @@ class PredictiveSearch extends SearchForm {
 		this.abortController = new AbortController();
 		this.searchTerm = "";
 		this.body = document.querySelector("body");
+		this.header = document.querySelector(".shopify-section-header");
 		this.headerBottom = document.querySelector(".header__bottom");
 		this.promoModal = document.querySelector(".search__modal");
 		this.collectionList = document.querySelector(".template-404__collections");
@@ -20,39 +22,12 @@ class PredictiveSearch extends SearchForm {
 	}
 
 	calcHeight() {
-		const annBar = document.querySelector(".section-announcement");
-		const heightHeader = document.querySelector(".shopify-section-header")
-			? document
-					.querySelector(".shopify-section-header")
-					.getBoundingClientRect().height
-			: 0;
-		const heightInput = this.headerInput.getBoundingClientRect().height;
-		let heightAnnouncementBar;
-
-		const annBarObserver = new IntersectionObserver((entries) => {
-			const [entry] = entries;
-
-			if (entry.isIntersecting) {
-				heightAnnouncementBar = entry.intersectionRect.height;
-			} else {
-				heightAnnouncementBar = 0;
-			}
-			if (document.querySelector(".predictive-search")) {
-				const clientHeight = document.documentElement.clientHeight;
-				const maxHeightAllowed =
-					clientHeight -
-					heightAnnouncementBar -
-					heightHeader -
-					heightInput -
-					32;
-				document.documentElement.style.setProperty(
-					"--search-height",
-					`${maxHeightAllowed}px`,
-				);
-			}
-		}, {});
-
-		annBarObserver.observe(annBar);
+		if (document.querySelector(".predictive-search")) {
+			document.documentElement.style.setProperty(
+				"--search-height",
+				`calc(100vh - ${this.header.getBoundingClientRect().top}px)`,
+			);
+		}
 	}
 
 	setupEventListeners() {
@@ -233,9 +208,7 @@ class PredictiveSearch extends SearchForm {
 		}
 
 		fetch(
-			`${routes.predictive_search_url}?q=${encodeURIComponent(
-				searchTerm,
-			)}&resources[type]=product,collection,article,page&section_id=predictive-search`,
+			`${routes.predictive_search_url}?q=${encodeURIComponent(searchTerm)}&section_id=predictive-search`,
 			{ signal: this.abortController.signal },
 		)
 			.then((response) => {

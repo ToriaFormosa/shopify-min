@@ -279,6 +279,11 @@
   .no-print {
     display: none;
   }
+  .gift-card__image-wrapper {
+    width: 486px;
+    min-height: 288px;
+    max-width: 100%;
+  }
 }
 .gift-card-header {
   padding: 4rem 0;

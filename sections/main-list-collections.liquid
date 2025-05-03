@@ -21,6 +21,8 @@
         assign collections = collections | sort: 'all_products_count'
       when 'date', 'date_reversed'
         assign collections = collections | sort: 'published_at'
+      when 'alphabetical'. 'alphabetical_reversed'
+          assign collections = collections | sort: 'title'
     endcase
 
     if section.settings.sort == 'products_high' or section.settings.sort == 'date_reversed' or section.settings.sort == 'alphabetical_reversed'
@@ -108,7 +110,7 @@
                 <span>{{- collection.title -}}</span>
               </h2>
               {%- if collection.description != blank and section.settings.show_desc -%}
-                <p class="collections-grid__desc">{{- collection.description | strip_html -}}</p>
+                <p class="collections-grid__desc">{{- collection.description | strip_html | truncatewords: 80, '...' -}}</p>
               {%- endif -%}
               {% if section.settings.show_button and section.settings.button_label %}
                 <a href="{{ collection.url | default: '#' }}" 

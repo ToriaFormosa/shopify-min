@@ -3,9 +3,15 @@ if (!customElements.get('product-form')) {
     constructor() {
       super();
 
-      this.form = this.querySelector('form');
-      this.form.querySelector('[name=id]').disabled = false;
-      this.form.addEventListener('submit', this.onSubmitHandler.bind(this));
+      if (this.querySelector('form')) {
+        this.form = this.querySelector('form');
+        this.form.querySelector('[name=id]').disabled = false;
+        this.form.addEventListener('submit', this.onSubmitHandler.bind(this));
+      }
+      else {
+        this.querySelector('[name=id]').disabled = false;
+        this.querySelector('button[type=submit]').addEventListener('click', this.onSubmitHandler.bind(this));
+      }
       this.cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
       this.submitButton = this.querySelector('[type="submit"]');
       if (document.querySelector('cart-drawer')) this.submitButton.setAttribute('aria-haspopup', 'dialog');
@@ -28,6 +34,10 @@ if (!customElements.get('product-form')) {
       delete config.headers['Content-Type'];
 
       const formData = new FormData(this.form);
+      if (!this.form) {
+        formData.append('id', this.querySelector('[name=id]').value);
+      }
+      
       if (this.cart) {
         formData.append('sections', this.cart.getSectionsToRender().map((section) => section.id));
         formData.append('sections_url', window.location.pathname);

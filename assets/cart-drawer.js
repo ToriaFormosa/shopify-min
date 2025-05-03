@@ -36,13 +36,6 @@ class CartDrawer extends HTMLElement {
       trapFocus(containerToTrapFocusOn, focusElement);
     }, { once: true });
 
-    if (this.querySelector('.cart-shipping')) {
-      let progressPrev = getComputedStyle(this.querySelector('.cart-shipping__progress-current')).getPropertyValue('width');
-      let progress = getComputedStyle(this.querySelector('.cart-shipping__progress-current')).getPropertyValue('--progress');
-      document.documentElement.style.setProperty('--progress-prev', progressPrev);
-      this.querySelector('.cart-shipping__progress-current').style.width = progress;
-    }
-
     document.body.classList.add('overflow-hidden');
   }
 

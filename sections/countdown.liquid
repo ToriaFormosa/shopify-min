@@ -7,7 +7,7 @@
 {%- endstyle -%}
 
 <div class="{%- if section.settings.full_width != true -%}container{%- endif -%}">
-  <div
+  <countdown-timer
     class="countdown js-countdown section-{{ section.id }}-padding js-countdown-{{ section.id }} {% if section.settings.section_type == 'with_overlay' %}countdown--overlay color-background-4 {% else %}color-background-2{% endif %}"
     data-date="{{ section.settings.date_picker }}"
     data-time="{{ section.settings.time_picker }}"
@@ -20,15 +20,31 @@
           style="background-color: rgba(var(--color-overlay), {{ section.settings.opacity_overlay }})"
         ></span>
         {%- if section.settings.image != blank -%}
+          {% capture sizes %}
+            100vw
+          {% endcapture %}
           {{
-            section.settings.image.preview_image
-            | image_url: width: 1946
+            section.settings.image
+            | image_url: width: section.settings.image.width
             | image_tag:
               class: 'countdown__image',
               loading: 'lazy',
-              widths: '246, 493, 600, 713, 823, 990, 1100, 1206, 1346, 1426, 1646, 1946'
+              sizes: sizes,
+              widths: '246, 493, 600, 713, 823, 990, 1100, 1206, 1346, 1426, 1646, 1946, 2200, 2400, 2600, 2800, 3000, 3200, 3400, 3600, 3800, 4000'
           }}
         {%- endif -%}
+        {% if section.settings.show_video == true %}
+          {% if section.settings.video != blank %}
+            <div class="countdown__video">
+              {% if section.settings.video != blank %}
+                {{
+                  section.settings.video
+                  | video_tag: image_size: '1920x', autoplay: true, loop: true, muted: true
+                }}
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endif %}
       </div>
     {%- endif -%}
     <div class="countdown__container">
@@ -125,7 +141,7 @@
         </div>
       {% endif %}
     </div>
-  </div>
+  </countdown-timer>
 </div>
 
 {% schema %}
@@ -214,6 +230,25 @@
       "id": "image",
       "label": "t:sections.countdown.settings.image.label",
       "info": "t:sections.countdown.settings.image.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.countdown.settings.header_video.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video",
+      "label": "t:sections.countdown.settings.show_video.label",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.countdown.settings.header__2.content"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "t:sections.countdown.settings.video.label"
     },
     {
       "type": "range",

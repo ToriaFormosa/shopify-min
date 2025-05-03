@@ -21,11 +21,13 @@ class FacetFiltersForm extends HTMLElement {
         if (!event.currentTarget.classList.contains('facets__button-show_up')) {
           if (event.currentTarget.querySelector('.label-hide').classList.contains('hidden')) {
             let width = this.querySelector('.facets__container').offsetWidth + 32;
+            this.querySelector('.facets__container').classList.add('hide');
             this.querySelector('.facets__container').style.marginLeft = `-${width + 64}px`;
             document.querySelector('.products-grid').style.marginLeft = `-${width}px`;
             document.querySelector('.facets__top').style.marginLeft = `-${width}px`;
           }
           else {
+            this.querySelector('.facets__container').classList.remove('hide');
             this.querySelector('.facets__container').style.marginLeft = '0';
             document.querySelector('.products-grid').style.marginLeft = '0';
             document.querySelector('.facets__top').style.marginLeft = '0';
@@ -55,11 +57,13 @@ class FacetFiltersForm extends HTMLElement {
           if (facetButton.querySelector('.label-hide').classList.contains('hidden')) {
             if (entry.contentRect.width > 749) {
               let width = this.querySelector('.facets__container').offsetWidth + 32;
+              this.querySelector('.facets__container').classList.add('hide');
               this.querySelector('.facets__container').style.marginLeft = `-${width + 64}px`;
               document.querySelector('.products-grid').style.marginLeft = `-${width}px`;
               document.querySelector('.facets__top').style.marginLeft = `-${width}px`;
             }
             else {
+              this.querySelector('.facets__container').classList.remove('hide');
               this.querySelector('.facets__container').style.marginLeft = '0';
               document.querySelector('.products-grid').style.marginLeft = '0';
               document.querySelector('.facets__top').style.marginLeft = '0';

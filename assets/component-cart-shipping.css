@@ -11,10 +11,13 @@
   margin-top: 2.4rem;
 }
 .cart-shipping__message {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 1rem;
   margin: 0;
+}
+.cart-shipping__message.active {
+  display: flex;
 }
 .cart-shipping__message svg {
   display: none;

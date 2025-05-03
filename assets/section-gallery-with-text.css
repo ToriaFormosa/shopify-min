@@ -65,6 +65,11 @@
   overflow: hidden;
   height: auto;
 }
+@media screen and (max-width: 575px) {
+  .gallery-with-text__card {
+    min-height: 32rem;
+  }
+}
 .gallery-with-text__card--light *:not(.button) {
   color: rgb(var(--color-foreground-secondary));
 }
@@ -102,7 +107,8 @@
 }
 .gallery-with-text__info {
   position: relative;
-  width: 100%;
+  width: var(--width-slide);
+  flex-shrink: 0;
   height: 100%;
   z-index: 2;
   padding: 3.2rem;

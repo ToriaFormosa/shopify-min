@@ -99,7 +99,7 @@
 							{{ block.shopify_attributes }}
 						>
 							{% if block.settings.button_link != blank and block.settings.full_link %} 
-								<a href="{{ block.settings.button_link }}" class="multicolumn__link-overlay"></a>
+								<a href="{{ block.settings.button_link }}" class="multicolumn__link-overlay" aria-label="{{ block.settings.heading }}"></a>
 							{% endif %}
 							
 							{%- if block.settings.icon != 'none' and section.settings.section_type != 'full_image' -%}

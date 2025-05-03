@@ -168,6 +168,7 @@
                             autocorrect="off"
                             autocapitalize="off"
                             autocomplete="email"
+                            pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
                             {% if form.errors %}
                               autofocus
                               aria-invalid="true"
@@ -178,6 +179,9 @@
                             placeholder="{{ 'newsletter.label' | t }}"
                             required
                           >
+                          <label class="visually-hidden" for="NewsletterForm--{{ section.id }}">
+                            {{ 'newsletter.label' | t }}
+                          </label>
                         </div>
                         {%- if form.errors -%}
                           <small
@@ -209,6 +213,37 @@
                         {{- 'newsletter.success' | t }}
                       </h3>
                     {%- endif -%}
+                    {% if block.settings.privacy_policy_consent %}
+                      <div class="footer-subscribe-form-checkbox field field--checkbox">
+                        <input
+                          type="checkbox"
+                          name="footer_newsletter_checkbox"
+                          id="footer_newsletter_checkbox"
+                          required
+                          oninvalid="this.classList.add('is-invalid')"
+                          onchange="this.classList.remove('is-invalid')"
+                        >
+                        <label
+                          for="footer_newsletter_checkbox"
+                        >
+                          <svg class="icon icon-checkmark" width="8" height="7" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 3.5L3 5.5L7 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                          <span class="">
+                            {{ 'sections.footer.accept_terms' | t }}
+                            <a
+                              href="{{ shop.privacy_policy.url }}"
+                              target="_blank"
+                            >
+                              {{- shop.privacy_policy.title -}}
+                            </a>
+                          </span>
+                        </label>
+                        <p class="footer-subscribe-form-checkbox__error">
+                          {{ 'sections.footer.checkbox_error' | t }}
+                        </p>
+                      </div>
+                    {% endif %}
                     {% if block.settings.additional_text != blank %}
                       <p class="newsletter__text newsletter__text--additional">
                         {{ block.settings.additional_text }}
@@ -608,7 +643,17 @@
     <div class="container">
       <div class="footer__content-bottom-wrapper">
         <div class="footer__copyright">
-          <span class="copyright__content">{{ section.settings.copyright }}</span>
+          <span class="copyright__content">
+            {% if section.settings.enable_copyright_shopname %}
+              &copy;
+            {% endif %}
+            {% if section.settings.enable_copyright_date %}
+              {{ 'now' | date: '%Y' }}
+            {% endif %}
+            {% if section.settings.enable_copyright_shopname %}
+              {{ shop.name | link_to: routes.root_url }}.
+            {% endif %}
+          </span>
           <span class="copyright__content">
             {{- powered_by_link -}}
           </span>
@@ -778,6 +823,7 @@
     },
     {
       "type": "subscribe",
+      "limit": 1,
       "name": "t:sections.footer.blocks.subscribe.name",
       "settings": [
         {
@@ -817,6 +863,12 @@
           ],
           "default": "secondary",
           "label": "t:sections.all.button.button_style.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "privacy_policy_consent",
+          "default": false,
+          "label": "t:sections.footer.blocks.subscribe.settings.privacy_policy_consent.label"
         },
         {
           "type": "paragraph",
@@ -882,10 +934,16 @@
       "label": "t:sections.footer.settings.show_social.label"
     },
     {
-      "type": "liquid",
-      "id": "copyright",
-      "default": "&copy; {{ 'now' | date: '%Y' }} {{ shop.name | link_to: routes.root_url }}. All rights reserved.",
-      "label": "t:sections.footer.settings.copyright.label"
+      "type": "checkbox",
+      "id": "enable_copyright_date",
+      "default": true,
+      "label": "t:sections.footer.settings.enable_copyright_date.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_copyright_shopname",
+      "default": true,
+      "label": "t:sections.footer.settings.enable_copyright_shopname.label"
     },
     {
       "type": "header",

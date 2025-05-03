@@ -399,6 +399,19 @@
     grid-column: 5/8;
   }
 }
+.categories-list__wrapper--grid .categories-list__item {
+  min-height: 25rem;
+}
+@media screen and (min-width: 1200px) {
+  .categories-list__wrapper--grid .categories-list__item {
+    min-height: 40rem;
+  }
+}
+@media screen and (min-width: 1360px) {
+  .categories-list__wrapper--grid .categories-list__item {
+    min-height: 48.6rem;
+  }
+}
 .categories-list__wrapper--columns-1 {
   grid-template-columns: 1fr;
 }
@@ -436,27 +449,48 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 }
-.categories-list__wrapper--columns .categories-list__item {
+.categories-list__wrapper--columns .categories-list__item--recommended {
   min-height: 50rem;
+  /*@media screen and (min-width: 2000px) {
+  	min-height: 72rem;
+  }*/
 }
 @media screen and (min-width: 1200px) {
-  .categories-list__wrapper--columns .categories-list__item {
-    min-height: 66.7vh;
+  .categories-list__wrapper--columns .categories-list__item--recommended {
+    min-height: 64rem;
   }
 }
-@media screen and (min-width: 2000px) {
-  .categories-list__wrapper--columns .categories-list__item {
+@media screen and (min-width: 1360px) {
+  .categories-list__wrapper--columns .categories-list__item--recommended {
     min-height: 72rem;
   }
+}
+.categories-list__wrapper--columns .categories-list__item {
+  display: flex;
+}
+.categories-list__wrapper--columns .categories-list__item::before {
+  content: "";
+  display: block;
+  width: 0;
+  padding-bottom: var(--padding-bottom);
 }
 .categories-list__wrapper--rows {
   grid-template-columns: 1fr;
 }
 .categories-list__wrapper--rows .categories-list__item {
+  display: flex;
+}
+.categories-list__wrapper--rows .categories-list__item::before {
+  content: "";
+  display: block;
+  width: 0;
+  padding-bottom: var(--padding-bottom);
+}
+.categories-list__wrapper--rows .categories-list__item--recommended {
   min-height: 20rem;
 }
 @media screen and (min-width: 1200px) {
-  .categories-list__wrapper--rows .categories-list__item {
+  .categories-list__wrapper--rows .categories-list__item--recommended {
     min-height: 31.2rem;
   }
 }
@@ -488,7 +522,6 @@
 }
 .categories-list__item {
   position: relative;
-  min-height: 25rem;
   border-radius: 0.4rem;
   transition: background var(--duration-default) linear;
   background-clip: padding-box;
@@ -496,19 +529,21 @@
   -webkit-background-clip: padding;
   border: 0.1rem inset transparent;
   overflow: hidden;
-}
-@media screen and (min-width: 1200px) {
-  .categories-list__item {
-    min-height: 53vh;
+  /*@media screen and (min-width: $xl) {
+  	min-height: 40rem;
   }
-}
-@media screen and (min-width: 2000px) {
-  .categories-list__item {
-    min-height: 48.6rem;
-  }
+
+  @media screen and (min-width: $xxl) {
+  	min-height: 48.6rem;
+  }*/
 }
 @media screen and (min-width: 1200px) {
   .categories-list__item:hover .categories-list__image-hover {
+    opacity: 1;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .categories-list__item:hover .categories-list__video {
     opacity: 1;
   }
 }
@@ -564,4 +599,16 @@
   color: rgb(var(--color-foreground-title));
   transition: color var(--duration-default) linear;
   z-index: 2;
+}
+.categories-list__video {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--duration-default) linear;
+  overflow: hidden;
+}
+.categories-list__video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

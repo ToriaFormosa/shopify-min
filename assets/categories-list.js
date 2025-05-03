@@ -11,15 +11,28 @@
 					item.addEventListener("mouseover", () => {
 						item.classList.remove(`${item.getAttribute("data-base")}`);
 						item.classList.add(`${item.getAttribute("data-hover")}`);
+						if (item.querySelector("video")) item.querySelector("video").play();
 					});
 					item.addEventListener("mouseout", () => {
 						item.classList.remove(`${item.getAttribute("data-hover")}`);
 						item.classList.add(`${item.getAttribute("data-base")}`);
+						if (item.querySelector("video")) item.querySelector("video").pause();
 					});
 				});
 			}
 		});
 		resizeObserver.observe(categoriesSection);
+
+		const stopVideo = () => {
+			const videos = categoriesSection.querySelectorAll("video");
+			if (videos.length > 0) {
+				videos.forEach((video) => {
+					video.pause();
+				});
+			}
+		};
+
+		stopVideo();
 	};
 
 	categoriesList();

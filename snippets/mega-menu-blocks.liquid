@@ -11,9 +11,15 @@
 >
   <ul class="mega-menu__list list-unstyled focus-inset">
     {% for block in blocks %}
+      {% liquid
+        if block.type == 'mega_menu_blocks'
+          assign overlay = block.settings.overlay_opacity
+          assign text_color = block.settings.color_scheme_1
+        endif
+      %}
       {% assign mega_menu_blocks_trigger = block.settings.mega_menu_blocks_trigger | handle | strip %}
       {% if link.handle == mega_menu_blocks_trigger %}
-        {% for collection in block.settings.select_collections %}
+        {% for item in block.settings.select_collections %}
           <li class="mega-menu__card mega-menu__card--{{ block.settings.height }} color-{{ text_color }}">
             <span
               class="mega-menu__overlay"
@@ -24,25 +30,25 @@
             ></span>
 
             {% liquid
-              if collection.id != collection_individual_id
+              if item.id != collection_individual_id
                 case block.settings.image
                   when 'product_hover'
-                    assign image_first = collection.products[0].images[1]
-                    assign image_second = collection.products[0].images[0]
-                    assign image_third = collection.featured_image
+                    assign image_first = item.products[0].images[1]
+                    assign image_second = item.products[0].images[0]
+                    assign image_third = item.featured_image
                   when 'product'
-                    assign image_first = collection.products[0].images[0]
-                    assign image_second = collection.featured_image
-                    assign image_third = collection.products[0].images[1]
+                    assign image_first = item.products[0].images[0]
+                    assign image_second = item.featured_image
+                    assign image_third = item.products[0].images[1]
                   when 'collection'
-                    assign image_first = collection.featured_image
-                    assign image_second = collection.products[0].images[1]
-                    assign image_third = collection.products[0].images[0]
+                    assign image_first = item.featured_image
+                    assign image_second = item.products[0].images[1]
+                    assign image_third = item.products[0].images[0]
                 endcase
               endif
             %}
 
-            {% if collection.id != collection_individual_id %}
+            {% if item.id != collection_individual_id %}
               {% if image_first != blank %}
                 {% assign collection_product_image = image_first %}
               {% elsif image_second != blank %}
@@ -51,7 +57,7 @@
                 {% assign collection_product_image = image_third %}
               {% endif %}
             {% else %}
-              {% assign collection_product_image = collection.featured_image %}
+              {% assign collection_product_image = item.featured_image %}
             {% endif %}
 
             {%- if collection_product_image != blank -%}
@@ -80,21 +86,21 @@
             {% endif %}
             <h3 class="mega-menu__title h4">
               <a
-                href="{{ collection.url | default: '#' }}"
+                href="{{ item.url | default: '#' }}"
                 class="mega-menu__link list-menu__item focus-inset caption-large"
               >
-                {{- collection.title -}}
+                {{- item.title -}}
               </a>
             </h3>
             {% if block.settings.show_button and block.settings.button_label != blank %}
               <a
-                href="{{ collection.url }}"
+                href="{{ item.url }}"
                 class="mega-menu__button button button--{{ block.settings.button_style }} focus-inset"
               >
                 {{ block.settings.button_label }}
               </a>
             {% endif %}
-            <a href="{{ collection.url | default: '#' }}" class="mega-menu__card-link"></a>
+            <a href="{{ item.url | default: '#' }}" class="mega-menu__card-link" aria-label="{{ item.title }}"></a>
           </li>
         {% endfor %}
       {% endif %}

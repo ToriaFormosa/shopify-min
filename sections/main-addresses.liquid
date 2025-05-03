@@ -96,7 +96,7 @@
 								</label>
 							</div>
 							<div class="field">
-								<div class="select js-select icon-caret">
+								<div class="select js-select field">
 									<select
 										id="AddressCountryNew"
 										name="address[country]"
@@ -106,6 +106,9 @@
 										{{ all_country_option_tags }}
 									</select>
 									{% render 'icon-caret' %}
+									<label for="AddressCountryNew">
+										{{- 'customer.addresses.country' | t -}}
+									</label>
 								</div>
 							</div>
 							<div class="field">
@@ -154,7 +157,7 @@
 								id="AddressProvinceContainerNew"
 								style="display: none"
 							>
-								<div class="select js-select icon-caret">
+								<div class="select field">
 									<select
 										id="AddressProvinceNew"
 										name="address[province]"
@@ -162,6 +165,9 @@
 										autocomplete="address-level1"
 									></select>
 									{% render 'icon-caret' %}
+									<label for="AddressProvinceNew">
+										{{- 'customer.addresses.province' | t -}}
+									</label>
 								</div>
 							</div>
 							<div class="field">
@@ -301,7 +307,7 @@
 										</label>
 									</div>
 									<div class="field">
-										<div class="select js-select icon-caret">
+										<div class="select js-select field">
 											<select
 												id="AddressCountry_{{ form.id }}"
 												name="address[country]"
@@ -313,6 +319,9 @@
 												{{ all_country_option_tags }}
 											</select>
 											{% render 'icon-caret' %}
+											<label for="AddressCountry_{{ form.id }}">
+												{{- 'customer.addresses.country' | t -}}
+											</label>
 										</div>
 									</div>
 									<div class="field">
@@ -361,7 +370,7 @@
 										id="AddressProvinceContainer_{{ form.id }}"
 										style="display:none;"
 									>
-										<div class="select js-select icon-caret">
+										<div class="select field">
 											<select
 												id="AddressProvince_{{ form.id }}"
 												name="address[province]"
@@ -369,6 +378,9 @@
 												autocomplete="address-level1"
 											></select>
 											{% render 'icon-caret' %}
+											<label for="AddressProvince_{{ form.id }}">
+												{{- 'customer.addresses.province' | t -}}
+											</label>
 										</div>
 									</div>
 									<div class="field">

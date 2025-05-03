@@ -1,23 +1,21 @@
-(function () {
-	let swiperMulticolumn;
-	const multicolumnSwipeEnabled = document.querySelector(
-		".swiper--multicolumn",
-	);
+;(function () {
+	let swiperMulticolumn
+	const multicolumnSwipeEnabled = document.querySelector('.swiper--multicolumn')
 
 	const addClasses = () => {
-		const slides = document.querySelectorAll(".multicolumn-list__item");
+		const slides = document.querySelectorAll('.multicolumn-list__item')
 		slides.forEach((slide) => {
-			slide.classList.add("swiper-slide");
-		});
-	};
+			slide.classList.add('swiper-slide')
+		})
+	}
 
 	const initSlider = () => {
-		const sliders = document.querySelectorAll('.swiper--multicolumn');
+		const sliders = document.querySelectorAll('.swiper--multicolumn')
 
 		if (sliders && sliders.length > 0) {
-			sliders.forEach(slider => {
-				const btnPrev = slider.querySelector('.multicolumn__button-prev');
-				const btnNext = slider.querySelector('.multicolumn__button-next');
+			sliders.forEach((slider) => {
+				const btnPrev = slider.querySelector('.multicolumn__button-prev')
+				const btnNext = slider.querySelector('.multicolumn__button-next')
 
 				swiperMulticolumn = new Swiper(slider, {
 					loop: false,
@@ -37,58 +35,58 @@
 						nextEl: btnNext,
 						prevEl: btnPrev,
 					},
-				});
+				})
 			})
 		}
-	};
+	}
 
 	const destroySlider = () => {
-		const slides = document.querySelectorAll(".multicolumn-list__item");
+		const slides = document.querySelectorAll('.multicolumn-list__item')
 
 		if (Array.isArray(swiperMulticolumn)) {
 			swiperMulticolumn.forEach((swiper) => {
-				swiper.destroy(true, true);
-			});
+				swiper.destroy(true, true)
+			})
 		} else {
-			swiperMulticolumn.destroy(true, true);
+			swiperMulticolumn.destroy(true, true)
 		}
-		swiperMulticolumn = null;
+		swiperMulticolumn = null
 
 		slides.forEach((slide) => {
-			slide.removeAttribute("style");
-			slide.classList.remove("swiper-slide");
-		});
-	};
+			slide.removeAttribute('style')
+			slide.classList.remove('swiper-slide')
+		})
+	}
 
 	const initMulticolumn = () => {
-		const multicolumnSection = document.querySelector(".multicolumn-section");
+		const multicolumnSection = document.querySelector('.multicolumn-section')
 
 		const sectionResizeObserver = new ResizeObserver((entries) => {
-			const [entry] = entries;
+			const [entry] = entries
 
 			if (entry.contentRect.width < 991 && multicolumnSwipeEnabled) {
-				addClasses();
-				initSlider();
+				addClasses()
+				initSlider()
 			} else if (swiperMulticolumn) {
-				destroySlider();
+				destroySlider()
 			}
-		});
+		})
 
-		sectionResizeObserver.observe(multicolumnSection);
-	};
+		sectionResizeObserver.observe(multicolumnSection)
+	}
 
 	if (swiperMulticolumn) {
-		destroySlider();
+		destroySlider()
 	}
-	addClasses();
-	initMulticolumn();
-	initSlider();
-	document.addEventListener("shopify:section:load", function () {
+	addClasses()
+	initMulticolumn()
+	initSlider()
+	document.addEventListener('shopify:section:load', function () {
 		if (swiperMulticolumn) {
-			destroySlider();
+			destroySlider()
 		}
-		addClasses();
-		initMulticolumn();
-		initSlider();
-	});
-})();
+		addClasses()
+		initMulticolumn()
+		initSlider()
+	})
+})()

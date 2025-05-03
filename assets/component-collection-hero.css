@@ -6,19 +6,12 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  padding: 1.6rem 2rem;
+  padding: 1.6rem 0;
   background-color: #e7e7e7;
-  /*&::after {
-  	content: '';
-  	position: absolute;
-  	inset: 0;
-  	//z-index: 2;
-  	background-color: rgba(var(--color-overlay), 0.3);
-  }*/
 }
 @media screen and (min-width: 1200px) {
   .collection-hero__wrapper--overlay {
-    padding: 1.6rem 6.4rem;
+    padding: 1.6rem 0;
   }
 }
 @media screen and (min-width: 990px) {
@@ -108,6 +101,18 @@
 .collection-hero__description {
   max-width: 38rem;
   color: rgb(var(--color-foreground-secondary));
+}
+.collection-hero__description.rte img, .collection-hero__description.rte blockquote {
+  max-width: 100%;
+}
+.collection-hero__description.rte *:first-child {
+  margin-top: 0;
+}
+.collection-hero__description.rte *:last-child {
+  margin-bottom: 0;
+}
+.collection-hero__description.rte *:not(a) {
+  color: inherit;
 }
 .collection-hero__image-wrapper {
   position: relative;

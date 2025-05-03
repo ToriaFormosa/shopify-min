@@ -4,12 +4,15 @@
       const header = document.querySelector('.shopify-section-header');
       const main = document.querySelector('main');
       const breadcrumbs = document.querySelector('.breadcrumbs-wrapper');
-      section.classList.add('section--has-overlay');
-      if (main.querySelectorAll('.shopify-section')[0] === section) {
+      if (main.querySelectorAll('.shopify-section')[0] === section && 
+      !main.querySelectorAll(".shopify-section")[0]?.classList.contains("not-margin")) {
         header.classList.add('color-background-1', 'color-background-3');
         if (breadcrumbs) {
           breadcrumbs.classList.add('color-background-3');
         }
+      }
+      else {
+        header.classList.remove('color-background-1', 'color-background-3');
       }
     };
 

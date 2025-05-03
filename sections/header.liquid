@@ -68,6 +68,14 @@
 			padding-top: 1rem;
 		}
 	}
+
+	{% if section.settings.sticky_header_type == "always" %}
+		.shopify-section-header {
+			position: sticky;
+			top: 0;
+			background: rgb(var(--color-background));
+		}
+	{% endif %}
 </style>
 
 <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
@@ -132,21 +140,15 @@
 
 	if (this.headerIsAlwaysSticky && scrollTop > this.header.offsetHeight + 1) {
 		this.header.classList.add('shopify-section-header-sticky','shopify-section-header-always-sticky');
-		this.header.style.transform = 'translateY(-100%)';
-	};
-
-	if (this.headerIsAlwaysSticky && scrollTop > this.header.offsetHeight + 2) {
 		this.header.classList.remove('color-background-3');
 		this.header.style.transition = 'background var(--duration-short), transform var(--duration-default)';
-		this.header.style.transform = 'translateY(0)';
 	};
 
 	if (this.headerIsAlwaysSticky && scrollTop < this.header.offsetHeight) {
 		this.header.classList.remove('shopify-section-header-sticky');
-		this.header.style.transform = 'translateY(0)';
 		this.header.style.transition = 'background var(--duration-short)';
 		if (this.header.classList.contains('color-background-1')) {
-		this.header.classList.add('color-background-3');
+			this.header.classList.add('color-background-3');
 		};
 	};
 
@@ -242,12 +244,18 @@
 			const headerHeight = header.getBoundingClientRect().height;
 			document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
 		});
-		headerObserver.observe(header);
+	if (header)	headerObserver.observe(header);
 	}
 
 	calcHeader();
 	
 	document.addEventListener('shopify:section:load', function () {
+		calcHeader();
+	});
+	document.addEventListener('shopify:section:unload', function () {
+		calcHeader();
+	});
+	document.addEventListener('shopify:section:reorder', function () {
 		calcHeader();
 	});
 
@@ -347,6 +355,12 @@
 		},
 		{
 			"type": "checkbox",
+			"id": "show_social",
+			"default": false,
+			"label": "t:sections.header.settings.show_social.label"
+		},
+		{
+			"type": "checkbox",
 			"id": "enable_social",
 			"default": false,
 			"label": "t:sections.header.settings.enable_social.label"
@@ -418,7 +432,7 @@
 			"type": "color_scheme",
 			"id": "search_color_scheme",
 			"default": "background-4",
-			"label": "t:sections.all.text_color_scheme.label"
+			"label": "t:sections.header.settings.search_color_scheme.label"
 		},
 		{
 			"type": "text",
@@ -486,7 +500,7 @@
 			"type": "color_scheme",
 			"id": "search_color_scheme_2",
 			"default": "background-4",
-			"label": "t:sections.all.text_color_scheme.label"
+			"label": "t:sections.header.settings.search_color_scheme.label"
 		},
 		{
 			"type": "text",

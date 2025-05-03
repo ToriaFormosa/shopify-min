@@ -47,6 +47,7 @@ const checkVisibility = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             loadItems(spinner);
+            sectionObserver.unobserve(entry.target);
           }
         })
       }

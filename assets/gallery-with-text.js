@@ -25,7 +25,7 @@
 		}
   }
 
-	const galleryTextSlide = () => {
+	const galleryTextSlide = () => {	
 		$(".gallery-with-text__card").hover(function () {
 			let $this = $(this);
 			$this.addClass("active");
@@ -61,7 +61,19 @@
 
 		const sectionResizeObserver = new ResizeObserver((entries) => {
 			const [entry] = entries;
-			playVideo(entry.target, entry.contentRect.width);			
+			let widthSlide = '100%';
+			if (document.documentElement.clientWidth >= 990) {
+				entry.target.querySelectorAll('.gallery-with-text__card').forEach(card => {
+					if (card.classList.contains('active')) {
+						widthSlide = card.getBoundingClientRect().width;
+					}
+				})
+				entry.target.style.setProperty("--width-slide", `${widthSlide}px`);
+			}
+			else {
+				entry.target.style.setProperty("--width-slide", '100%');
+			}
+			playVideo(entry.target, entry.contentRect.width);
 		})
 
 		sections.forEach(section => {

@@ -24,10 +24,10 @@
   margin-inline: auto;
 }
 .rich-text__heading {
-  max-width: 60rem;
+  max-width: 100rem;
 }
 .rich-text__text {
-  max-width: 45rem;
+  max-width: 90.3rem;
 }
 .rich-text__text p {
   margin: 0;

@@ -23,10 +23,22 @@
   {% endif %}
 {% endfor %}
 
+{% liquid
+  assign has_header_overlay = false
+  for block in section.blocks
+    case block.type
+      when 'article-header'
+        if section.settings.header_variant == 'overlay'
+          assign has_header_overlay = true
+        endif
+    endcase
+  endfor
+%}
+
 <article
   class="
     article-template section-{{ section.id }}-padding
-    {% if section.settings.header_variant == 'overlay' %} section--overlay{% endif %}
+    {% if has_header_overlay %} section--overlay{% endif %}
   "
   itemscope
   itemtype="http://schema.org/BlogPosting"
@@ -47,7 +59,7 @@
             article-template__header
             {% if section.settings.header_variant == 'column' %} article-template__header--column {%- endif -%}
             {% if section.settings.header_variant == 'row' %} article-template__header--row {%- endif -%}
-            {% if section.settings.header_variant == 'overlay' %} section--has-overlay article-template__header--overlay 
+            {% if section.settings.header_variant == 'overlay' %} section--has-overlay article-template__header--overlay
               article-template__header--{{ block.settings.image_height }} color-{{ section.settings.color_scheme }} background {% endif %}
           "
           {{ block.shopify_attributes }}
@@ -99,12 +111,18 @@
                       </div>
                     {%- endif -%}
 
-                    {%- if article.tags != blank and block.settings.blog_show_tags == true and section.settings.header_variant != 'overlay' -%}
+                    {%- if article.tags != blank
+                      and block.settings.blog_show_tags == true
+                      and section.settings.header_variant != 'overlay'
+                    -%}
                       <ul class="article-template__tags">
                         {% for tag in article.tags %}
                           <li class="article-template__tag card__subtitle">
                             <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="card__subtitle">
-                              <span title="{{ tag }}">{{- tag }}{%- if forloop.last == false -%},{%- endif -%}</span>
+                              <span title="{{ tag }}">
+                                {{- tag }}
+                                {%- if forloop.last == false -%},{%- endif -%}
+                              </span>
                             </a>
                           </li>
                         {% endfor %}
@@ -114,8 +132,10 @@
 
                   <div class="article-template__meta-right">
                     {%- if block.settings.blog_show_date -%}
-                      <div class="article-template__date {% if section.settings.header_variant %} article-template__date_overlay {% endif %}">
-                        {% if article.updated_at != article.published_at and section.settings.header_variant != 'overlay' %}
+                      <div class="article-template__date {% if section.settings.header_variant == "overlay" %} article-template__date_overlay {% endif %}">
+                        {% if article.updated_at != article.published_at
+                          and section.settings.header_variant != 'overlay'
+                        %}
                           <span class="card__subtitle" itemprop="dateCreated pubdate datePublished">
                             {{- 'general.blog.update' | t | append: ':' }}
                             <span>{{ article.updated_at | time_tag: format: 'abbreviated_date' }}</span>
@@ -130,12 +150,18 @@
                       </div>
                     {%- endif -%}
 
-                    {%- if article.tags != blank and block.settings.blog_show_tags == true and section.settings.header_variant == 'overlay' -%}
+                    {%- if article.tags != blank
+                      and block.settings.blog_show_tags == true
+                      and section.settings.header_variant == 'overlay'
+                    -%}
                       <ul class="article-template__tags article-template__tags_overlay">
                         {% for tag in article.tags %}
                           <li class="article-template__tag card__subtitle">
                             <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="card__subtitle">
-                              <span title="{{ tag }}">{{- tag }}{%- if forloop.last == false -%},{%- endif -%}</span>
+                              <span title="{{ tag }}">
+                                {{- tag }}
+                                {%- if forloop.last == false -%},{%- endif -%}
+                              </span>
                             </a>
                           </li>
                         {% endfor %}
@@ -240,7 +266,10 @@
 
                     {%- if block.settings.show_share_copy -%}
                       <li class="share-buttons-simple__item">
-                        <a href="{{ shop.url | append: product.url }}" class="share-buttons-simple__button copy-btn focus-inset">
+                        <a
+                          href="{{ shop.url | append: product.url }}"
+                          class="share-buttons-simple__button copy-btn focus-inset"
+                        >
                           {% render 'icon-share' %}
                         </a>
                       </li>
@@ -322,7 +351,7 @@
     <div class="article-template__comment-wrapper background-secondary">
       <div id="comments" class="page-width page-width--narrow">
         {%- if article.comments_count > 0 -%}
-          {%- assign anchorId = '#Comments-' | append: article.id -%}
+          {%- assign anchor_id = '#Comments-' | append: article.id -%}
 
           <h2 id="Comments-{{ article.id }}" tabindex="-1">
             {{ 'blogs.article.comments' | t: count: article.comments_count }}
@@ -349,7 +378,7 @@
                   </footer>
                 </article>
               {%- endfor -%}
-              {% render 'pagination', paginate: paginate, anchor: anchorId %}
+              {% render 'pagination', paginate: paginate, anchor: anchor_id %}
             </div>
           {% endpaginate %}
         {%- endif -%}
@@ -437,6 +466,7 @@
                   autocorrect="off"
                   autocapitalize="off"
                   aria-required="true"
+                  pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
                   required
                   {% if form.errors contains 'email' %}
                     aria-invalid="true"
@@ -535,8 +565,8 @@
   }
 </script>
 
-{%- if section.settings.header_variant == 'overlay' %}
-	{% render 'section-overlay' %}
+{%- if has_header_overlay == 'overlay' %}
+  {% render 'section-overlay' %}
 {% endif -%}
 
 {% schema %}

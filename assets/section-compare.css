@@ -193,3 +193,63 @@
 .divider:hover {
   opacity: 0.5;
 }
+
+.no-js .compare img-comparison-slider {
+  position: relative;
+  display: flex;
+  visibility: visible;
+  height: 28rem;
+  border-radius: 0.4rem;
+  overflow: hidden;
+}
+@media screen and (min-width: 750px) {
+  .no-js .compare img-comparison-slider {
+    height: 35rem;
+  }
+}
+@media screen and (min-width: 990px) {
+  .no-js .compare img-comparison-slider {
+    height: 45rem;
+  }
+}
+@media screen and (min-width: 1360px) {
+  .no-js .compare img-comparison-slider {
+    height: 64rem;
+  }
+}
+.no-js .compare img-comparison-slider::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  height: 100%;
+  width: 0.5rem;
+  background-color: rgb(var(--color-background));
+  transform: translate(-50%, -50%);
+}
+.no-js .compare img-comparison-slider .compare__figure {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 50%;
+  width: 50%;
+}
+.no-js .compare img-comparison-slider .compare__figure[slot=second] {
+  left: 50%;
+  right: 0;
+  display: block;
+}
+.no-js .compare img-comparison-slider .compare__figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.no-js .compare .icon-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}

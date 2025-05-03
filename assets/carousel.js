@@ -1,4 +1,30 @@
 (function() {
+  const stopVideo = (section) => {
+    const videos = section.querySelectorAll('video');
+
+		if (videos) {
+			videos.forEach(video => {
+				video.pause();
+			});
+		}
+  }
+
+  const playVideo = (section) => {
+    const videos = section.querySelectorAll('video');
+		const slides = section.querySelectorAll('.swiper-slide');
+
+		if (videos.length > 0 && slides.length > 0) {
+			slides.forEach(slide => {
+				if (slide.querySelector('video')) {
+					if (slide.classList.contains('swiper-slide-visible')) 
+            slide.querySelector('video').play();
+					else 
+            slide.querySelector('video').pause();
+				}
+			});
+		}
+  }
+  
   const initSlider = () => {
     const sliders = document.querySelectorAll('.carousel__slider');
 
@@ -21,6 +47,7 @@
       const carouselSlider = new Swiper(slider, {
         slidesPerView: 1,
         spaceBetween: 8,
+        watchSlidesProgress: true,
         speed: 1000,
         navigation: {
           nextEl: ".carousel__slider-nav .swiper-button-next",
@@ -43,14 +70,46 @@
             slidesPerView: columns1360,
             slidesPerGroup: columns1360
           }
+        },
+        on: {
+          slideChange: function() {
+            playVideo(this.el.closest('.section-carousel'));
+          }
         }
       })
     })
   }
 
-  initSlider();
+  const initSection = () => {
+    const sections = document.querySelectorAll('.section-carousel');
+
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+					if (entry.isIntersecting) 
+						playVideo(entry.target);
+					else 
+						stopVideo(entry.target);
+			})
+		});
+
+
+    const sectionResizeObserver = new ResizeObserver((entries) => {
+			const [entry] = entries;
+			playVideo(entry.target);			
+		})
+
+    sections.forEach(section => {
+      sectionObserver.observe(section);
+			sectionResizeObserver.observe(section);
+    });
+
+    initSlider();
+  }
+
+  initSection();
 
   document.addEventListener('shopify:section:load', function () {
-    initSlider();
+    initSection();
   });
 })()

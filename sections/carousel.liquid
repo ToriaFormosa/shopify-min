@@ -76,7 +76,7 @@
               >
                 <div class="carousel__slide-content">
                   <div class="carousel__slide-image">
-                    {% if block.settings.image != blank %}
+                    {% if block.settings.image != blank and block.settings.show_video == false or block.settings.video == blank %}
                       {% liquid
                         assign aspect_ratio = block.settings.image.aspect_ratio
 
@@ -172,12 +172,28 @@
                           widths: '360, 535, 600, 720, 940, 1066, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000, 3200, 3400, 3600, 3800'
                       }}
                     {% endif %}
+
+                     {%- if block.settings.show_video == true and block.settings.video != blank -%}
+                      {% case section.settings.columns %}
+                        {% when 5 %}
+                          {% assign image_size = '900x' %}
+                        {% when 4 %}
+                          {% assign image_size = '1100x' %}
+                        {% when 3 %}
+                          {% assign image_size = '1500x' %}
+                        {% when 2 %}
+                          {% assign image_size = '2000x' %}
+                        {% else %}
+                          {% assign image_size = '2600x' %}
+                      {% endcase %}
+                      {{ block.settings.video | video_tag: image_size: image_size, autoplay: false, loop: true, muted: true }}
+                    {% endif %}
                   </div>
                   {% if block.settings.heading != blank %}
                     <h3 class="carousel__slide-title h4">{{ block.settings.heading }}</h3>
                   {% endif %}
                   {% if block.settings.link != blank %}
-                    <a href="{{ block.settings.link }}" class="link card-wrapper__link--overlay"></a>
+                    <a href="{{ block.settings.link }}" class="link card-wrapper__link--overlay" aria-label="{{ block.settings.heading }}"></a>
                   {% endif %}
                 </div>
               </div>
@@ -365,6 +381,17 @@
           "type": "image_picker",
           "id": "image",
           "label": "t:sections.carousel.blocks.carousel_slide.settings.image.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_video",
+          "label": "t:sections.media-slideshow.blocks.media_slide.settings.show_video.label",
+          "default": false
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "t:sections.media-slideshow.blocks.media_slide.settings.video.label"
         },
         {
           "type": "range",

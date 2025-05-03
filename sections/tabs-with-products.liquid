@@ -1,6 +1,10 @@
 {{ 'section-tabs-with-products.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'tabs-with-products.js' | asset_url }}" defer="defer"></script>
 
+{%- if settings.type_color_swatch == 'custom' -%}
+  {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+{% endif %}
+
 {%- style -%}
   {% render 'section-margin' %}
   {% render 'section-padding' %}
@@ -181,8 +185,9 @@
   "name": "t:sections.tabs-with-products.name",
   "class": "tabs-slider-section",
   "tag": "section",
-  "enabled_on": {
-    "templates": ["*"]
+  "disabled_on": {
+    "templates": ["password"],
+    "groups": ["*"]
   },
   "settings": [
     {

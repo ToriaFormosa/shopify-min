@@ -4,6 +4,7 @@
 }
 
 .countdown {
+  display: block;
   padding-top: 3.2rem;
   position: relative;
   z-index: 1;
@@ -24,11 +25,25 @@
   height: 100%;
   object-fit: cover;
 }
+.countdown__bg {
+  overflow: hidden;
+}
 .countdown__placeholder {
   background-color: rgb(var(--color-overlay), 0.7);
 }
 .countdown__placeholder svg {
   fill: rgb(249, 249, 249);
+}
+.countdown__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.countdown__video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .countdown__bg-overlay {
   position: absolute;

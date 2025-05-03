@@ -136,6 +136,7 @@
               {% if block.settings.button_link != blank %}
                 href="{{ block.settings.button_link }}"
               {% endif %}
+              aria-label = "{{ block.settings.button_label }}"
               class="link link--overlay"
               {% if block.settings.button_link == blank %}
                 aria-disabled="true"

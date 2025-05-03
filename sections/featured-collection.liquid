@@ -70,7 +70,7 @@
 									 {%- endif -%}
 										 "
 							>
-								{% if collection_image != blank %}
+								{% if collection_image != blank and block.settings.show_video == false or block.settings.video == blank %}
 									{% assign width_ratio =  1 %}
 									{% if collection_image.width < collection_image.height or section.settings.image_ratio == 'landscape' %}
 										{% assign width_ratio =  1 %}
@@ -101,12 +101,14 @@
 									widths: '360, 533, 720, 940, 1066, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600',
 									style: style
 									}}
+								{% elsif block.settings.show_video == true and block.settings.video != blank %}
+									{{ block.settings.video | video_tag: image_size: '1920x', autoplay: true, loop: true, muted: true }}
 								{% else %}
 									{{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
 								{% endif %}
 
 								{% if block.settings.collection != blank %}
-									<a href="{{ block.settings.collection.url }}" class="featured-collection__link-overlay"></a>
+									<a href="{{ block.settings.collection.url }}" class="featured-collection__link-overlay" aria-label="{{ block.settings.collection.title }}"></a>
 									<div class="featured-collection__info">
 										<div class="featured-collection__name color-{{ section.settings.color_scheme }} background">{{ block.settings.collection.title }}</div>
 										<a
@@ -175,7 +177,7 @@
 									{%- endif -%}
 								"
 							>
-								{% if collection_image != blank %}
+								{% if collection_image != blank and block.settings.show_video == false or block.settings.video == blank %}
 									{% assign width_ratio =  1 %}
 									{% if collection_image.width < collection_image.height or section.settings.image_ratio == 'landscape' %}
 										{% assign width_ratio =  1 %}
@@ -206,12 +208,14 @@
 										widths: '360, 533, 720, 940, 1066, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600',
 										style: style
 									}}
+								{% elsif block.settings.show_video == true and block.settings.video != blank %}
+									{{ block.settings.video | video_tag: image_size: '1920x', autoplay: false, loop: true, muted: true }}
 								{% else %}
 									{{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
 								{% endif %}
 
 								{% if block.settings.collection != blank %}
-									<a href="{{ block.settings.collection.url }}" class="featured-collection__link-overlay"></a>
+									<a href="{{ block.settings.collection.url }}" class="featured-collection__link-overlay" aria-label="{{ block.settings.collection.title }}"></a>
 									<div class="featured-collection__info">
 										<div class="featured-collection__name color-{{ section.settings.color_scheme }} background">{{ block.settings.collection.title }}</div>
 										<a
@@ -476,7 +480,18 @@
 					"label": "t:sections.featured-collection.blocks.settings.image.label",
 					"info": "t:sections.featured-collection.blocks.settings.image.info"
 				},
-				 {
+				{
+          "type": "checkbox",
+          "id": "show_video",
+          "label": "t:sections.media-slideshow.blocks.media_slide.settings.show_video.label",
+          "default": false
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "t:sections.media-slideshow.blocks.media_slide.settings.video.label"
+        },
+				{
           "type": "range",
           "id": "overlay_opacity",
           "min": 0,

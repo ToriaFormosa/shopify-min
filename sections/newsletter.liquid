@@ -36,6 +36,7 @@
                   autocorrect="off"
                   autocapitalize="off"
                   autocomplete="email"
+                  pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
                   {% if form.errors %}
                     autofocus
                     aria-invalid="true"
@@ -46,7 +47,41 @@
                   placeholder="{{ 'newsletter.label' | t }}"
                   required
                 >
+                <label class="visually-hidden" for="NewsletterForm--{{ section.id }}">
+                  {{ 'newsletter.label' | t }}
+                </label>
               </div>
+              {% if section.settings.privacy_policy_consent %}
+                <div class="newsletter-subscribe-form-checkbox field field--checkbox">
+                  <input
+                    type="checkbox"
+                    name="newsletter_checkbox"
+                    id="newsletter_checkbox"
+                    required
+                    oninvalid="this.classList.add('is-invalid')"
+                    onchange="this.classList.remove('is-invalid')"
+                  >
+                  <label
+                    for="newsletter_checkbox"
+                  >
+                    <svg class="icon icon-checkmark" width="8" height="7" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 3.5L3 5.5L7 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="">
+                      {{ 'sections.footer.accept_terms' | t }}
+                      <a
+                        href="{{ shop.privacy_policy.url }}"
+                        target="_blank"
+                      >
+                        {{- shop.privacy_policy.title -}}
+                      </a>
+                    </span>
+                  </label>
+                  <p class="newsletter-subscribe-form-checkbox__error">
+                    {{ 'sections.footer.checkbox_error' | t }}
+                  </p>
+                </div>
+              {% endif %}
               {%- if form.errors -%}
                 <small
                   class="newsletter-form__message form__message"
@@ -167,6 +202,12 @@
       "type": "image_picker",
       "id": "image",
       "label": "t:sections.image-with-text.settings.image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "privacy_policy_consent",
+      "default": false,
+      "label": "t:sections.newsletter.settings.privacy_policy_consent.label"
     },
     {
       "type": "paragraph",

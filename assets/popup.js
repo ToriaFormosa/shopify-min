@@ -255,6 +255,14 @@ jQuery(document).ready(function($) {
 			openPopup: function( e ) {
 				let popup = ( e.originalEvent ) ? this : e;
 
+				if ( $( popup ).hasClass( 'popup-open' ) ) {
+					return;
+				}
+
+				// Check already opened.
+				if ( $( popup ).hasClass( 'popup-already-opened' ) ) {
+					return;
+				}
 
 				// Hide body scroll.
 				if ( $( popup ).is( '[data-body-scroll-disable="true"]' ) ) {
@@ -267,15 +275,6 @@ jQuery(document).ready(function($) {
 				$this.setCookie( 'popup-' + $( popup ).data( 'id' ), limit, {
 					expires: $( popup ).data( 'limit-lifetime' )
 				} );
-
-				if ( $( popup ).hasClass( 'popup-open' ) ) {
-					return;
-				}
-
-				// Check already opened.
-				if ( $( popup ).hasClass( 'popup-already-opened' ) ) {
-					return;
-				}
 
 				// Display popup.
 				$( popup ).addClass( 'popup-open' );

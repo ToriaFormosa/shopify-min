@@ -7,7 +7,7 @@
 {{ 'component-search.css' | asset_url | stylesheet_tag }}
 {{ 'template-search.css' | asset_url | stylesheet_tag }}
 
-{%- if settings.quickview_show or settings.show_on_mobile or settings.show_color_swatch -%}
+{%- if settings.quickview_show or settings.show_on_mobile or settings.type_color_swatch == 'custom' -%}
 	{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
 {% endif %}
 
@@ -66,6 +66,7 @@
 										spellcheck="false"
 									{%- endif -%}
 							>
+              <label class="visually-hidden" for="Search-In-404">{{ 'general.search.search' | t }}</label>
 							<input name="options[prefix]" type="hidden" value="last">
 
               <button class="button button--primary focus-inset" aria-label="{{ 'general.search.search' | t }}">

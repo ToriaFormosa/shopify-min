@@ -3,7 +3,6 @@
 	searchDetails.addEventListener('keyup', (e) => {
 		if (e.key === 'Escape') {
 			searchDetails.removeAttribute("open");
-			console.log('esc')
 		}
 	});
 })();

@@ -6,9 +6,9 @@
 {%- endstyle -%}
 
 <div
-  class="lookbook"
+  class="lookbook {%if section.settings.full_width %} lookbook--full-width {% endif %}"
 >
-  <div class="container">
+  <div class="{%if section.settings.full_width == false %} container {% endif %}">
     {%- if section.settings.subheading != blank and section.settings.heading != blank -%}
       <div class="lookbook__subtitle subtitle">
         {{ section.settings.subheading }}
@@ -24,8 +24,8 @@
         {{ section.settings.heading }}
       </h2>
     {%- endif -%}
-    <div class="lookbook__wrapper lookbook__swiper">
-      <div class="lookbook__slides" id="{{ section.id }}">
+    <div class="lookbook__wrapper lookbook__swiper" data-autoheight="{{ section.settings.adapt_height }}">
+      <div class="lookbook__slides {% if section.settings.adapt_width %} lookbook__slides--adapt-width {% endif %}" id="{{ section.id }}">
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'lookbook_slide' -%}
@@ -101,6 +101,81 @@
                   </div>
                 </div>
               </div>
+              {%- when 'lookbook_video' -%}
+                <div
+                  class="lookbook__slide lookbook__slide--video"
+                  {{ block.shopify_attributes }}
+                >
+                  <div class="lookbook__slide-content">
+                    {% if block.settings.video != blank %}
+                        {% liquid
+                        assign muted = block.settings.muted_video
+                        assign playsinline = false
+                        assign autoPlay = false
+  
+                        if block.settings.autoplay_video == true
+                          assign muted = true
+                          assign autoPlay = true
+                        endif
+                      %}
+                      <div
+                        class="lookbook__slide-video lookbook__slide_show__video {% if block.settings.autoplay_video %} autoplay {% endif %}"
+                        data-video-id="{{ block.settings.video.id }}"
+                      >
+                        {% if block.settings.video != blank %}
+                          {{
+                            block.settings.video
+                            | video_tag:
+                              image_size: '1920x',
+                              autoplay: autoPlay,
+                              loop: block.settings.loop_video,
+                              muted: muted,
+                              playsinline: playsinline,
+                              title: block.settings.description_video
+                          }}
+                        {% else %}
+                          <iframe
+                            src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?{%- if block.settings.autoplay_video -%}autoplay=1&autopause=0{%- else -%}autoplay=0{%- endif -%}{%- if muted == true -%}&muted=1{%- endif -%}&controls=false{%- if block.settings.loop_video -%}&loop=true{%- endif -%}"
+                            class="js-slide-vimeo {% if muted == true %} video-muted {% endif %}"
+                            allow="autoplay; encrypted-media"
+                            allowfullscreen
+                            title="{{ block.settings.description_video | escape }}"
+                            data-id="{{ block.settings.video_url.id }}"
+                          ></iframe>
+                          {%- endif -%}
+                      </div>
+                      {% if block.settings.show_icon_play %}
+                        <button
+                          class="button--unstyled button--play js-slide-play-video {% if block.settings.full_link == false or block.settings.button_link == blank %} button--play_full {% endif %} color-{{ block.settings.buttons_color_scheme }}"
+                          aria-label=" {{ 'general.video.play' | t }}">
+                          <span>
+                            <span class="button-icon {% if block.settings.autoplay_video == false %} icon-hidden {% endif %}">
+                              {% render 'icon-pause-colored' %}
+                            </span>
+                            <span class="button-icon {% if block.settings.autoplay_video == true %} icon-hidden {% endif %}">
+                              {% render 'icon-play' %}
+                            </span>
+                          </span>
+                        </button>
+                      {% endif %}
+                      {% if block.settings.show_icon_sound %}
+                        <button class="button--unstyled button--sound js-slide-sound-video color-{{ block.settings.buttons_color_scheme }}"
+                          aria-label=" {{ 'general.video.sound' | t }}">
+                          <span>
+                            <span class="button-icon {% if muted == false %} icon-hidden {% endif %}">
+                              {% render 'icon-sound-off-colored' %}
+                            </span>
+                            <span class="button-icon {% if muted == true %} icon-hidden {% endif %}">
+                              {% render 'icon-sound-on-colored' %}
+                            </span>
+                          </span>
+                        </button>
+                      {% endif %}
+                    {% else %}
+                      {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {% endif %}
+                  </div>
+                </div>
             {%- when 'lookbook_text' -%}
               <div
                 class="lookbook__slide lookbook__slide--{{ block.settings.text_position }} lookbook__slide--text color-{{ block.settings.color_scheme }} background"
@@ -218,6 +293,24 @@
       ],
       "default": "h2",
       "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "t:sections.lookbook.settings.full_width.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "adapt_width",
+      "default": false,
+      "label": "t:sections.lookbook.settings.adapt_width.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "adapt_height",
+      "default": false,
+      "label": "t:sections.lookbook.settings.adapt_height.label"
     },
     {
       "type": "header",
@@ -483,12 +576,69 @@
           "label": "t:sections.lookbook.blocks.lookbook_slide.settings.image.label"
         }
       ]
+    },
+    {
+      "type": "lookbook_video",
+      "name": "t:sections.lookbook.blocks.lookbook_video.name",
+      "settings": [
+        {
+          "type": "color_scheme",
+          "id": "buttons_color_scheme",
+          "default": "background-1",
+          "label": "t:sections.lookbook.blocks.lookbook_video.settings.buttons_color_scheme.label"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "t:sections.lookbook.blocks.lookbook_video.settings.video_header.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay_video",
+          "label": "t:sections.lookbook.blocks.lookbook_video.settings.autoplay_video.label",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "muted_video",
+          "label": "t:sections.lookbook.blocks.lookbook_video.settings.muted_video.label",
+          "info": "t:sections.lookbook.blocks.lookbook_video.settings.muted_video.info",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "loop_video",
+          "label": "t:sections.lookbook.blocks.lookbook_video.settings.loop_video.label",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon_play",
+          "label": "t:sections.lookbook.blocks.lookbook_video.settings.show_icon_play.label",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon_sound",
+          "label": "t:sections.lookbook.blocks.lookbook_video.settings.show_icon_sound.label",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "description_video",
+          "label": "t:sections.lookbook.blocks.lookbook_video.settings.description_video.label",
+          "info": "t:sections.lookbook.blocks.lookbook_video.settings.description_video.info"
+        }
+      ]
     }
   ],
   "presets": [
     {
       "name": "t:sections.lookbook.name",
       "blocks": [
+        {
+          "type": "lookbook_video"
+        },
         {
           "type": "lookbook_text"
         },

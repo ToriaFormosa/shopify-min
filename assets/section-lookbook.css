@@ -4,6 +4,27 @@
 .lookbook__heading + .lookbook__wrapper, .lookbook__subheading + .lookbook__wrapper {
   margin-top: 3.2rem;
 }
+@media screen and (max-width: 989px) {
+  .lookbook__wrapper[data-autoheight=true] .lookbook__slides {
+    align-items: flex-start;
+    min-height: unset;
+    max-height: unset;
+    height: auto;
+    margin-bottom: -0.6rem;
+  }
+  .lookbook__wrapper[data-autoheight=true] .lookbook__slide {
+    width: 100%;
+    min-height: unset;
+    max-height: unset;
+  }
+  .lookbook__wrapper[data-autoheight=true] .lookbook__slide--text {
+    padding-inline: 0;
+  }
+  .lookbook__wrapper[data-autoheight=true] .lookbook__slide-image,
+  .lookbook__wrapper[data-autoheight=true] .lookbook__slide-video {
+    height: auto;
+  }
+}
 .lookbook__slides {
   display: flex;
   align-items: stretch;
@@ -50,7 +71,7 @@
   width: 100%;
   height: 100%;
 }
-.lookbook__slide-image {
+.lookbook__slide-image, .lookbook__slide-video {
   flex: none;
   width: 100%;
   height: 100%;
@@ -198,6 +219,68 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.lookbook__slide--video {
+  width: 75rem;
+  position: relative;
+}
+@media screen and (min-width: 1200px) {
+  .lookbook__slide--video {
+    width: 125.6rem;
+  }
+}
+.lookbook__slide--video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.lookbook__slide--video .button--play {
+  position: absolute;
+  top: 2.4rem;
+  right: 5.6rem;
+  color: rgb(var(--color-foreground-title));
+  z-index: 3;
+  padding: 0;
+}
+@media screen and (min-width: 750px) {
+  .lookbook__slide--video .button--play {
+    top: 3.6rem;
+    right: 7.8rem;
+  }
+}
+.lookbook__slide--video .button--play:not(:has(+ .button--sound)) {
+  right: 2rem;
+}
+@media screen and (min-width: 750px) {
+  .lookbook__slide--video .button--play:not(:has(+ .button--sound)) {
+    right: 3.2rem;
+  }
+}
+.lookbook__slide--video .button--sound {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  padding: 0;
+  color: rgb(var(--color-foreground-title));
+  z-index: 3;
+}
+@media screen and (min-width: 750px) {
+  .lookbook__slide--video .button--sound {
+    top: 3.2rem;
+    right: 3.2rem;
+  }
+}
+.lookbook--full-width .lookbook__slide--text .lookbook__slide-content {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+@media screen and (min-width: 990px) {
+  .lookbook__slides--adapt-width .lookbook__slide {
+    width: auto;
+  }
+  .lookbook__slides--adapt-width .lookbook__slide--text {
+    max-width: 85%;
+  }
 }
 .lookbook__image-wrapper {
   position: absolute;

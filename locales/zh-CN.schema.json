@@ -693,10 +693,6 @@
 				"show_collection": {
 					"label": "Show collection"
 				},
-				"show_rating": {
-					"label": "Show rating",
-					"info": "To display a rating, add a product rating app. [Learn more](https://help.shopify.com/en/manual/products/product-reviews/installation)"
-				},
 				"show_desc": {
 					"label": "Show description",
 					"info": "120 characters max."
@@ -1732,7 +1728,7 @@
 				},
 				"small_menu": {
 					"label": "Secondary menu",
-					"info": "Only the first three links are displayed."
+					"info": "Only the first three top level links are displayed."
 				},
 				"enable_country_selector": {
 					"label": "Enable country/region selector"
@@ -3017,11 +3013,11 @@
 				},
 				"enable_autoheight": {
 					"label": "Enable automatic slide height",
-					"info": "Only for gallery types \"Single aside\" and \"Thumbs aside\""
+					"info": "Only for gallery types \"Slider with Bullets\" and \"Slider with Previews\""
 				},
 				"columns_desktop": {
 					"label": "Number of columns on desktop",
-					"info": "Only for gallery types \"Top full screen\" and \"Top with multiple slides\". There are only Buy buttons, Variant picker, and Icon with text blocks in the 2nd column.",
+					"info": "Only for gallery types \"Horizontal Slider\" and \"Horizontal Carousel\". There are only Buy buttons, Variant picker, and Icon with text blocks in the 2nd column.",
 					"options__1": {
 						"label": "1 column"
 					},

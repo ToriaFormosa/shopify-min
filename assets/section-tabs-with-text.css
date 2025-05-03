@@ -38,7 +38,16 @@
   bottom: 0.05rem;
   left: 0;
 }
-.twt__tabs:not(.swiper-initialized) .twt__tabs-item, .twt__tabs:not(.swiper-initialized) .twt__nav {
+.twt__tabs:not(.swiper-initialized) .swiper-wrapper {
+  display: flex;
+  gap: 3.2rem;
+}
+@media screen and (min-width: 990px) {
+  .twt__tabs:not(.swiper-initialized) .swiper-wrapper {
+    gap: 6.4rem;
+  }
+}
+.twt__tabs:not(.swiper-initialized) .twt__nav {
   opacity: 0;
 }
 .twt__tabs .swiper-wrapper {

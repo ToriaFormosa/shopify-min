@@ -15,7 +15,7 @@
 	<script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
-{%- if settings.quickview_show  or settings.show_on_mobile or settings.show_color_swatch -%}
+{%- if settings.quickview_show  or settings.show_on_mobile or settings.type_color_swatch == 'custom' -%}
 	{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
 {% endif %}
 
@@ -84,6 +84,7 @@
 										spellcheck="false"
 									{%- endif -%}
 							>
+							<label class="visually-hidden" for="Search-In-Template">{{ 'general.search.search' | t }}</label>
 							<input name="options[prefix]" type="hidden" value="last">
 
 							<button class="button button--primary focus-inset" aria-label="{{ 'general.search.search' | t }}">
@@ -137,7 +138,11 @@
 								results: search, 
 								enable_filtering: section.settings.enable_filtering, 
 								enable_sorting: section.settings.enable_sorting, 
-								filter_type: section.settings.filter_type
+								filter_type: section.settings.filter_type,
+								image_filter_ratio: section.settings.image_filter_ratio,
+          			image_filter_fit: section.settings.image_filter_fit,
+          			image_filter_columns: section.settings.image_filter_columns,
+								default_open: section.settings.default_open
 							%}
 					{%- endif -%}
 				{%- endif -%}
@@ -202,7 +207,6 @@
 														show_secondary_image: section.settings.show_secondary_image,
 														show_vendor: section.settings.show_vendor,
 														show_collection: section.settings.show_collection,
-														show_rating: section.settings.show_rating,
 														show_desc: section.settings.show_desc %}
 												</li>
 											{%- endfor -%}
@@ -345,13 +349,6 @@
 			"label": "t:sections.all.card.show_collection.label"
 		},
 		{
-			"type": "checkbox",
-			"id": "show_rating",
-			"default": false,
-			"label": "t:sections.all.card.show_rating.label",
-			"info": "t:sections.all.card.show_rating.info"
-		},
-		{
       "type": "checkbox",
       "id": "show_desc",
       "default": false,
@@ -397,7 +394,7 @@
       "label": "t:sections.main-collection-product-grid.settings.enable_filtering.label",
       "info": "t:sections.main-collection-product-grid.settings.enable_filtering.info"
     },
-		 {
+		{
       "type": "select",
       "id": "filter_type",
       "options": [
@@ -417,11 +414,67 @@
       "default": "vertical",
       "label": "t:sections.main-collection-product-grid.settings.filter_type.label"
     },
+		 {
+      "type": "checkbox",
+      "id": "default_open",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.default_open.label",
+      "info": "t:sections.main-collection-product-grid.settings.default_open.info"
+    },
 		{
       "type": "checkbox",
       "id": "enable_sorting",
       "default": false,
       "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+    },
+		 {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.image_filter.content"
+    },
+    {
+      "type": "select",
+      "id": "image_filter_ratio",
+      "options": [
+        {
+          "value": "3/2",
+          "label": "t:sections.all.card.image_ratio.options__1.label"
+        },
+        {
+          "value": "4/5",
+          "label": "t:sections.all.card.image_ratio.options__2.label"
+        },
+        {
+          "value": "1/1",
+          "label": "t:sections.all.card.image_ratio.options__3.label"
+        }
+      ],
+      "default": "4/5",
+      "label": "t:sections.all.card.image_ratio.label"
+    },
+    {
+      "type": "select",
+      "id": "image_filter_fit",
+      "options": [
+        {
+          "value": "contain",
+          "label": "t:sections.all.card.image_fit.options__1.label"
+        },
+        {
+          "value": "cover",
+          "label": "t:sections.all.card.image_fit.options__2.label"
+        }
+      ],
+      "default": "cover",
+      "label": "t:sections.all.card.image_fit.label"
+    },
+    {
+      "type": "range",
+      "id": "image_filter_columns",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 2,
+      "label": "t:sections.main-collection-product-grid.settings.image_filter_columns.label"
     },
 		{
       "type": "header",

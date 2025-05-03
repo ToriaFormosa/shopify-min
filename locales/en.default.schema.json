@@ -345,12 +345,25 @@
 				"show_color_swatch": {
 					"label": "Enable color swatches"
 				},
+				"type_color_swatch": {
+					"label": "Color swatches type",
+					"options__1": {
+						"label": "Custom"
+					},
+					"options__2": {
+						"label": "Standard"
+					}
+				},
 				"trigger_swatch": {
 					"label": "Swatch trigger"
 				},
+				"trigger_swatch_other": {
+					"label": "Swatch trigger for other languages",
+					"info": "If you use multiple languages ​​for your store, you will need to add names for the Swatch trigger for all languages ​​except the default language. Each swatch trigger must be in its own line."
+				},
 				"custom_colors": {
 					"label": "Custom colors",
-					"info": "Like \"Red: #ff0000\". Each color must be in its own line."
+					"info": "Like \"Red: #ff0000\". If you use multiple languages ​​for your store, you will need to add all the color names in other languages. Each color must be in its own line."
 				},
 				"swatch_border_radius": {
 					"label": "Border radius"
@@ -554,11 +567,25 @@
 				}
 			}
 		},
+		"reviews_style": {
+			"name": "Reviews",
+			"settings": {
+				"enable_styles": {
+					"label": "Enable theme style for Judge.me Reviews App"
+				}
+			}
+		},
 		"advanced": {
 			"name": "Advanced",
 			"settings": {
+				"enable_vendor_link": {
+					"label": "Enable product vendor link"
+				},
 				"show_back_to_top": {
-					"label": "Enable back to top"
+					"label": "Enable back-to-top button"
+				},
+				"show_breadcrumbs": {
+					"label": "Enable breadcrumbs"
 				}
 			}
 		}
@@ -692,10 +719,6 @@
 				},
 				"show_collection": {
 					"label": "Show collection"
-				},
-				"show_rating": {
-					"label": "Show rating",
-					"info": "To display a rating, add a product rating app. [Learn more](https://help.shopify.com/en/manual/products/product-reviews/installation)"
 				},
 				"show_desc": {
 					"label": "Show description",
@@ -1167,6 +1190,40 @@
 					"options__3": {
 						"label": "Rows"
 					}
+				},
+				"aspect_ratio": {
+					"label": "Image ratio",
+					"info": "Available only for Column and Row layouts",
+					"options__1": {
+						"label": "1/1"
+					},
+					"options__2": {
+						"label": "2/1"
+					},
+					"options__3": {
+						"label": "2/3"
+					},
+					"options__4": {
+						"label": "3/2"
+					},
+					"options__5": {
+						"label": "3/4"
+					},
+					"options__6": {
+						"label": "4/3"
+					},
+					"options__7": {
+						"label": "16/9"
+					},
+					"options__8": {
+						"label": "21/9"
+					},
+					"options__9": {
+						"label": "Adapt to image"
+					},
+					"options__10": {
+						"label": "Recommended"
+					}
 				}
 			},
 			"blocks": {
@@ -1182,6 +1239,18 @@
 					"image_2": {
 						"label": "Alternative cover on hover",
 						"info": "Default to collection image."
+					},
+					"header_video": {
+						"content": "Video options"
+					},
+					"show_video": {
+						"label": "Show video on hover"
+					},
+					"header__1": {
+						"content": "Shopify-hosted video"
+					},
+					"video": {
+						"label": "Video"
 					}
 				}
 			},
@@ -1247,6 +1316,18 @@
 				},
 				"full_width": {
 					"label": "Full width"
+				},
+				"header_video": {
+					"content": "Video options"
+				},
+				"show_video": {
+					"label": "Show video"
+				},
+				"header__2": {
+					"content": "Shopify-hosted video"
+				},
+				"video": {
+					"label": "Video"
 				}
 			},
 			"presets": {
@@ -1289,6 +1370,44 @@
 				"image_secondary": {
 					"label": "Secondary image"
 				},
+				"video": {
+					"label": "Or video"
+				},
+				"autoplay_video": {
+					"label": "Autoplay video"
+				},
+				"muted_video": {
+					"label": "Muted sound",
+					"info": "If autoplay is enabled, the sound of the video will be muted."
+				},
+				"loop_video": {
+					"label": "Loop"
+				},
+				"show_icon_play": {
+					"label": "Show play/pause"
+				},
+				"show_icon_sound": {
+					"label": "Show sound on/off"
+				},
+				"video_secondary": {
+					"label": "Or secondary video"
+				},
+				"autoplay_video_secondary": {
+					"label": "Autoplay secondary video"
+				},
+				"muted_video_secondary": {
+					"label": "Muted sound for secondary video",
+					"info": "If autoplay is enabled, the sound of the video will be muted."
+				},
+				"loop_video_secondary": {
+					"label": "Loop secondary video"
+				},
+				"show_icon_play_secondary": {
+					"label": "Show play/pause for secondary video"
+				},
+				"show_icon_sound_secondary": {
+					"label": "Show sound on/off for secondary video"
+				},
 				"height": {
 					"options__1": {
 						"label": "Small"
@@ -1300,12 +1419,12 @@
 						"label": "Large"
 					},
 					"options__4": {
-						"label": "Adapt to image"
+						"label": "Adapt to media"
 					},
 					"options__5": {
 						"label": "All height"
 					},
-					"label": "Image size"
+					"label": "Media size"
 				},
 				"text": {
 					"label": "Text"
@@ -1315,22 +1434,22 @@
 				},
 				"layout": {
 					"options__1": {
-						"label": "Image left"
+						"label": "Media left"
 					},
 					"options__2": {
-						"label": "Image right"
+						"label": "Media right"
 					},
 					"label": "Desktop layout",
-					"info": "Image first is the default mobile layout."
+					"info": "Media first is the default mobile layout."
 				},
 				"position": {
 					"options__1": {
-						"label": "Images in container"
+						"label": "Media in container"
 					},
 					"options__2": {
-						"label": "Images outside container"
+						"label": "Media outside container"
 					},
-					"label": "Images position"
+					"label": "Media position"
 				}
 			},
 			"presets": {
@@ -1583,6 +1702,9 @@
 					"settings": {
 						"additional_text": {
 							"label": "Additional text"
+						},
+						"privacy_policy_consent": {
+							"label": "Show Privacy Policy consent"
 						}
 					}
 				}
@@ -1659,8 +1781,11 @@
 				"enable_language_selector": {
 					"label": "Enable language selector"
 				},
-				"copyright": {
-					"label": "Copyright text"
+				"enable_copyright_date": {
+					"label": "Enable date in Copyright"
+				},
+				"enable_copyright_shopname": {
+					"label": "Enable Shop name in Copyright"
 				},
 				"enable_follow_on_shop": {
 					"label": "Enable Follow on Shop"
@@ -1732,7 +1857,7 @@
 				},
 				"small_menu": {
 					"label": "Secondary menu",
-					"info": "Only the first three links are displayed."
+					"info": "Only the first three top level links are displayed."
 				},
 				"enable_country_selector": {
 					"label": "Enable country/region selector"
@@ -1758,6 +1883,9 @@
 				"enable_search": {
 					"label": "Enable search",
 					"info": "If this option is disabled, settings below will not work."
+				},
+				"show_social": {
+					"label": "Enable social media links"
 				},
 				"enable_social": {
 					"label": "Enable social media links in mobile menu"
@@ -1799,6 +1927,9 @@
 				},
 				"show_search_block": {
 					"label": "Enable Search promo block"
+				},
+				"search_color_scheme": {
+					"label": "Promo block color scheme"
 				},
 				"search_image": {
 					"label": "Background image"
@@ -2241,7 +2372,16 @@
 				},
 				"heading": {
 					"label": "Heading"
-				}
+				},
+				"full_width": {
+					"label": "Full width"
+				},
+				"adapt_width": {
+					"label": "Adapt width for slides for desktop"
+				},
+				"adapt_height": {
+					"label": "Adapt height for slides for mobile"
+				},
 			},
 			"blocks": {
 				"lookbook_slide": {
@@ -2289,6 +2429,37 @@
 							"label": "Text position"
 						}
 					}
+				},
+				"lookbook_video": {
+					"name": "Video",
+					"settings": {
+						"buttons_color_scheme": {
+							"label": "Buttons color scheme"
+						},
+						"video_header": {
+							"label": "Shopify-hosted video"
+						},
+						"autoplay_video": {
+							"label": "Autoplay"
+						},
+						"muted_video": {
+							"label": "Muted sound",
+							"info": "If autoplay is enabled, the sound of the video will be muted."
+						},
+						"loop_video": {
+							"label": "Loop"
+						},
+						"show_icon_play": {
+							"label": "Show play/pause"
+						},
+						"show_icon_sound": {
+							"label": "Show sound on/off"
+						},
+						"description_video": {
+							"label": "Video alt text",
+							"info": "Describe the video to make it accessible for customers using screen readers."
+						}
+					}
 				}
 			}
 		},
@@ -2325,6 +2496,9 @@
 			"settings": {
 				"text": {
 					"label": "Text"
+				},
+				"show_subscribe": {
+					"label": "Show subscription consent"
 				}
 			},
 			"blocks": {
@@ -2620,8 +2794,18 @@
 						"label": "Horizontal united"
 					}
 				},
+				"default_open": {
+					"label": "Default open filters",
+					"info": "For desktop filter layout \"Vertical\"."
+				},
 				"enable_sorting": {
 					"label": "Enable sorting"
+				},
+				"image_filter": {
+					"content": "Image filter"
+				},
+				"image_filter_columns": {
+					"label": "Image per row"
 				},
 				"image_ratio": {
 					"label": "Image ratio",
@@ -2794,6 +2978,9 @@
 				"title": {
 					"name": "Heading"
 				},
+				"custom_badges": {
+					"name": "Custom badges"
+				},
 				"price": {
 					"name": "Price"
 				},
@@ -2841,6 +3028,19 @@
 							"options__2": {
 								"label": "Pills"
 							}
+						},
+						"swatch_type": {
+							"label": "Swatch type",
+							"option__1": {
+								"label": "Color"
+							},
+							"option__2": {
+								"label": "Variant image"
+							},
+							"info": "Applies only to the \"Pills\" type for Color swatches, which are configured in Theme Settings - Color swatch."
+						},
+						"variant_image_size": {
+							"label": "Variant image aspect ratio"
 						}
 					}
 				},
@@ -2912,6 +3112,9 @@
 						},
 						"text": {
 							"label": "Text"
+						},
+						"page": {
+							"label": "Size chart"
 						}
 					}
 				},
@@ -2992,7 +3195,7 @@
 					}
 				},
 				"gallery_type": {
-					"label": "Gallery type",
+					"label": "Desktop gallery type",
 					"options__1": {
 						"label": "Horizontal Slider"
 					},
@@ -3012,6 +3215,39 @@
 						"label": "Stacked Gallery"
 					}
 				},
+				"gallery_type_mobile": {
+					"label": "Mobile gallery type"
+				},
+				"aspect_ratio": {
+					"label": "Aspect ratio",
+					"options__1": {
+						"label": "1/1"
+					},
+					"options__2": {
+						"label": "2/1"
+					},
+					"options__3": {
+						"label": "2/3"
+					},
+					"options__4": {
+						"label": "3/2"
+					},
+					"options__5": {
+						"label": "3/4"
+					},
+					"options__6": {
+						"label": "4/3"
+					},
+					"options__7": {
+						"label": "16/9"
+					},
+					"options__8": {
+						"label": "21/9"
+					},
+					"options__9": {
+						"label": "Recommended"
+					}
+				},
 				"image_fit": {
 					"info": "Used for slideshow"
 				},
@@ -3020,11 +3256,14 @@
 				},
 				"enable_autoheight": {
 					"label": "Enable automatic slide height",
-					"info": "Only for gallery types \"Single aside\" and \"Thumbs aside\""
+					"info": "Only for desktop gallery types \"Slider with Bullets\" and \"Slider with Previews\""
+				},
+				"enable_video_looping": {
+					"label": "Enable video looping"
 				},
 				"columns_desktop": {
 					"label": "Number of columns on desktop",
-					"info": "Only for gallery types \"Top full screen\" and \"Top with multiple slides\". There are only Buy buttons, Variant picker, and Icon with text blocks in the 2nd column.",
+					"info": "Only for gallery types \"Horizontal Slider\" and \"Horizontal Carousel\". There are only Buy buttons, Variant picker, and Icon with text blocks in the 2nd column.",
 					"options__1": {
 						"label": "1 column"
 					},
@@ -3100,6 +3339,9 @@
 				"image": {
 					"label": "Image"
 				},
+				"privacy_policy_consent": {
+					"label": "Show Privacy Policy consent"
+				},
 				"paragraph": {
 					"content": "When customers subscribe to emails, customer accounts are created. [Learn more](https://help.shopify.com/en/manual/customers)"
 				}
@@ -3120,6 +3362,81 @@
 				"name": "Page"
 			}
 		},
+		"products-grid": {
+			"name": "Products grid",
+			"settings": {
+				"products_per_page": {
+					"label": "Products amount"
+				},
+				"products_to_show_row": {
+					"label": "Products per row"
+				},
+				"sort": {
+					"label": "Sort products by:",
+					"options__1": {
+						"label": "Alphabetically, A-Z"
+					},
+					"options__2": {
+						"label": "Alphabetically, Z-A"
+					},
+					"options__3": {
+						"label": "Date, new to old"
+					},
+					"options__4": {
+						"label": "Date, old to new"
+					},
+					"options__5": {
+						"label": "Product price, high to low"
+					},
+					"options__6": {
+						"label": "Product price, low to high"
+					}
+				},
+				"columns": {
+					"label": "Number of columns"
+				},
+				"image_ratio": {
+					"label": "Image ratio",
+					"options__1": {
+						"label": "1/1"
+					},
+					"options__2": {
+						"label": "3/2"
+					},
+					"options__3": {
+						"label": "4/5"
+					},
+					"options__4": {
+						"label": "5/4"
+					}
+				},
+				"show_secondary_image": {
+					"label": "Show second image on hover"
+				},
+				"add_image_padding": {
+					"label": "Add image padding"
+				},
+				"show_vendor": {
+					"label": "Show vendor"
+				},
+				"show_desc": {
+					"label": "Show description",
+					"info": "120 characters max."
+				},
+				"header__3": {
+					"content": "Product card"
+				},
+				"columns_mobile": {
+					"label": "Number of columns on mobile",
+					"options__1": {
+						"label": "1 column"
+					},
+					"options__2": {
+						"label": "2 columns"
+					}
+				}
+			}
+		},
 		"product-recommendations": {
 			"name": "Product recommendations",
 			"settings": {
@@ -3130,7 +3447,7 @@
 					"label": "Link"
 				},
 				"paragraph__1": {
-					"content": "Dynamic recommendations use order and product information to change and improve over time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products)"
+					"content": "Dynamic recommendations use order and product information to change and improve over time. [Learn more](https://help.shopify.com/en/manual/online-store/search-and-discovery/product-recommendations)"
 				},
 				"header__2": {
 					"content": "Product card"
@@ -3171,6 +3488,41 @@
 				},
 				"border_top": {
 					"label": "Enable border top"
+				}
+			}
+		},
+		"product_markers": {
+			"name": "Product markers",
+			"settings": {},
+			"blocks": {
+				"name": "Marker",
+				"settings": {
+					"product": {
+						"label": "Product"
+					},
+					"position_x": {
+						"label": "Position by horizontal"
+					},
+					"position_y": {
+						"label": "Position by vertical"
+					},
+					"tooltip_open_position": {
+						"field_name": "Opening direction",
+						"options": {
+							"options__1": {
+								"label": "Тo top"
+							},
+							"options__2": {
+								"label": "Тo right"
+							},
+							"options__3": {
+								"label": "Тo bottom"
+							},
+							"options__4": {
+								"label": "Тo left"
+							}
+						}
+					}
 				}
 			}
 		},
@@ -3397,6 +3749,9 @@
 				"image": {
 					"label": "Background image"
 				},
+				"mobile_image": {
+					"label": "Background Mobile image"
+				},
 				"image_position": {
 					"label": "Image position",
 					"options__1": {
@@ -3407,7 +3762,7 @@
 					}
 				},
 				"image_ratio": {
-					"label": "Image ratio",
+					"label": "Desktop image ratio",
 					"options__1": {
 						"label": "1/1"
 					},
@@ -3428,7 +3783,13 @@
 					},
 					"options__7": {
 						"label": "Adapt to image"
+					},
+					"options__8": {
+						"label": "Recommended"
 					}
+				},
+				"image_ratio_mobile": {
+					"label": "Mobile image ratio"
 				},
 				"opacity_overlay": {
 					"label": "Overlay opacity"
@@ -3579,6 +3940,18 @@
 				},
 				"enable_navigation": {
 					"label": "Enable navigation for desktop"
+				},
+				"enable_loop": {
+					"label": "Enable loop",
+					"info": "Works only with the 'Full Page' desktop layout and requires at least 3 slides."
+				},
+				"enable_autoplay": {
+					"label": "Enable autoplay",
+					"info": "Works only with the 'Full Page' desktop layout."
+				},
+				"autoplay_delay": {
+					"label": "Autoplay slide duration",
+					"info": "Works only with the 'Full Page' desktop layout and 'Autoplay' enabled."
 				},
 				"navigation_color_scheme": {
 					"label": "Navigation color scheme"

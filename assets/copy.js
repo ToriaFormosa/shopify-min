@@ -1,10 +1,12 @@
-function copyURI(evt) {
-	evt.preventDefault();
-	navigator.clipboard.writeText(window.location.href);
-}
+(function () {
+  function copyURI(evt) {
+    evt.preventDefault();
+    navigator.clipboard.writeText(window.location.href);
+  }
 
-const copyLinks = document.querySelectorAll('.copy-btn');
+  const copyLinks = document.querySelectorAll('.copy-btn');
 
-for (const copyLink of copyLinks) {
-	copyLink.addEventListener('click', copyURI)
-}
+  for (const copyLink of copyLinks) {
+    copyLink.addEventListener('click', copyURI);
+  }
+})();

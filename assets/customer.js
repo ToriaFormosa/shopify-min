@@ -118,11 +118,28 @@ class CustomerAddresses {
         }
 
         if (el.getAttribute(attributes.expandedTarget) === 'false') {
+          const formBox = target.closest(".address-list__item")?.previousElementSibling;
+          const addressId = target.getAttribute("id").slice(15);
+
           setTimeout(function () {
             $('html, body').animate({
-              scrollTop: target.closest('.address-list__item').previousElementSibling.offsetTop
+              scrollTop: formBox.offsetTop
             }, 700);
           }, 100);
+
+          this._setupCountries();
+
+          const selectCountry = formBox?.querySelector(`#AddressCountry_${addressId}`);
+          if (selectCountry) {
+            const initCountry = selectCountry?.dataset.default;
+            selectCountry.value = initCountry;
+          }
+
+          const selectProvince = formBox?.querySelector(`#AddressProvince_${addressId}`);
+          if (selectProvince) {
+            const initProvince = selectProvince?.dataset.default;
+            selectProvince.value = initProvince;
+          }
         }
       })
     }

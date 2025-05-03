@@ -103,6 +103,65 @@
     width: 100%;
   }
 }
+.newsletter .newsletter-subscribe-form-checkbox {
+  margin-top: 1.6rem;
+  min-height: unset;
+}
+.newsletter .newsletter-subscribe-form-checkbox label {
+  font-size: unset !important;
+}
+.newsletter .newsletter-subscribe-form-checkbox label:hover::before {
+  border-color: rgb(var(--color-foreground)) !important;
+}
+.newsletter .newsletter-subscribe-form-checkbox__error {
+  display: none;
+  padding: 0.4rem 0.8rem;
+  margin: 0;
+  color: red;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid rgba(var(--color-border-input));
+  position: absolute;
+  left: -3px;
+  top: calc(100% + 4px);
+  font-size: 1.4rem;
+}
+.newsletter .newsletter-subscribe-form-checkbox__error::before {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  background-color: #fff;
+  border-left: 1px solid rgba(var(--color-border-input));
+  border-top: 1px solid rgba(var(--color-border-input));
+  transform: rotate(45deg);
+  transform-origin: 0 0;
+  border-top-left-radius: 1px;
+  z-index: 10;
+  position: absolute;
+  top: -6px;
+  left: 10px;
+}
+.newsletter .newsletter-subscribe-form-checkbox input[type=checkbox] {
+  padding: 0 !important;
+}
+.newsletter .newsletter-subscribe-form-checkbox input[type=checkbox]:checked + label::before {
+  border-color: rgb(var(--color-foreground));
+  background-color: rgb(var(--color-foreground));
+}
+.newsletter .newsletter-subscribe-form-checkbox input[type=checkbox]:checked + label .icon-checkmark {
+  color: rgb(var(--color-background));
+}
+.newsletter .newsletter-subscribe-form-checkbox input[type=checkbox]:checked + label::after {
+  display: block;
+  opacity: 1;
+}
+.newsletter .newsletter-subscribe-form-checkbox input[type=checkbox]:focus-visible + label::before {
+  outline: 1px solid rgba(var(--color-foreground));
+}
+.newsletter .newsletter-subscribe-form-checkbox input[type=checkbox].is-invalid ~ .newsletter-subscribe-form-checkbox__error {
+  display: block;
+}
 
 .newsletter__form {
   width: 100%;

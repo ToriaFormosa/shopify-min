@@ -8,7 +8,7 @@
   line-height: 1.4;
   font-weight: 450;
   text-transform: none;
-  letter-spacing: 0;
+  letter-spacing: -0.02em;
   word-break: break-word;
   border-radius: 0.2rem;
   background-color: rgb(var(--color-background));

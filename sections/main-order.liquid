@@ -30,7 +30,10 @@
 
           {%- if order.cancelled -%}
             {%- assign cancelled_at = order.cancelled_at | time_tag: format: 'date_at_time' -%}
-            <span>{{ 'customer.order.cancelled_html' | t: date: cancelled_at }} {{ 'customer.order.cancelled_reason' | t: reason: order.cancel_reason_label }}</span>
+            <span>
+              {{- 'customer.order.cancelled_html' | t: date: cancelled_at }}
+              {{ 'customer.order.cancelled_reason' | t: reason: order.cancel_reason_label -}}
+            </span>
           {%- endif -%}
         </div>
         <div role="table" class="order-table order-table--details">
@@ -57,7 +60,10 @@
                   <div class="properties">
                     {%- unless line_item.product.has_only_default_variant -%}
                       {%- for option in line_item.options_with_values -%}
-                        <span>{{ option.value }}{%- if forloop.index != line_item.options_with_values.size -%}, {%- endif -%}</span>
+                        <span>
+                          {{- option.value }}
+                          {%- if forloop.index != line_item.options_with_values.size -%},{%- endif -%}
+                        </span>
                       {%- endfor -%}
                     {%- endunless -%}
                     {%- unless line_item.selling_plan_allocation == null -%}
@@ -66,6 +72,23 @@
                       </span>
                     {%- endunless -%}
                   </div>
+
+                  {%- if line_item.line_level_discount_allocations != blank -%}
+                    <ul
+                      role="list"
+                      aria-label="{{ 'customer.order.discount' | t }}"
+                      class="list-unstyled discounts"
+                    >
+                      {%- for discount_allocation in line_item.line_level_discount_allocations -%}
+                        <li class="discounts__item">
+                          {% render 'icon-discount' %}
+                          {{- discount_allocation.discount_application.title }} (-
+                          {{- discount_allocation.amount | money -}}
+                          )
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
                 </div>
               </div>
               <div data-label="{{ 'customer.order.sku' | t }}">
@@ -203,35 +226,58 @@
           <div class="row tbody bold">
             <span>{{ 'customer.order.subtotal' | t }}</span>
             <span>
-                {% if settings.currency_code_enabled %}
-                  {{ order.line_items_subtotal_price | money_with_currency }}
-                {% else %}
-                  {{ order.line_items_subtotal_price | money }}
-                {% endif %}
-              </span>
+              {% if settings.currency_code_enabled %}
+                {{ order.line_items_subtotal_price | money_with_currency }}
+              {% else %}
+                {{ order.line_items_subtotal_price | money }}
+              {% endif %}
+            </span>
           </div>
           {%- for shipping_method in order.shipping_methods -%}
             <div class="row tbody bold">
               <span id="RowShipping">{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }}) </span>
               <span data-label="{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})">
-                  {% if settings.currency_code_enabled %}
-                    {{ shipping_method.price | money_with_currency }}
-                  {% else %}
-                    {{ shipping_method.price | money }}
-                  {% endif %}
-                </span>
+                {% if settings.currency_code_enabled %}
+                  {{ shipping_method.price | money_with_currency }}
+                {% else %}
+                  {{ shipping_method.price | money }}
+                {% endif %}
+              </span>
             </div>
           {%- endfor -%}
+          {%- if order.cart_level_discount_applications != blank -%}
+            <div class="row tbody bold">
+              {%- for discount_application in order.cart_level_discount_applications -%}
+                <span>
+                  {{ 'customer.order.discount' | t }}
+                  <span class="cart-discount">
+                    {% render 'icon-discount' %}
+                    {{- discount_application.title -}}
+                  </span>
+                </span>
+                <span
+                  >-
+                  {% if settings.currency_code_enabled %}
+                    {{ discount_application.total_allocated_amount | money_with_currency }}
+                  {% else %}
+                    {{ discount_application.total_allocated_amount | money }}
+                  {% endif %}
+                </span>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
           <div class="row tbody bold">
             <span id="RowTotal">{{ 'customer.order.total' | t }}</span>
-            <span data-label="{{ 'customer.order.total' | t }}">{{ order.total_net_amount | money_with_currency }}</span>
+            <span data-label="{{ 'customer.order.total' | t }}">
+              {{- order.total_net_amount | money_with_currency -}}
+            </span>
           </div>
           {%- if order.billing_address != null -%}
             <div class="row tbody">
               <span>{{ 'customer.order.billing_address' | t }}</span>
               <span>
-              {{ order.billing_address | format_address }}
-            </span>
+                {{ order.billing_address | format_address }}
+              </span>
             </div>
           {%- endif -%}
           <div class="row tbody">
@@ -250,40 +296,40 @@
           {%- endif -%}
           {%- for tax_line in order.tax_lines -%}
             <div class="row tbody">
-                <span id="RowTax">
-                  {{- 'customer.order.tax' | t }} ({{ tax_line.title }}
-                  {{ tax_line.rate | times: 100 }}%)
-                </span>
+              <span id="RowTax">
+                {{- 'customer.order.tax' | t }} ({{ tax_line.title }}
+                {{ tax_line.rate | times: 100 }}%)
+              </span>
               <span
                 data-label="{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)"
               >
-                  {% if settings.currency_code_enabled %}
-                    {{ tax_line.price | money_with_currency }}
-                  {% else %}
-                    {{ tax_line.price | money }}
-                  {% endif %}
-                </span>
+                {% if settings.currency_code_enabled %}
+                  {{ tax_line.price | money_with_currency }}
+                {% else %}
+                  {{ tax_line.price | money }}
+                {% endif %}
+              </span>
             </div>
           {%- endfor -%}
           {%- if order.shipping_price > 0 -%}
             <div class="row tbody">
-              <span id="RowShipping">{{ 'customer.order.shipping' | t  }}</span>
+              <span id="RowShipping">{{ 'customer.order.shipping' | t }}</span>
               <span data-label="{{ 'customer.order.shipping' | t }}">
                 {{ order.shipping_price | money }}
               </span>
             </div>
           {%- else -%}
             <div class="row tbody">
-              <span id="RowShipping">{{ 'customer.order.shipping' | t  }}</span>
+              <span id="RowShipping">{{ 'customer.order.shipping' | t }}</span>
               <span data-label="{{ 'customer.order.shipping' | t }}">
-                {{ 'customer.orders.shipping_free' | t  }}
+                {{ 'customer.orders.shipping_free' | t }}
               </span>
             </div>
           {% endif %}
           {%- if order.total_duties -%}
             <div class="row tbody">
-              <span id="RowDuties">{{ 'customer.order.total_duties' | t }}</span>
-              <span data-label="{{ 'customer.order.total_duties' | t }}">
+              <span id="RowDuties">{{ 'customer.orders.total_duties' | t }}</span>
+              <span data-label="{{ 'customer.orders.total_duties' | t }}">
                 {{ order.total_duties | money }}
               </span>
             </div>
@@ -291,9 +337,9 @@
           {%- if order.total_refunded_amount > 0 -%}
             <div class="row tbody">
               <span id="RowTotalRefund">
-                {{ 'customer.order.total_refunded' | t }}
+                {{ 'customer.orders.total_refunded' | t }}
               </span>
-              <span data-label="{{ 'customer.order.total_refunded' | t }}">
+              <span data-label="{{ 'customer.orders.total_refunded' | t }}">
                 {{ order.total_refunded_amount | money_with_currency }}
               </span>
             </div>

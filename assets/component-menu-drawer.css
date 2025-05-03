@@ -138,7 +138,6 @@ details[open] > .menu-drawer__submenu {
 .js .menu-drawer__submenu {
   width: 100%;
   background-color: rgb(var(--color-background));
-  z-index: 1;
   visibility: hidden;
 }
 

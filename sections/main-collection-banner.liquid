@@ -12,41 +12,36 @@
 
 <div class="collection-hero color-{{ section.settings.color_scheme }} background">
   <div class="collection-hero__wrapper collection-hero__wrapper--{{- section.settings.layout -}}">
-    {% if section.settings.layout == "overlay" %}
+    {% if section.settings.layout == 'overlay' %}
       <span class="collection-hero__overlay"></span>
     {% endif %}
-    {% if section.settings.layout == "column" %}
+    
+    {% if settings.show_breadcrumbs %}
       <div class="container">
-    {% endif %}
-      <nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
-        <a href="{{ routes.root_url }}" title="{{ 'general.breadcrumbs.home' | t }}">
-          {{ 'general.breadcrumbs.home' | t }}
-        </a>
-        <div class="breadcrumb__delimiter">/</div>
-        <span>{{ collection.title }}</span>
-      </nav>
-    {% if section.settings.layout == "column" %}
+        <nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+          <a href="{{ routes.root_url }}" title="{{ 'general.breadcrumbs.home' | t }}">
+            {{ 'general.breadcrumbs.home' | t }}
+          </a>
+          <div class="breadcrumb__delimiter">/</div>
+          <span>{{ collection.title }}</span>
+        </nav>
       </div>
     {% endif %}
+    
     <div class="collection-hero__inner">
-      {% if section.settings.layout == "column" %}
-        <div class="container">
-      {% endif %}
+      <div class="container">
         <div class="collection-hero__text-wrapper">
           <h1 class="collection-hero__title title--page h2">
             <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
             {{- collection.title | escape -}}
           </h1>
           {%- if section.settings.show_collection_description and collection.description != blank -%}
-            <div class="collection-hero__description">
-              {{ collection.description | strip_html }}
+            <div class="collection-hero__description rte">
+              {{ collection.description }}
             </div>
           {%- endif -%}
         </div>
-      {% if section.settings.layout == "column" %}
-        </div>
-      {% endif %}
-
+      </div>
       {%- liquid
         assign collection_image = collection.image
 

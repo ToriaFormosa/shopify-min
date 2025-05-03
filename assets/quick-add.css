@@ -258,6 +258,11 @@
 .quick-add-modal .product__outer--static-column-aside .product__media-list-wrapper, .quick-add-modal .product__outer--static-multicolumns-aside .product__media-list-wrapper {
   height: auto;
 }
+@media (min-width: 750px) {
+  .quick-add-modal .product__outer--static-column-aside .product__main, .quick-add-modal .product__outer--static-multicolumns-aside .product__main {
+    max-height: unset;
+  }
+}
 .quick-add-modal .product__outer--static-column-aside .product__media-list, .quick-add-modal .product__outer--static-multicolumns-aside .product__media-list {
   height: auto;
   overflow-y: auto;
@@ -293,6 +298,9 @@
   .quick-add-modal .product__outer--thumbs-aside .product__media-list {
     height: 100%;
   }
+}
+.quick-add-modal .product__outer--thumbs-aside .product__media-list .swiper-wrapper {
+  height: auto !important;
 }
 @media (min-width: 750px) {
   .quick-add-modal .product__outer--thumbs-aside .product__media-sublist-outer {
@@ -367,6 +375,8 @@
 }
 .quick-add-modal .product .deferred-media__poster-button {
   display: flex;
+  width: 4.4rem;
+  height: 4.4rem;
 }
 .quick-add-modal .product__media-toggle, .quick-add-modal .product__media-icon {
   display: none;

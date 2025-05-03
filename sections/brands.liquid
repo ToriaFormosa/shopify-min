@@ -47,6 +47,7 @@
 						class="brands__item brands__item--{{ section.settings.layout }}"
 						{% if block.settings.brand_link.url != blank %}
 							href="{{ block.settings.brand_link }}"
+              aria-label="{{ 'general.brand.label' | t }}"
 						{% endif %}
 						{% if block.settings.brand_link.url == blank %}
 							aria-disabled="true"

@@ -65,7 +65,13 @@
         media-slideshow__slider_{{ section.settings.layout }}
         swiper
       "
-      data-duration="{{ section.settings.duration }}">
+      {% if section.settings.layout == 'full' and section.settings.enable_autoplay %}
+        data-media-slideshow-autoplay="true"
+      {% endif %}
+      {% if section.settings.layout == 'full' and section.settings.enable_loop and section.blocks.size >= 3 %}
+        data-media-slideshow-loop="true"
+      {% endif %}
+      >
       <div class="swiper-wrapper">
         {% for block in section.blocks %}
           {% liquid
@@ -111,6 +117,9 @@
 
             <div
               class="media-slideshow__slider-item_{{ section.settings.layout }} media-slideshow__slide media-slideshow__slide-{{ block.id }} swiper-slide"
+              {% if section.settings.layout == 'full' and section.settings.enable_autoplay %}
+                data-swiper-autoplay="{{ section.settings.autoplay_delay | times: 1000 }}"
+              {% endif %}
               {{ block.shopify_attributes }}
             >
               <div
@@ -136,9 +145,12 @@
                   {% if block.settings.video != blank or block.settings.video_url != blank %}
                     {% liquid
                       assign muted = block.settings.muted_video
+                      assign playsinline = false
+                      assign autoPlay = false
 
                       if block.settings.autoplay_video == true
                         assign muted = true
+                        assign autoPlay = true
                       endif
                     %}
 
@@ -151,9 +163,10 @@
                           block.settings.video
                           | video_tag:
                             image_size: '1920x',
-                            autoplay: false,
+                            autoplay: autoPlay,
                             loop: block.settings.loop_video,
-                            muted: muted
+                            muted: muted,
+                            playsinline: playsinline
                         }}
                       {% else %}
                         {%- if block.settings.video_url.type == 'youtube' -%}
@@ -167,7 +180,7 @@
                           ></iframe>
                         {%- else -%}
                           <iframe
-                            src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?{%- if block.settings.autoplay_video -%}autoplay=true{%- else -%}autoplay=false{%- endif -%}{%- if muted == true -%}&mute=true{%- endif -%}&controls=false{%- if block.settings.loop_video -%}&loop=true{%- endif -%}"
+                            src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?{%- if block.settings.autoplay_video -%}autoplay=1&autopause=0{%- else -%}autoplay=0{%- endif -%}{%- if muted == true -%}&muted=1{%- endif -%}&controls=false{%- if block.settings.loop_video -%}&loop=true{%- endif -%}"
                             class="js-vimeo {% if muted == true %} video-muted {% endif %}"
                             allow="autoplay; encrypted-media"
                             allowfullscreen
@@ -178,7 +191,7 @@
                       {% endif %}
                     </div>
                     {% if block.settings.show_icon_play %}
-                      <button class="button--unstyled button--play js-play-video">
+                      <button class="button--unstyled button--play js-play-video {% if block.settings.full_link == false or block.settings.button_link == blank %} button--play_full {% endif %}" aria-label=" {{ 'general.video.play' | t }}">
                         <span>
                           <span class="button-icon {% if block.settings.autoplay_video == false %} icon-hidden {% endif %}">
                             {% render 'icon-pause' %}
@@ -190,7 +203,7 @@
                       </button>
                     {% endif %}
                     {% if block.settings.show_icon_sound %}
-                      <button class="button--unstyled button--sound js-sound-video">
+                      <button class="button--unstyled button--sound js-sound-video" aria-label=" {{ 'general.video.sound' | t }}">
                         <span>
                           <span class="button-icon {% if muted == false %} icon-hidden {% endif %}">
                             {% render 'icon-sound-off' %}
@@ -211,14 +224,8 @@
                   "
                 ></span>
 
-                {% if block.settings.video == blank and block.settings.video_url == blank and block.settings.show_video == true %}
-                  {% if block.settings.button_link != blank and block.settings.full_link %} 
-                    <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay"></a>
-                  {% endif %}
-                {% endif %}
-
-                {% if block.settings.show_video == false and block.settings.button_link != blank and block.settings.full_link %}
-                  <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay"></a>
+                {% if block.settings.button_link != blank and block.settings.full_link %}
+                  <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay" aria-label="{{ block.settings.button_label }}"></a>
                 {% endif %}
 
                   {% if block.settings.additional_image != blank or block.settings.additional_image_2 != blank %}
@@ -367,9 +374,12 @@
                     {% if block.settings.video != blank or block.settings.video_url != blank %}
                       {% liquid
                         assign muted = block.settings.muted_video
+                        assign playsinline = false
+                        assign autoPlay = false
 
                         if block.settings.autoplay_video == true
                           assign muted = true
+                          assign autoPlay = true
                         endif
                       %}
 
@@ -382,9 +392,10 @@
                             block.settings.video
                             | video_tag:
                               image_size: '960x',
-                              autoplay: false,
+                              autoplay: autoPlay,
                               loop: block.settings.loop_video,
-                              muted: muted
+                              muted: muted,
+                              playsinline: playsinline
                           }}
                         {% else %}
                           {%- if block.settings.video_url.type == 'youtube' -%}
@@ -398,7 +409,7 @@
                             ></iframe>
                           {%- else -%}
                             <iframe
-                              src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?{%- if block.settings.autoplay_video -%}autoplay=true{%- else -%}autoplay=false{%- endif -%}{%- if muted == true -%}&mute=true{%- endif -%}&controls=false{%- if block.settings.loop_video -%}&loop=true{%- endif -%}"
+                              src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?{%- if block.settings.autoplay_video -%}autoplay=1&autopause=0{%- else -%}autoplay=0{%- endif -%}{%- if muted == true -%}&muted=1{%- endif -%}&controls=false{%- if block.settings.loop_video -%}&loop=true{%- endif -%}"
                               class="js-vimeo {% if muted == true %} video-muted {% endif %}"
                               allow="autoplay; encrypted-media"
                               allowfullscreen
@@ -409,7 +420,7 @@
                         {% endif %}
                       </div>
                       {% if block.settings.show_icon_play %}
-                        <button class="button--unstyled button--play js-play-video">
+                        <button class="button--unstyled button--play js-play-video {% if block.settings.full_link == false or block.settings.button_link == blank %} button--play_full {% endif %}" aria-label=" {{ 'general.video.play' | t }}">
                           <span>
                             <span class="button-icon {% if block.settings.autoplay_video == false %} icon-hidden {% endif %}">
                               {% render 'icon-pause' %}
@@ -421,7 +432,7 @@
                         </button>
                       {% endif %}
                       {% if block.settings.show_icon_sound %}
-                        <button class="button--unstyled button--sound js-sound-video">
+                        <button class="button--unstyled button--sound js-sound-video" aria-label=" {{ 'general.video.sound' | t }}">
                           <span>
                             <span class="button-icon {% if muted == false %} icon-hidden {% endif %}">
                               {% render 'icon-sound-off' %}
@@ -442,14 +453,8 @@
                     "
                   ></span>
 
-                  {% if block.settings.video == blank and block.settings.video_url == blank and block.settings.show_video == true %}
-                    {% if block.settings.button_link != blank and block.settings.full_link %} 
-                      <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay"></a>
-                    {% endif %}
-                  {% endif %}
-
-                  {% if block.settings.show_video == false and block.settings.button_link != blank and block.settings.full_link %}
-                    <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay"></a>
+                  {% if block.settings.button_link != blank and block.settings.full_link %}
+                    <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay" aria-label="{{ block.settings.button_label }}"></a>
                   {% endif %}
 
                   {% if block.settings.additional_image != blank or block.settings.additional_image_2 != blank %}
@@ -603,9 +608,12 @@
                     {% if block.settings.video != blank or block.settings.video_url != blank %}
                       {% liquid
                         assign muted = block.settings.muted_video
+                        assign playsinline = false
+                        assign autoPlay = false
 
                         if block.settings.autoplay_video == true
                           assign muted = true
+                          assign autoPlay = true
                         endif
                       %}
 
@@ -618,9 +626,10 @@
                             block.settings.video
                             | video_tag:
                               image_size: '960x',
-                              autoplay: false,
+                              autoplay: autoPlay,
                               loop: block.settings.loop_video,
-                              muted: muted
+                              muted: muted,
+                              playsinline: playsinline
                           }}
                         {% else %}
                           {%- if block.settings.video_url.type == 'youtube' -%}
@@ -634,7 +643,7 @@
                             ></iframe>
                           {%- else -%}
                             <iframe
-                              src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?{%- if block.settings.autoplay_video -%}autoplay=true{%- else -%}autoplay=false{%- endif -%}{%- if muted == true -%}&mute=true{%- endif -%}&controls=false{%- if block.settings.loop_video -%}&loop=true{%- endif -%}"
+                              src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?{%- if block.settings.autoplay_video -%}autoplay=1&autopause=0{%- else -%}autoplay=0{%- endif -%}{%- if muted == true -%}&muted=1{%- endif -%}&controls=false{%- if block.settings.loop_video -%}&loop=true{%- endif -%}"
                               class="js-vimeo {% if muted == true %} video-muted {% endif %}"
                               allow="autoplay; encrypted-media"
                               allowfullscreen
@@ -645,7 +654,7 @@
                         {% endif %}
                       </div>
                       {% if block.settings.show_icon_play %}
-                        <button class="button--unstyled button--play js-play-video">
+                        <button class="button--unstyled button--play js-play-video {% if block.settings.full_link == false or block.settings.button_link == blank %} button--play_full {% endif %}" aria-label=" {{ 'general.video.play' | t }}">
                           <span>
                             <span class="button-icon {% if block.settings.autoplay_video == false %} icon-hidden {% endif %}">
                               {% render 'icon-pause' %}
@@ -657,7 +666,7 @@
                         </button>
                       {% endif %}
                       {% if block.settings.show_icon_sound %}
-                        <button class="button--unstyled button--sound js-sound-video">
+                        <button class="button--unstyled button--sound js-sound-video" aria-label=" {{ 'general.video.sound' | t }}">
                           <span>
                             <span class="button-icon {% if muted == false %} icon-hidden {% endif %}">
                               {% render 'icon-sound-off' %}
@@ -678,14 +687,8 @@
                     "
                   ></span>
 
-                  {% if block.settings.video == blank and block.settings.video_url == blank and block.settings.show_video == true %}
-                    {% if block.settings.button_link != blank and block.settings.full_link %} 
-                      <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay"></a>
-                    {% endif %}
-                  {% endif %}
-
-                  {% if block.settings.show_video == false and block.settings.button_link != blank and block.settings.full_link %}
-                    <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay"></a>
+                  {% if block.settings.button_link != blank and block.settings.full_link %}
+                    <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay" aria-label="{{ block.settings.button_label }}"></a>
                   {% endif %}
 
                   {% if block.settings.additional_image != blank or block.settings.additional_image_2 != blank %}
@@ -829,9 +832,12 @@
                       {% if block.settings.video != blank or block.settings.video_url != blank %}
                         {% liquid
                           assign muted = block.settings.muted_video
+                          assign playsinline = false
+                          assign autoPlay = false
 
                           if block.settings.autoplay_video == true
                             assign muted = true
+                            assign autoPlay = true
                           endif
                         %}
 
@@ -844,9 +850,10 @@
                               block.settings.video
                               | video_tag:
                                 image_size: '960x',
-                                autoplay: false,
+                                autoplay: autoPlay,
                                 loop: block.settings.loop_video,
-                                muted: muted
+                                muted: muted,
+                                playsinline: playsinline
                             }}
                           {% else %}
                             {%- if block.settings.video_url.type == 'youtube' -%}
@@ -860,7 +867,7 @@
                               ></iframe>
                             {%- else -%}
                               <iframe
-                                src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?{%- if block.settings.autoplay_video -%}autoplay=true{%- else -%}autoplay=false{%- endif -%}{%- if muted == true -%}&mute=true{%- endif -%}&controls=false{%- if block.settings.loop_video -%}&loop=true{%- endif -%}"
+                                src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?{%- if block.settings.autoplay_video -%}autoplay=1&autopause=0{%- else -%}autoplay=0{%- endif -%}{%- if muted == true -%}&muted=1{%- endif -%}&controls=false{%- if block.settings.loop_video -%}&loop=true{%- endif -%}"
                                 class="js-vimeo {% if muted == true %} video-muted {% endif %}"
                                 allow="autoplay; encrypted-media"
                                 allowfullscreen
@@ -871,7 +878,7 @@
                           {% endif %}
                         </div>
                         {% if block.settings.show_icon_play %}
-                          <button class="button--unstyled button--play js-play-video">
+                          <button class="button--unstyled button--play js-play-video {% if block.settings.full_link == false or block.settings.button_link == blank %} button--play_full {% endif %}" aria-label=" {{ 'general.video.play' | t }}">
                             <span>
                               <span class="button-icon {% if block.settings.autoplay_video == false %} icon-hidden {% endif %}">
                                 {% render 'icon-pause' %}
@@ -883,7 +890,7 @@
                           </button>
                         {% endif %}
                         {% if block.settings.show_icon_sound %}
-                          <button class="button--unstyled button--sound js-sound-video">
+                          <button class="button--unstyled button--sound js-sound-video" aria-label=" {{ 'general.video.sound' | t }}">
                             <span>
                               <span class="button-icon {% if muted == false %} icon-hidden {% endif %}">
                                 {% render 'icon-sound-off' %}
@@ -904,14 +911,8 @@
                       "
                     ></span>
 
-                    {% if block.settings.video == blank and block.settings.video_url == blank and block.settings.show_video == true %}
-                      {% if block.settings.button_link != blank and block.settings.full_link %} 
-                        <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay"></a>
-                      {% endif %}
-                    {% endif %}
-
-                    {% if block.settings.show_video == false and block.settings.button_link != blank and block.settings.full_link %}
-                      <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay"></a>
+                    {% if block.settings.button_link != blank and block.settings.full_link %}
+                      <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay" aria-label="{{ block.settings.button_label }}"></a>
                     {% endif %}
 
                     {% if block.settings.additional_image != blank or block.settings.additional_image_2 != blank %}
@@ -1046,9 +1047,7 @@
     <div class="media-slideshow__wrapper {% if is_slider_mobile -%} is-slider {%- endif %} media-slideshow__wrapper_mobile media-slideshow__wrapper--full
       {% if section.settings.border_radius == true %} media-slideshow__wrapper_border-radius {%- endif -%}">
       <div
-        class="media-slideshow__slider_mobile media-slideshow__slider_full swiper"
-        data-duration="{{ section.settings.duration }}"
-      >
+        class="media-slideshow__slider_mobile media-slideshow__slider_full swiper">
         <div class="swiper-wrapper">
           {% for block in section.blocks %}
             {% if section.settings.aspect_ratio != 'adapt' %}
@@ -1109,9 +1108,12 @@
                   {% if block.settings.video != blank or block.settings.video_url != blank %}
                     {% liquid
                       assign muted = block.settings.muted_video
+                      assign playsinline = false
+                      assign autoPlay = false
 
                       if block.settings.autoplay_video == true
                         assign muted = true
+                        assign autoPlay = true
                       endif
                     %}
 
@@ -1124,9 +1126,10 @@
                           block.settings.video
                           | video_tag:
                             image_size: '1920x',
-                            autoplay: false,
+                            autoplay: autoPlay,
                             loop: block.settings.loop_video,
-                            muted: muted
+                            muted: muted,
+                            playsinline: playsinline
                         }}
                       {% else %}
                         {%- if block.settings.video_url.type == 'youtube' -%}
@@ -1140,7 +1143,7 @@
                           ></iframe>
                         {%- else -%}
                           <iframe
-                            src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?{%- if block.settings.autoplay_video -%}autoplay=true{%- else -%}autoplay=false{%- endif -%}{%- if muted == true -%}&mute=true{%- endif -%}&controls=false{%- if block.settings.loop_video -%}&loop=true{%- endif -%}"
+                            src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?{%- if block.settings.autoplay_video -%}autoplay=1&autopause=0{%- else -%}autoplay=0{%- endif -%}{%- if muted == true -%}&muted=1{%- endif -%}&controls=false{%- if block.settings.loop_video -%}&loop=true{%- endif -%}"
                             class="js-vimeo {% if muted == true %} video-muted {% endif %}"
                             allow="autoplay; encrypted-media"
                             allowfullscreen
@@ -1151,7 +1154,7 @@
                       {% endif %}
                     </div>
                     {% if block.settings.show_icon_play %}
-                      <button class="button--unstyled button--play js-play-video">
+                      <button class="button--unstyled button--play js-play-video {% if block.settings.full_link == false or block.settings.button_link == blank %} button--play_full {% endif %}" aria-label=" {{ 'general.video.play' | t }}">
                         <span>
                           <span class="button-icon {% if block.settings.autoplay_video == false %} icon-hidden {% endif %}">
                             {% render 'icon-pause' %}
@@ -1163,7 +1166,7 @@
                       </button>
                     {% endif %}
                     {% if block.settings.show_icon_sound %}
-                      <button class="button--unstyled button--sound js-sound-video">
+                      <button class="button--unstyled button--sound js-sound-video" aria-label=" {{ 'general.video.sound' | t }}">
                         <span>
                           <span class="button-icon {% if muted == false %} icon-hidden {% endif %} ">
                             {% render 'icon-sound-off' %}
@@ -1184,14 +1187,8 @@
                   "
                 ></span>
 
-                {% if block.settings.video == blank and block.settings.video_url == blank and block.settings.show_video == true %}
-                  {% if block.settings.button_link != blank and block.settings.full_link %} 
-                    <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay"></a>
-                  {% endif %}
-                {% endif %}
-
-                {% if block.settings.show_video == false and block.settings.button_link != blank and block.settings.full_link %}
-                  <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay"></a>
+                {% if block.settings.button_link != blank and block.settings.full_link %}
+                  <a href="{{ block.settings.button_link }}" class="media-slideshow__link-overlay" aria-label="{{ block.settings.button_label }}"></a>
                 {% endif %}
 
                   {% if block.settings.additional_image != blank or block.settings.additional_image_2 != blank %}
@@ -1448,14 +1445,29 @@
       "default": "sides"
     },
     {
+      "type": "checkbox",
+      "id": "enable_loop",
+      "label": "t:sections.media-slideshow.settings.enable_loop.label",
+      "info": "t:sections.media-slideshow.settings.enable_loop.info",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "t:sections.media-slideshow.settings.enable_autoplay.label",
+      "info": "t:sections.media-slideshow.settings.enable_autoplay.info",
+      "default": false
+    },
+    {
       "type": "range",
-      "id": "duration",
+      "id": "autoplay_delay",
+      "default": 2,
+      "step": 1,
       "min": 1,
       "max": 10,
-      "step": 1,
-      "default": 5,
       "unit": "s",
-      "label": "t:sections.media-slideshow.settings.duration.label"
+      "label": "t:sections.media-slideshow.settings.autoplay_delay.label",
+      "info": "t:sections.media-slideshow.settings.autoplay_delay.info"
     },
     {
       "type": "header",

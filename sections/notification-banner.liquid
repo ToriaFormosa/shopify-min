@@ -17,7 +17,6 @@
     popup popup--{{ section.settings.position }}
     notification-banner-image--{{ section.settings.image_position }}
     {% if section.settings.image == blank %} notification-banner--no-image {% endif %}
-    color-{{ section.settings.color_scheme }} background
   "
   {% if section.settings['popup-id'] != blank %}
     id="{{ section.settings.popup-id }}"
@@ -46,7 +45,7 @@
   data-id="{{ section.id }}"
   style="width: {{ width }}"
 >
-  <div class="popup-wrap">
+  <div class="popup-wrap color-{{ section.settings.color_scheme }} background">
     <div class="popup-container">
       <div class="popup-outer popup-outer-image--{{ section.settings.image_position }}">
         {% if section.settings.layout == 'banner' and section.settings.image != blank %}

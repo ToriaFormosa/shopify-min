@@ -114,7 +114,7 @@
 						</div>
 						{%- if enable_sorting -%}
 							<div class="facet-filters facets-sorting sorting">
-								<div class="facets-sorting__label">{{ 'products.facets.sort_by_label' | t }}</div>
+								<label class="facets-sorting__label" for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
 								<div class="facet-filters__field facets-sorting__field">
 									<div class="select field">
 										{%- assign sort_by = results.sort_by | default: results.default_sort_by -%}
@@ -141,16 +141,28 @@
 						<div id="FacetsWrapperDesktop" class="facets__wrapper
 							facets__wrapper--{{ filter_type }}">
 							{%- for filter in results.filters -%}
+								{% liquid
+									assign presentation = filter.presentation | default: default_presentation
+								%}
 								{%- assign total_active_values = total_active_values | plus: filter.active_values.size -%}
 								{% case filter.type %}
 								{% when 'boolean', 'list' %}
 									{% liquid
-										assign color_trigger = settings.trigger_swatch | handle | strip
-										assign name_option = filter.label | handle | strip 
+										assign color_swatch = false
+										assign color_trigger = settings.trigger_swatch | append: '<br />' | append: settings.trigger_swatch_other | strip | newline_to_br | split: '<br />' 
+										assign name_option = filter.label | handle | strip
+
+										for item in color_trigger
+											assign item_temp = item | handle | strip
+											if name_option == item_temp
+												assign color_swatch = true
+											endif
+										endfor
 									%}
+
 									<details id="Details-{{ forloop.index }}-{{ section.id }}" 
 										class="disclosure-has-popup facets__disclosure js-filter" data-index="{{ forloop.index }}" 
-										{% if filter_type != 'horizontal' %} open {% endif %}>
+										{% if filter_type == 'horizontal_united' %} open {% elsif filter_type == 'vertical' and default_open %} open {% endif %}>
 										<summary class="facets__summary focus-inset">
 											<div class="facets__summary-inner">
 												<span class="subtitle facets__summary-title">
@@ -173,10 +185,15 @@
 												</div>
 											{% endif %}
 											<ul class="facets__list list-unstyled
-											{% if settings.show_color_swatch and color_trigger == name_option -%} facets__list--color {%- endif -%}" role="list">
+												{% if settings.type_color_swatch == 'custom' and color_swatch -%} facets__list--color 
+												{% elsif settings.type_color_swatch == 'standart' and presentation == 'swatch' %} facets__list--color 
+                        {% elsif presentation == 'image' %} facets__list--image {%- endif -%}" 
+												role="list"
+												style= "--image_filter_columns: {{ image_filter_columns }};"
+											>
 												{%- for value in filter.values -%}
 													{% liquid
-														if settings.show_color_swatch and color_trigger == name_option
+														if settings.type_color_swatch == 'custom' and color_swatch
 															assign color_value = value.value | handle | strip
 															assign color_value_custom = color_value
 															
@@ -198,13 +215,33 @@
 																endfor
 															endif 
 														endif
+
+														assign swatch_value = null
+                            if presentation == 'swatch'
+                              assign swatch = value.swatch
+                              if swatch.image
+                                assign image_url = swatch.image | image_url: width: 50
+                                assign swatch_value = 'url(' | append: image_url | append: ')'
+                                assign swatch_focal_point = swatch.image.presentation.focal_point
+                              elsif swatch.color
+                                assign swatch_value = 'rgb(' | append: swatch.color.rgb | append: ')'
+                              endif
+                            endif
 													%}
 													<li class="list-menu__item facets__item
-														{% if settings.show_color_swatch and color_trigger == name_option -%} facets__item--color {%- endif -%}"
-														{% if settings.show_color_swatch and color_trigger == name_option %}
-															style="--swatch-color: {{ color_value_custom | remove: '-' }}"
-														{% endif %}
-														>
+														{% if settings.type_color_swatch == 'custom' and color_swatch -%} facets__item--color 
+														{% elsif settings.type_color_swatch == 'standart' and presentation == 'swatch' %} facets__item--color 
+														{% elsif presentation == 'image' %} facets__item--image {%- endif -%}"
+														{% if settings.type_color_swatch == 'custom' and color_swatch %}
+                              style="--swatch-color: {{ color_value_custom | remove: '-' }}; --border-radius: {{ settings.swatch_border_radius }}px;"
+                            {% elsif settings.type_color_swatch == 'standart' and presentation == 'swatch' %}
+                              style="
+                                --border-radius: {{ settings.swatch_border_radius }}px;
+                                --swatch-color: {{ swatch_value }};
+                                {% if swatch_focal_point %} --swatch-focal-point: {{ swatch_focal_point }}; {% endif %}
+                              "
+                            {% endif %}
+													>
 														<input type="checkbox" class="focus-inset"
 															name="{{ value.param_name }}"
 															value="{{ value.value }}"
@@ -214,12 +251,40 @@
 														>
 														<label for="Filter-{{ filter.label | escape }}-{{ forloop.index }}" 
 															class="facet-checkbox{% if value.count == 0 and value.active == false %} facet-checkbox--disabled{% endif %}
-															{%- if settings.show_color_swatch and color_trigger == name_option -%} facet-checkbox--color {%- endif -%}">
-															<svg class="icon icon-checkmark" width="8" height="7" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-																<path d="M1 3.5L3 5.5L7 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-															</svg>
+															{%- if settings.type_color_swatch == 'custom' and color_swatch -%} 
+																facet-checkbox--color 
+															{%- elsif settings.type_color_swatch == 'standart' and presentation == 'swatch' -%} facet-checkbox--color 
+                              {% elsif presentation == 'image' %} facet-checkbox--image {%- endif -%}" 
+															{%- if settings.type_color_swatch == 'custom' and color_swatch -%} 
+																title="{{- value.label -}}" 
+															{%- elsif settings.type_color_swatch == 'standart' and presentation == 'swatch' -%}
+																title="{{- value.label -}}" 
+															{% endif %}
+														>
+															{%- if presentation == 'image' -%}
+                                <div class="facets__image-wrapper" 
+                                  style = "--image_filter_ratio: {{ image_filter_ratio }}; 
+                                    --image_filter_fit: {{ image_filter_fit }};"
+                                >
+                                  {% liquid
+                                    assign width = 1000 | divided_by: image_filter_columns
+                                  %}
+                                  {%- if value.image -%}
+                                    {{
+                                      value.image
+                                      | image_url: width: width
+                                      | image_tag: class: 'facets__image', alt: value.alt
+                                    }}
+                                  {%- endif -%}
+                                </div>
+                              {% else %}
+																<svg class="icon icon-checkmark" width="8" height="7" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+																	<path d="M1 3.5L3 5.5L7 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+																</svg>
+															{% endif %}
 															<span class="facet-checkbox__label 
-																{% if settings.show_color_swatch and color_trigger == name_option -%} visually-hidden {%- endif -%}">
+																{% if settings.type_color_swatch == 'custom' and color_swatch -%} visually-hidden 
+																{%- elsif settings.type_color_swatch == 'standart' and presentation == 'swatch' -%} visually-hidden {%- endif -%}">
 																{{ value.label | escape }} 
 															</span>
 														</label>
@@ -236,20 +301,13 @@
 										</div>
 									</details>
 								{% when 'price_range' %}
-								{% liquid
-									assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,TRY,UYU,VES,VND' | split: ','
-									assign uses_comma_decimals = false
-									if currencies_using_comma_decimals contains cart.currency.iso_code
-									assign uses_comma_decimals = true
-									endif %}
-
 									{%- assign max_price_amount = filter.range_max | money | strip_html | escape -%}
 
 									{% if filter.range_max != 0 %}
 										<details id="Details-{{ forloop.index }}-{{ section.id }}" 
 											class="disclosure-has-popup facets__disclosure facets__disclosure-price js-filter" 
 											data-index="{{ forloop.index }}" 
-											{% if filter_type != 'horizontal' %} open {% endif %}>
+											{% if filter_type == 'horizontal_united' %} open {% elsif filter_type == 'vertical' and default_open %} open {% endif %}>
 											<summary class="facets__summary">
 												<div class="facets__summary-inner">
 													<span class="subtitle facets__summary-title">
@@ -273,113 +331,69 @@
 													</div>
 												{% endif %}
 												<price-range class="facets__price">
-													{% liquid
-														if uses_comma_decimals
-															assign max_price = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' 
-														else
-															assign max_price = filter.range_max | money_without_currency | replace: ',', '' 
-														endif
-
-														if uses_comma_decimals 
-															if filter.min_value.value
-																assign current_price_min = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' 
-																assign range_min = current_price_min | divided_by: max_price | times: 100
-															else
-																assign range_min = 0
-																assign current_price_min = 0
-															endif
-														else 
-															if filter.min_value.value
-																assign current_price_min = filter.min_value.value | money_without_currency | replace: ',', '' 
-																assign range_min = current_price_min | divided_by: max_price | times: 100
-															else
-																assign range_min = 0
-																assign current_price_min = 0
-															endif
-														endif
-														
-														if uses_comma_decimals 
-															if filter.max_value.value
-																assign current_price_max = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
-																assign range_max = current_price_max | divided_by: max_price | times: 100
-															else
-																assign current_price_max = max_price
-																assign range_max = 100 
-															endif
-														else 
-															if filter.max_value.value
-																assign current_price_max = filter.max_value.value | money_without_currency | replace: ',', '' 
-																assign range_max = current_price_max | divided_by: max_price | times: 100
-															else
-																assign current_price_max = max_price
-																assign range_max = 100
-															endif	
-														endif
+													{% liquid 
+														assign min_value = filter.min_value.value | default: 0.0 | divided_by: 100.0 
+														assign max_value = filter.max_value.value | default: filter.range_max | divided_by: 100.0 
+														assign filter_range_max = filter.range_max | divided_by: 100.0 | ceil 
+														assign range_min = min_value | divided_by: filter_range_max | times: 100.0 
+														assign range_max = max_value | divided_by: filter_range_max | times: 100.0 
 													%}
 													
 													<div class="facets__price-wrapper">
-														{% if filter_type == 'horizontal' %}
-															<label class="field__label" for="Filter-{{ filter.label | escape }}-GTE">{{ 'products.facets.from' | t }}</label>
-														{% endif %}
+														<label class="field__label {% if filter_type != 'horizontal' %} visually-hidden {% endif %}" for="Filter-{{ filter.label | escape }}-GTE">{{ 'products.facets.from' | t }}</label>
 														<div class="field">
 															<span class="field__currency">{{ cart.currency.symbol }}</span>
 															<input class="field__input"
-																		name="{{ filter.min_value.param_name }}"
-																		id="Filter-{{ filter.label | escape }}-GTE"
-																	{%- if filter.min_value.value -%}
-																		{%- if uses_comma_decimals -%}
-																			value="{{ filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
-																			{%- else -%}
-																			value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
-																		{% endif %}
-																	{% else %}
-																		value= "0"
-																	{%- endif -%}
-																		type="number"
-																		placeholder="0"
-																		min="0"
-																	{%- if uses_comma_decimals -%}max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"{%- else -%}max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"{% endif %}
+																name="{{ filter.min_value.param_name }}"
+																id="Filter-{{ filter.label | escape }}-GTE"
+																{% if filter.min_value.value %}
+																	value="{{ min_value | ceil }}"
+																{% endif %}
+																type="number"
+																placeholder="0"
+																min="0"
+																max="{{ max_value | ceil }}"
+																step="1"
+																autocomplete="off"
 															>
 														</div>
-														{% if filter_type == 'horizontal' %}
-															<label class="field__label" for="Filter-{{ filter.label | escape }}-LTE">{{ 'products.facets.to' | t }}</label>
-														{% endif %}
+														<label class="field__label {% if filter_type != 'horizontal' %} visually-hidden {% endif %}" for="Filter-{{ filter.label | escape }}-LTE">{{ 'products.facets.to' | t }}</label>
 														<div class="field">
 															<span class="field__currency">{{ cart.currency.symbol }}</span>
 															<input class="field__input"
-																		name="{{ filter.max_value.param_name }}"
-																		id="Filter-{{ filter.label | escape }}-LTE"
-																		{%- if filter.max_value.value -%}
-																			{%- if uses_comma_decimals -%}value="{{ filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}" {%- else -%}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
-																		{% else %}
-																			value ="{{ current_price_max }}"
-																		{%- endif -%}
-																		type="number"
-																		min="0"
-																	{%- if uses_comma_decimals -%}
-																		placeholder="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
-																		max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
-																	{%- else -%}
-																		placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-																		max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-																	{% endif %}
+																name="{{ filter.max_value.param_name }}"
+																id="Filter-{{ filter.label | escape }}-LTE"
+																{% if filter.max_value.value %}
+																	value="{{ max_value | ceil }}"
+																{% endif %}
+																type="number"
+																min="0"
+																max="{{ filter_range_max | ceil }}"
+																step="1"
+																placeholder="{{ filter_range_max | ceil }}"
 															>
 														</div>
 													</div>
 													<div class="facets__range" style="--range-min: {{ range_min }}%; --range-max: {{ range_max }}%">
+														<label class="visually-hidden" for="Filter-{{ filter.label | escape }}-Min">{{ 'products.facets.from' | t }}</label>
 														<input 
 															type="range" 
-															value="{{ current_price_min }}" 
+															value="{{ min_value | ceil }}"
 															min="0" 
-															max = "{{ max_price }}"
+															max="{{ filter_range_max | ceil }}"
+															step="1"
 															class="field__range"
+															id="Filter-{{ filter.label | escape }}-Min"
 														/>
+														<label class="visually-hidden" for="Filter-{{ filter.label | escape }}-Max">{{ 'products.facets.to' | t }}</label>
 														<input 
 															type="range" 
-															value="{{ current_price_max }}" 
+															value="{{ max_value | ceil }}"
 															min="0" 
-															max = "{{ max_price }}"
+															max="{{ filter_range_max | ceil }}"
+															step="1"
 															class="field__range"
+															id="Filter-{{ filter.label | escape }}-Max"
 														/>
 													</div>
 												</price-range>
@@ -456,11 +470,22 @@
 							<div class="mobile-facets__main">
 								{% if enable_filtering %}
 									{%- for filter in results.filters -%}
+										{% liquid
+											assign presentation = filter.presentation | default: default_presentation
+										%}
 										{% case filter.type %}
 										{% when 'boolean', 'list' %}
 											{% liquid
-												assign color_trigger = settings.trigger_swatch | handle | strip
-												assign name_option = filter.label | handle | strip 
+												assign color_swatch = false
+												assign color_trigger = settings.trigger_swatch | append: '<br />' | append: settings.trigger_swatch_other | strip | newline_to_br | split: '<br />' 
+												assign name_option = filter.label | handle | strip
+
+												for item in color_trigger
+													assign item_temp = item | handle | strip
+													if name_option == item_temp
+														assign color_swatch = true
+													endif
+												endfor
 											%}
 											<details id="Details-Mobile-{{ forloop.index }}-{{ section.id }}" class="mobile-facets__details js-filter" data-index="mobile-{{ forloop.index }}">
 												<summary class="mobile-facets__summary">
@@ -476,10 +501,15 @@
 														{{ filter.label | escape }}
 													</button>
 													<ul class="mobile-facets__list list-unstyled
-														{% if settings.show_color_swatch and color_trigger == name_option -%} mobile-facets__list--color {%- endif -%}" role="list">
+														{% if settings.type_color_swatch == 'custom' and color_swatch -%} mobile-facets__list--color 
+														{% elsif settings.type_color_swatch == 'standart' and presentation == 'swatch' %} mobile-facets__list--color 
+                            {% elsif presentation == 'image' %} mobile-facets__list--image {%- endif -%}" 
+														role="list"
+														style= "--image_filter_columns: {{ image_filter_columns }};"
+													>
 														{%- for value in filter.values -%}
 															{% liquid
-																if settings.show_color_swatch and color_trigger == name_option
+																if settings.type_color_swatch == 'custom' and color_swatch
 																	assign color_value = value.value | handle | strip
 																	assign color_value_custom = color_value
 																	
@@ -501,11 +531,31 @@
 																		endfor
 																	endif 
 																endif
+
+																assign swatch_value = null
+                                if presentation == 'swatch'
+                                  assign swatch = value.swatch
+                                  if swatch.image
+                                    assign image_url = swatch.image | image_url: width: 50
+                                    assign swatch_value = 'url(' | append: image_url | append: ')'
+                                    assign swatch_focal_point = swatch.image.presentation.focal_point
+                                  elsif swatch.color
+                                    assign swatch_value = 'rgb(' | append: swatch.color.rgb | append: ')'
+                                  endif
+                                endif
 															%}
 															<li class="mobile-facets__item list-menu__item 
-																{% if settings.show_color_swatch and color_trigger == name_option -%} mobile-facets__item--color {%- endif -%}"
-																{% if settings.show_color_swatch and color_trigger == name_option %}
-																	style="--swatch-color: {{ color_value_custom | remove: '-' }}"
+																{% if settings.type_color_swatch == 'custom' and color_swatch -%} mobile-facets__item--color 
+																{% elsif settings.type_color_swatch == 'standart' and presentation == 'swatch' %} mobile-facets__item--color 
+                                {% elsif presentation == 'image' %} mobile-facets__item--image {%- endif -%}"
+																{% if settings.type_color_swatch == 'custom' and color_swatch %}
+																	style="--swatch-color: {{ color_value_custom | remove: '-' }}; --border-radius: {{ settings.swatch_border_radius }}px;"
+																{% elsif settings.type_color_swatch == 'standart' and presentation == 'swatch' %}
+                                  style="
+                                    --border-radius: {{ settings.swatch_border_radius }}px;
+                                    --swatch-color: {{ swatch_value }};
+                                    {% if swatch_focal_point %} --swatch-focal-point: {{ swatch_focal_point }}; {% endif %}
+                                  "
 																{% endif %}>
 																<input class="mobile-facets__checkbox" type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" id="Filter-{{ filter.label | escape }}-mobile-{{ forloop.index }}"
 																	{% if value.active %}checked{% endif %}
@@ -513,13 +563,43 @@
 																>
 																<label for="Filter-{{ filter.label | escape }}-mobile-{{ forloop.index }}" 
 																	class="mobile-facets__label{% if value.count == 0 and value.active == false %} mobile-facets__label--disabled{% endif %}
-																	{%- if settings.show_color_swatch and color_trigger == name_option -%} facet-checkbox facet-checkbox--color {%- endif -%}">
+																		{%- if settings.type_color_swatch == 'custom' and color_swatch -%} facet-checkbox facet-checkbox--color 
+																		{%- elsif settings.type_color_swatch == 'standart' and presentation == 'swatch' -%} facet-checkbox facet-checkbox--color 
+                                    {% elsif presentation == 'image' %} facet-checkbox facet-checkbox--image {%- endif -%}" 
+																		{%- if settings.type_color_swatch == 'custom' and color_swatch -%} 
+																			title="{{- value.label -}}" 
+																		{%- elsif settings.type_color_swatch == 'standart' and presentation == 'swatch' -%}
+																			title="{{- value.label -}}" 
+																		{% endif %}
+																	>
 																	<span class="mobile-facets__highlight"></span>
-																	<svg class="icon icon-checkmark" width="8" height="7" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-																		<path d="M1 3.5L3 5.5L7 1.5" stroke="#F9F9F9" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-																	</svg>
+																	{%- if presentation == 'image' -%}
+                                    <div class="facets__image-wrapper" 
+                                      style = "--image_filter_ratio: {{ image_filter_ratio }}; 
+                                        --image_filter_fit: {{ image_filter_fit }};"
+                                    >
+                                      {% liquid
+                                        assign width = 1000 | divided_by: image_filter_columns
+                                      %}
+                                      {% capture sizes %}
+                                        calc((100vw - 50px) / {{ image_filter_columns }})
+                                      {% endcapture %}
+                                      {%- if value.image -%}
+                                        {{
+                                          value.image
+                                          | image_url: width: value.image.width
+                                          | image_tag: class: 'facets__image', alt: value.alt, sizes: sizes
+                                        }}
+                                      {%- endif -%}
+                                    </div>
+                                  {% else %}
+																		<svg class="icon icon-checkmark" width="8" height="7" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+																			<path d="M1 3.5L3 5.5L7 1.5" stroke="#F9F9F9" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+																		</svg>
+																	{% endif %}
 																	<span class="facet-checkbox__label
-																		{% if settings.show_color_swatch and color_trigger == name_option -%} visually-hidden {%- endif -%}">
+																		{% if settings.type_color_swatch == 'custom' and color_swatch -%} visually-hidden 
+																		{%- elsif settings.type_color_swatch == 'standart' and presentation == 'swatch' -%} visually-hidden {%- endif -%}">
 																		{{ value.label | escape }} 
 																	</span>
 																</label>
@@ -558,62 +638,66 @@
 													</p>
 
 													<price-range class="facets__price">
+														{% liquid 
+															assign min_value = filter.min_value.value | default: 0.0 | divided_by: 100.0 
+															assign max_value = filter.max_value.value | default: filter.range_max | divided_by: 100.0 
+															assign filter_range_max = filter.range_max | divided_by: 100.0 | ceil 
+															assign range_min = min_value | divided_by: filter_range_max | times: 100.0 
+															assign range_max = max_value | divided_by: filter_range_max | times: 100.0 
+														%}
 														<div class= "facets__price-wrapper">
 															<div class="field">
 																<span class="field__currency">{{ cart.currency.symbol }}</span>
 																<input class="field__input"
-																			name="{{ filter.min_value.param_name }}"
-																			id="Mobile-Filter-{{ filter.label | escape }}-GTE"
-																		{%- if filter.min_value.value -%}
-																			{%- if uses_comma_decimals -%}
-																				value="{{ filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
-																			{%- else -%}
-																				value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
-																			{% endif %}
-																		{% else %}
-																			value= "0"
-																		{%- endif -%}
-																			type="number"
-																			placeholder="0"
-																			min="0"
-																			max="{{ filter.range_max | divided_by: 100 | ceil }}"
+																	name="{{ filter.min_value.param_name }}"
+																	id="Mobile-Filter-{{ filter.label | escape }}-GTE"
+																	{% if filter.min_value.value %}
+																		value="{{ min_value | ceil }}"
+																	{% endif %}
+																	type="number"
+																	placeholder="0"
+																	min="0"
+																	max="{{ max_value | ceil }}"
+																	step="1"
+																	autocomplete="off"
 																	>
 															</div>
 															<div class="field">
 																<span class="field__currency">{{ cart.currency.symbol }}</span>
 																<input class="field__input"
-																			name="{{ filter.max_value.param_name }}"
-																			id="Mobile-Filter-{{ filter.label | escape }}-LTE"
-																		{%- if filter.max_value.value -%}
-																			{%- if uses_comma_decimals -%}
-																				value="{{ filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
-																			{%- else -%}
-																				value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
-																			{% endif %}
-																		{% else %}
-																			value ="{{ current_price_max }}"
-																		{%- endif -%}
-																			type="number"
-																			placeholder="{{ filter.range_max | divided_by: 100 | ceil }}"
-																			min="0"
-																			max="{{ filter.range_max | divided_by: 100 | ceil }}"
+																	name="{{ filter.max_value.param_name }}"
+																	id="Mobile-Filter-{{ filter.label | escape }}-LTE"
+																	{% if filter.max_value.value %}
+																		value="{{ max_value | ceil }}"
+																	{% endif %}
+																	type="number"
+																	min="0"
+																	max="{{ filter_range_max | ceil }}"
+																	step="1"
+																	placeholder="{{ filter_range_max | ceil }}"
 																	>
 															</div>
 														</div>
 														<div class="facets__range" style="--range-min: {{ range_min }}%; --range-max: {{ range_max }}%">
+															<label class="visually-hidden" for="Filter-{{ filter.label | escape }}-Min-mobile">{{ 'products.facets.from' | t }}</label>
 															<input 
 																type="range" 
-																value="{{ current_price_min }}" 
+																value="{{ min_value | ceil }}"
 																min="0" 
-																max = "{{ max_price }}"
+																max="{{ filter_range_max | ceil }}"
+																step="1"
 																class="field__range"
+																id="Filter-{{ filter.label | escape }}-Min-mobile"
 															/>
+															<label class="visually-hidden" for="Filter-{{ filter.label | escape }}-Max-mobile">{{ 'products.facets.to' | t }}</label>
 															<input 
 																type="range" 
-																value="{{ current_price_max }}" 
+																value="{{ max_value | ceil }}"
 																min="0" 
-																max = "{{ max_price }}"
+																max="{{ filter_range_max | ceil }}"
+																step="1"
 																class="field__range"
+																id="Filter-{{ filter.label | escape }}-Max-mobile"
 															/>
 														</div>
 													</price-range>

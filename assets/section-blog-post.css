@@ -439,6 +439,9 @@ main .shopify-section:first-child.not-margin .section--overlay > .article-templa
   margin-right: 0;
   margin-left: auto;
 }
+.article-template__footer .article-template__date .card__subtitle span {
+  margin-left: 0.4rem;
+}
 .article-template__comment-wrapper {
   margin-top: 5rem;
 }

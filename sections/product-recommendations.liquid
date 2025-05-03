@@ -30,7 +30,7 @@
   {{- 'section-product-recommendations.css' | asset_url | stylesheet_tag -}}
 </noscript>
 
-{%- if settings.quickview_show or settings.show_on_mobile or settings.show_color_swatch -%}
+{%- if settings.quickview_show or settings.show_on_mobile or settings.type_color_swatch == 'custom' -%}
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
 {% endif %}
 
@@ -62,7 +62,7 @@
       {% if recommendations.performed and recommendations.products_count > 0 %}
         <div class="product-recommendations__list 
         product-recommendations__list--{{ section.settings.columns_mobile }}-mobile
-        js-recommendation-swiper" role="list"
+        js-recommendation-swiper"
         data-mobile-layout = "{{ section.settings.columns_mobile }}">
           <div class="swiper-wrapper">
             {% for recommendation in recommendations.products limit: section.settings.products_limit %}
@@ -74,7 +74,6 @@
                   show_secondary_image: section.settings.show_secondary_image,
                   show_vendor: section.settings.show_vendor,
                   show_collection: section.settings.show_collection,
-                  show_rating: section.settings.show_rating,
                   show_desc: section.settings.show_desc,
                   section_id: section.id
                 %}
@@ -208,13 +207,6 @@
       "default": true,
       "label": "t:sections.all.card.show_collection.label"
     },
-    {
-			"type": "checkbox",
-			"id": "show_rating",
-			"default": false,
-			"label": "t:sections.all.card.show_rating.label",
-			"info": "t:sections.all.card.show_rating.info"
-		},
     {
       "type": "checkbox",
       "id": "show_desc",

@@ -16,22 +16,44 @@ class CartItems extends HTMLElement {
   constructor() {
     super();
     this.lineItemStatusElement = document.getElementById('shopping-cart-line-item-status') || document.getElementById('CartDrawer-LineItemStatus');
+    
+    if (document.querySelector('.cart-shipping')) {
+      this.minSpend = document.querySelector('.cart-shipping').dataset.minSpend;
+      this.minTotal = Math.round(this.minSpend * (Shopify.currency.rate || 1));
+      this.cartShipping();
+    }
 
     const debouncedOnChange = debounce((event) => {
       this.onChange(event);
     }, ON_CHANGE_DEBOUNCE_TIMER);
 
     this.addEventListener('change', debouncedOnChange.bind(this));
-
-    if (document.querySelector('.cart-shipping')) {
-      let progressPrev = getComputedStyle(document.querySelector('.cart-shipping__progress-current')).getPropertyValue('width');
-      let progress = getComputedStyle(document.querySelector('.cart-shipping__progress-current')).getPropertyValue('--progress');
-      document.documentElement.style.setProperty('--progress-prev', progressPrev);
-      document.querySelector('.cart-shipping__progress-current').style.width = progress;
-    }
   }
 
   cartUpdateUnsubscriber = undefined;
+
+  cartShipping() {
+    let progressPrev = getComputedStyle(document.querySelector('.cart-shipping__progress-current')).getPropertyValue('width');    
+    document.documentElement.style.setProperty('--progress-prev', progressPrev);
+
+    this.total = document.querySelector('.cart-shipping').dataset.total;
+    this.progress = this.total / this.minTotal * 100;
+    if (this.progress > 100)
+      this.progress = 100;
+
+    if (this.minTotal > this.total) {
+      let amount = this.minTotal - this.total;
+      let message = document.querySelector('.cart-shipping').dataset.message.replace('||amount||', formatMoney(amount));
+      document.querySelector('.cart-shipping__message_default').innerText = message;
+      document.querySelector('.cart-shipping__message_success').classList.remove('active');
+      document.querySelector('.cart-shipping__message_default').classList.add('active');
+    }
+    else {
+      document.querySelector('.cart-shipping__message_default').classList.remove('active');
+      document.querySelector('.cart-shipping__message_success').classList.add('active');
+    }
+    document.querySelector('.cart-shipping__progress-current').style.width = this.progress+'%';
+  }
 
   connectedCallback() {
     this.cartUpdateUnsubscriber = subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
@@ -177,8 +199,7 @@ class CartItems extends HTMLElement {
       .finally(() => {
         this.querySelectorAll('.quantity__button').forEach((button) => button.classList.remove('disabled'));
         if (document.querySelector('.cart-shipping')) {
-          let progress = getComputedStyle(document.querySelector('.cart-shipping__progress-current')).getPropertyValue('--progress');
-          document.querySelector('.cart-shipping__progress-current').style.width = progress;
+          this.cartShipping();
         }
         this.disableLoading(line);
       });

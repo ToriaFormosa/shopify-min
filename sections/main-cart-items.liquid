@@ -27,32 +27,18 @@
     <div id="main-cart-shipping" data-id="{{ section.id }}">
       <div class="js-contents-shipping">
         {% if settings.show_shipping %}
-          {% liquid
-            assign total = cart.total_price | money_without_currency | remove: ',' | plus: 0.0
-            assign min_total = settings.min_spend | plus: 0.0
-            assign progress = total | divided_by: min_total | times: 100
-            if progress > 100
-              assign progress = 100
-            endif
-          %}
-          <div class="cart-shipping">
-            <span class="cart-shipping__progress" style="--progress: {{ progress }}%">
+          <div class="cart-shipping" data-min-spend="{{ settings.min_spend | times: 100.0 }}" data-total="{{ cart.total_price }}"
+            data-message = " {{ settings.message_shipping }}">
+            <span class="cart-shipping__progress">
               <span class="cart-shipping__progress-current"></span>
             </span>
-            {% if total < min_total %}
-              {% liquid
-                assign amount = min_total | minus: total | times: 100 | money_without_trailing_zeros
-                assign message = settings.message_shipping | replace: '||amount||', amount
-              %}
-              <p class="cart-shipping__message">{{ message }}</p>
-            {% else %}
-              <p class="cart-shipping__message cart-shipping__message_success">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20.6 10.9999C20.6 16.3018 16.3019 20.5999 11 20.5999C5.69806 20.5999 1.39999 16.3018 1.39999 10.9999C1.39999 5.69797 5.69806 1.3999 11 1.3999C12.5062 1.3999 13.9314 1.74677 15.2 2.36498M18.8 4.9999L10.4 13.3999L7.99999 10.9999" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                {{ settings.message_shipping_free }}
-              </p>
-            {% endif %}
+            <p class="cart-shipping__message cart-shipping__message_default active"></p>
+            <p class="cart-shipping__message cart-shipping__message_success">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.6 10.9999C20.6 16.3018 16.3019 20.5999 11 20.5999C5.69806 20.5999 1.39999 16.3018 1.39999 10.9999C1.39999 5.69797 5.69806 1.3999 11 1.3999C12.5062 1.3999 13.9314 1.74677 15.2 2.36498M18.8 4.9999L10.4 13.3999L7.99999 10.9999" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              {{ settings.message_shipping_free }}
+            </p>
           </div>
         {% endif %}
       </div>
@@ -247,6 +233,9 @@
                         </td>
 
                         <td class="cart-item__quantity">
+                          <label class="visually-hidden" for="Quantity-{{ item.index | plus: 1 }}">
+                            {{ 'products.product.quantity.label' | t }}
+                          </label>
                           <quantity-input class="quantity">
                             <button class="quantity__button no-js-hidden focus-inset" name="minus" type="button">
                               <span class="visually-hidden">

@@ -125,7 +125,7 @@
 			</header>
 
 			{% if section.settings.article.url %}
-				<a href="{{ section.settings.article.url }}" class="featured-article__link"></a>
+				<a href="{{ section.settings.article.url }}" class="featured-article__link" aria-label="{{ section.settings.article.title }}"></a>
 			{% endif %}
 		</article>
 	{% if section.settings.full_width == false %}

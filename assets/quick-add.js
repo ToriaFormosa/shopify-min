@@ -10,7 +10,7 @@ if (!customElements.get("quick-add-modal")) {
 					if (event.code.toUpperCase() === "ESCAPE") this.hide();
 				});
 
-				window.addEventListener('resize', function () {
+				/*window.addEventListener('resize', function () {
 					$('.js-media-list').each(function () {
 						this.swiper?.destroy();
 					});
@@ -22,7 +22,7 @@ if (!customElements.get("quick-add-modal")) {
 						subSliderInit(true);
 						sliderInit(true);
 					}, 200)
-				});
+				});*/
 			}
 
 			hide(preventFocus = false) {
@@ -143,6 +143,9 @@ if (!customElements.get("quick-add-modal")) {
 			}
 
 			removeDOMElements() {
+				const modal = this.productElement.querySelector('product-modal');
+				if (modal) modal.remove();
+				
 				const popup = this.productElement.querySelectorAll(".product-popup");
 				if (popup)
 					popup.forEach((el) => {
@@ -163,7 +166,7 @@ if (!customElements.get("quick-add-modal")) {
 				if (iconText)
 					iconText.forEach((el) => {
 						el.remove();
-				});
+				}); 
 
 				const shareButtons =
 					this.productElement.querySelector(".share-buttons");
@@ -173,7 +176,7 @@ if (!customElements.get("quick-add-modal")) {
 				if (tags) tags.remove();
 
 				const pickupAvailability = this.productElement.querySelector(
-					"pickup-availability",
+					".pickup-availability",
 				);
 				if (pickupAvailability) pickupAvailability.remove();
 

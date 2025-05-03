@@ -80,7 +80,7 @@
                                       {% render 'icon-caret' %}
                                     </summary>
                                     <div
-                                      id="childlink-{{ childlink.title | escape }}"
+                                      id="childlink-{{ link.title }}-{{ childlink.title | escape }}"
                                       class="menu-drawer__submenu motion-reduce"
                                     >
                                       <button
@@ -399,7 +399,7 @@
                               class="mega-menu__wrapper mega-menu mega-menu__items mega-menu__wrapper--blocks"
                             >
                               <ul class="mega-menu__list list-unstyled focus-inset">
-                                {% for collection in block.settings.select_collections %}
+                                {% for item in block.settings.select_collections %}
                                   <li class="mega-menu__card mega-menu__card--{{ block.settings.height }} color-{{ text_color }}">
                                     <span
                                       class="mega-menu__overlay"
@@ -410,25 +410,25 @@
                                     ></span>
 
                                     {% liquid
-                                      if collection.id != collection_individual_id
+                                      if item.id != collection_individual_id
                                         case block.settings.image
                                           when 'product_hover'
-                                            assign image_first = collection.products[0].images[1]
-                                            assign image_second = collection.products[0].images[0]
-                                            assign image_third = collection.featured_image
+                                            assign image_first = item.products[0].images[1]
+                                            assign image_second = item.products[0].images[0]
+                                            assign image_third = item.featured_image
                                           when 'product'
-                                            assign image_first = collection.products[0].images[0]
-                                            assign image_second = collection.featured_image
-                                            assign image_third = collection.products[0].images[1]
+                                            assign image_first = item.products[0].images[0]
+                                            assign image_second = item.featured_image
+                                            assign image_third = item.products[0].images[1]
                                           when 'collection'
-                                            assign image_first = collection.featured_image
-                                            assign image_second = collection.products[0].images[1]
-                                            assign image_third = collection.products[0].images[0]
+                                            assign image_first = item.featured_image
+                                            assign image_second = item.products[0].images[1]
+                                            assign image_third = item.products[0].images[0]
                                         endcase
                                       endif
                                     %}
 
-                                    {% if collection.id != collection_individual_id %}
+                                    {% if item.id != collection_individual_id %}
                                       {% if image_first != blank %}
                                         {% assign collection_product_image = image_first %}
                                       {% elsif image_second != blank %}
@@ -437,7 +437,7 @@
                                         {% assign collection_product_image = image_third %}
                                       {% endif %}
                                     {% else %}
-                                      {% assign collection_product_image = collection.featured_image %}
+                                      {% assign collection_product_image = item.featured_image %}
                                     {% endif %}
 
                                     {%- if collection_product_image != blank -%}
@@ -464,21 +464,21 @@
                                     {% endif %}
                                     <h3 class="mega-menu__title h4">
                                       <a
-                                        href="{{ collection.url | default: '#' }}"
+                                        href="{{ item.url | default: '#' }}"
                                         class="mega-menu__link list-menu__item focus-inset caption-large"
                                       >
-                                        {{- collection.title -}}
+                                        {{- item.title -}}
                                       </a>
                                     </h3>
                                     {% if block.settings.show_button and block.settings.button_label != blank %}
                                       <a
-                                        href="{{ collection.url }}"
+                                        href="{{ item.url }}"
                                         class="mega-menu__button button button--{{ block.settings.button_style }}"
                                       >
                                         {{ block.settings.button_label }}
                                       </a>
                                     {% endif %}
-                                    <a href="{{ collection.url | default: '#' }}" class="mega-menu__card-link"></a>
+                                    <a href="{{ item.url | default: '#' }}" class="mega-menu__card-link" aria-label="{{ item.title }}"></a>
                                   </li>
                                 {% endfor %}
                               </ul>
@@ -749,9 +749,7 @@
           <div class="menu-drawer__bottom">
             {% render 'color-scheme' %}
             {%- if section.settings.enable_country_selector
-              and localization.available_countries.size > 1
               or section.settings.enable_language_selector
-              and localization.available_languages.size > 1
             -%}
               <div class="menu-drawer__localization-wrapper">
                 {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
@@ -764,9 +762,8 @@
                               type="button"
                               class="header__localization-button disclosure__button localization-form__select localization-selector link link--text caption-large focus-inset"
                               aria-expanded="false"
-                              aria-controls="HeaderCountryList"
+                              aria-controls="HeaderCountryListMobile"
                               aria-describedby="HeaderCountryLabel"
-                              aria-label="Localization"
                             >
                               <span class="currency-country">
                                 {{- localization.country.currency.iso_code }}
@@ -775,7 +772,7 @@
                               {% render 'icon-caret' %}
                             </button>
                             <ul
-                              id="HeaderCountryList"
+                              id="HeaderCountryListMobile"
                               role="list"
                               class="disclosure__list list-unstyled color-background-1"
                               hidden
@@ -819,7 +816,7 @@
                               type="button"
                               class="disclosure__button header__localization-lang-button localization-form__select localization-selector link link--text focus-inset"
                               aria-expanded="false"
-                              aria-controls="HeaderLanguageList"
+                              aria-controls="HeaderLanguageListMobile"
                               aria-describedby="HeaderLanguageLabel"
                             >
                               <span class="value">
@@ -828,7 +825,7 @@
                               {% render 'icon-caret' -%}
                             </button>
                             <ul
-                              id="HeaderLanguageList"
+                              id="HeaderLanguageListMobile"
                               role="list"
                               class="disclosure__list list-unstyled color-background-1"
                               hidden

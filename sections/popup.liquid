@@ -10,53 +10,54 @@
   endif
 %}
 
-<div class="popup-main popup 
-  popup--{{ section.settings.position }}
-  popup-main-image--{{ section.settings.image_layout }}
-  {% if section.settings.image == blank %} popup-main--no-image {% endif %}
+<div
+  class="
+    popup-main popup
+    popup--{{ section.settings.position }}
+    popup-main-image--{{ section.settings.image_layout }}
+    {% if section.settings.image == blank %} popup-main--no-image {% endif %}
   "
-  {% if section.settings.popup-id != blank %} 
-    id="{{ section.settings.popup-id }}" 
+  {% if section.settings['popup-id'] != blank %}
+    id="{{ section.settings.popup-id }}"
   {% endif %}
-  data-limit-display = "{{ section.settings.limit-display }}"
-  data-limit-lifetime = "{{ section.settings.limit-cache }}"
-  data-open-trigger = "{{ section.settings.trigger-open }}"
-  data-open-delay-number = "{{ section.settings.trigger-open-delay }}"
-  data-open-scroll-position = "{{ section.settings.open-scroll-position }}"
-  data-open-scroll-type = "{{ section.settings.open-scroll-type }}"
-  {% if section.settings.manual-selector != blank %}
-    data-open-manual-selector = "{{ section.settings.manual-selector }}"
+  data-limit-display="{{ section.settings.limit-display }}"
+  data-limit-lifetime="{{ section.settings.limit-cache }}"
+  data-open-trigger="{{ section.settings.trigger-open }}"
+  data-open-delay-number="{{ section.settings.trigger-open-delay }}"
+  data-open-scroll-position="{{ section.settings.open-scroll-position }}"
+  data-open-scroll-type="{{ section.settings.open-scroll-type }}"
+  {% if section.settings['manual-selector'] != blank %}
+    data-open-manual-selector="{{ section.settings.manual-selector }}"
   {% endif %}
-  data-close-trigger = "{{ section.settings.trigger-close }}"
-  data-close-delay-number = "{{ section.settings.trigger-close-delay }}"
-  data-close-scroll-position = "{{ section.settings.close-scroll-position }}"
-  data-close-scroll-type = "{{ section.settings.close-scroll-type }}"
-  data-open-animation = "popupOpen{{ section.settings.open-animation }}"
-  data-exit-animation = "popupExit{{ section.settings.exit-animation }}"
-  data-overlay= "{{ section.settings.show-overlay }}"
-  data-mobile-disable = "{{ section.settings.mobile }}"
-  data-body-scroll-disable = "{{ section.settings.scrolling }}"
-  data-overlay-close = "{{ section.settings.overlay-close }}"
-  data-esc-close = "{{ section.settings.esc-close }}"
-  data-f4-close = "{{ section.settings.f4-close }}"
-  data-id = "{{ section.id }}"
-  style = "width: {{ width }}"
+  data-close-trigger="{{ section.settings.trigger-close }}"
+  data-close-delay-number="{{ section.settings.trigger-close-delay }}"
+  data-close-scroll-position="{{ section.settings.close-scroll-position }}"
+  data-close-scroll-type="{{ section.settings.close-scroll-type }}"
+  data-open-animation="popupOpen{{ section.settings.open-animation }}"
+  data-exit-animation="popupExit{{ section.settings.exit-animation }}"
+  data-overlay="{{ section.settings.show-overlay }}"
+  data-mobile-disable="{{ section.settings.mobile }}"
+  data-body-scroll-disable="{{ section.settings.scrolling }}"
+  data-overlay-close="{{ section.settings.overlay-close }}"
+  data-esc-close="{{ section.settings.esc-close }}"
+  data-f4-close="{{ section.settings.f4-close }}"
+  data-id="{{ section.id }}"
+  style="width: {{ width }}"
 >
   <div class="popup-wrap color-{{ section.settings.color_scheme }} background">
     <div class="popup-container">
       <div class="popup-outer {%- if section.settings.image != blank %} popup-outer_image {% endif %}">
         {% if section.settings.image != blank %}
-        <div class="popup-thumbnail">
-          {% capture style %}
+          <div class="popup-thumbnail">
+            {% capture style %}
             object-fit: {{ section.settings.image_fit }};
           {% endcapture %}
-          {{
-            section.settings.image | image_url: width: section.settings.image.width | image_tag:
-            loading: 'lazy',
-            widths: '275, 550, 750',
-            style: style
-          }}
-        </div>
+            {{
+              section.settings.image
+              | image_url: width: section.settings.image.width
+              | image_tag: loading: 'lazy', widths: '275, 550, 750', style: style
+            }}
+          </div>
         {% endif %}
         <div class="popup-content">
           <div class="popup-wraper-text">
@@ -76,7 +77,10 @@
                   {% endif %}
                 {%- when 'subscribe_form' -%}
                   {% form 'customer', class: 'newsletter-form' %}
-                    <div class="newsletter-form__inner {% if section.settings.width <= 500 %} newsletter-form__inner_column {% endif %}" {{ block.shopify_attributes }}>
+                    <div
+                      class="newsletter-form__inner {% if section.settings.width <= 500 %} newsletter-form__inner_column {% endif %}"
+                      {{ block.shopify_attributes }}
+                    >
                       <input type="hidden" name="contact[tags]" value="newsletter">
                       <div class="newsletter-form__field-wrapper">
                         <div class="field">
@@ -90,6 +94,7 @@
                             autocorrect="off"
                             autocapitalize="off"
                             autocomplete="email"
+                            pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
                             {% if form.errors %}
                               autofocus
                               aria-invalid="true"
@@ -100,6 +105,9 @@
                             placeholder="{{ block.settings.placeholder_input }}"
                             required
                           >
+                          <label class="visually-hidden" for="NewsletterForm--{{ section.id }}">
+                            {{ 'newsletter.label' | t }}
+                          </label>
                         </div>
                         {%- if form.errors -%}
                           <small
@@ -133,7 +141,7 @@
                     {%- endif -%}
                   {% endform %}
                   {% if block.settings.description %}
-                    <div class = "popup-text" {{ block.shopify_attributes }}>
+                    <div class="popup-text" {{ block.shopify_attributes }}>
                       {{ block.settings.description }}
                     </div>
                   {% endif %}
@@ -297,10 +305,14 @@
                       </li>
                     {%- endif -%}
                   </ul>
-               {% endcase %}
+              {% endcase %}
             {% endfor %}
           </div>
-          <button type="button" class="link modal-close-button popup-close focus-inset" aria-label="{{ 'accessibility.close' | t }}">
+          <button
+            type="button"
+            class="link modal-close-button popup-close focus-inset"
+            aria-label="{{ 'accessibility.close' | t }}"
+          >
             {% render 'icon-close' %}
           </button>
         </div>
@@ -308,7 +320,7 @@
     </div>
   </div>
 </div>
-{% if section.settings.show-overlay %}
+{% if section.settings['show-overlay'] %}
   <div class="popup-overlay"></div>
 {% endif %}
 
@@ -351,7 +363,7 @@
     {
       "type": "select",
       "id": "image_fit",
-			"label": "t:sections.all.card.image_fit.label",
+      "label": "t:sections.all.card.image_fit.label",
       "options": [
         {
           "value": "contain",
@@ -384,49 +396,49 @@
       "id": "position",
       "options": [
         {
-					"value": "top-left",
-					"label": "t:sections.overlay-group.all.settings.position.options__1.label"
-				},
+          "value": "top-left",
+          "label": "t:sections.overlay-group.all.settings.position.options__1.label"
+        },
         {
-					"value": "top",
-					"label": "t:sections.overlay-group.all.settings.position.options__2.label"
-				},
+          "value": "top",
+          "label": "t:sections.overlay-group.all.settings.position.options__2.label"
+        },
         {
-					"value": "top-right",
-					"label": "t:sections.overlay-group.all.settings.position.options__3.label"
-				},
+          "value": "top-right",
+          "label": "t:sections.overlay-group.all.settings.position.options__3.label"
+        },
         {
-					"value": "left",
-					"label": "t:sections.overlay-group.all.settings.position.options__4.label"
-				},
+          "value": "left",
+          "label": "t:sections.overlay-group.all.settings.position.options__4.label"
+        },
         {
-					"value": "center",
-					"label": "t:sections.overlay-group.all.settings.position.options__5.label"
-				},
+          "value": "center",
+          "label": "t:sections.overlay-group.all.settings.position.options__5.label"
+        },
         {
-					"value": "right",
-					"label": "t:sections.overlay-group.all.settings.position.options__6.label"
-				},
+          "value": "right",
+          "label": "t:sections.overlay-group.all.settings.position.options__6.label"
+        },
         {
-					"value": "bottom-left",
-					"label": "t:sections.overlay-group.all.settings.position.options__7.label"
-				},
+          "value": "bottom-left",
+          "label": "t:sections.overlay-group.all.settings.position.options__7.label"
+        },
         {
-					"value": "bottom",
-					"label": "t:sections.overlay-group.all.settings.position.options__8.label"
-				},
+          "value": "bottom",
+          "label": "t:sections.overlay-group.all.settings.position.options__8.label"
+        },
         {
-					"value": "bottom-right",
-					"label": "t:sections.overlay-group.all.settings.position.options__9.label"
-				}
+          "value": "bottom-right",
+          "label": "t:sections.overlay-group.all.settings.position.options__9.label"
+        }
       ],
       "default": "center",
       "label": "t:sections.overlay-group.all.settings.position.label"
     },
     {
-			"type": "header",
-			"content": "t:sections.overlay-group.all.settings.trigger.header.content"
-		},
+      "type": "header",
+      "content": "t:sections.overlay-group.all.settings.trigger.header.content"
+    },
     {
       "type": "text",
       "id": "popup-id",
@@ -545,9 +557,9 @@
       "label": "t:sections.overlay-group.all.settings.close-scroll-position.label"
     },
     {
-			"type": "header",
-			"content": "t:sections.overlay-group.all.settings.animation.header.content"
-		},
+      "type": "header",
+      "content": "t:sections.overlay-group.all.settings.animation.header.content"
+    },
     {
       "type": "range",
       "id": "width",
@@ -619,9 +631,9 @@
       "default": true
     },
     {
-			"type": "header",
-			"content": "t:sections.overlay-group.all.settings.advanced.header.content"
-		},
+      "type": "header",
+      "content": "t:sections.overlay-group.all.settings.advanced.header.content"
+    },
     {
       "type": "checkbox",
       "id": "mobile",

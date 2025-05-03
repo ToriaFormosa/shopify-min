@@ -1,20 +1,25 @@
-$(window).on('load', function () {
-	let selects = $('.js-select');
+(() => {
+  window.addEventListener("load", function () {
+    const selects = document.querySelectorAll(".js-select");
 
-	if (selects) {
-		selects.each(function() {
-			const that = $(this);
-			const defOption = $('<option value="Country" data-provinces="[]" selected disabled></option>');
+    if (selects.length > 0) {
+      selects.forEach((selectField) => {
+        const select = selectField.querySelector("select");
+        if (!select) return;
 
-			const ph = $('<div class="placeholder-select">Country <span>*</span></div>');
+        const defOption = document.createElement("option");
+        defOption.value = "";
+        defOption.setAttribute("data-provinces", "[]");
+        defOption.selected = true;
+        defOption.disabled = true;
 
-			$(this).find('option:first-child').remove();
-			$(this).prepend(ph);
-			$(this).find('select').prepend(defOption);
+        const firstOption = select.querySelector("option:first-child");
+        if (firstOption) {
+          firstOption.remove();
+        }
 
-			$(this).find('select').change(function (e) {
-				$(this).css('color', 'rgb(var(--color-foreground), 1)');
-			});
-		});
-	}
-});
+        select.prepend(defOption);
+      });
+    }
+  });
+})();

@@ -19,10 +19,6 @@
   }
 }
 .instagram-collage__top {
-  /*display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-end;*/
   align-self: center;
 }
 .instagram-collage__title {
@@ -123,10 +119,10 @@
 }
 .instagram-collage__image .placeholder-svg {
   fill: rgb(var(--color-foreground-title));
-  background-color: rgb(var(--color-button-secondary-hover));
+  background-color: rgba(var(--color-foreground), 0.025);
 }
 .instagram-collage__account {
-  background-color: rgb(var(--color-button-secondary-hover));
+  background-color: rgba(var(--color-foreground), 0.025);
   text-decoration: none;
   height: 0;
   overflow: hidden;

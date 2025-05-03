@@ -52,22 +52,22 @@
   }
 }
 @media (min-width: 750px) {
-  .featured-product .product__outer--thumbs-aside .product__media-list .product__media {
+  .featured-product .product__outer--thumbs-aside .product__media-list .product__media--recommended {
     padding-top: 50%;
   }
 }
 @media (min-width: 1200px) {
-  .featured-product .product__outer--thumbs-aside .product__media-list .product__media {
+  .featured-product .product__outer--thumbs-aside .product__media-list .product__media--recommended {
     padding-top: 136%;
   }
 }
 @media (min-width: 750px) {
-  .featured-product .product__outer--thumbs-aside .product__media-subitem .product__media {
+  .featured-product .product__outer--thumbs-aside .product__media-subitem .product__media--recommended {
     padding-top: 50%;
   }
 }
 @media (min-width: 1200px) {
-  .featured-product .product__outer--thumbs-aside .product__media-subitem .product__media {
+  .featured-product .product__outer--thumbs-aside .product__media-subitem .product__media--recommended {
     padding-top: 136%;
   }
 }
@@ -79,6 +79,16 @@
 @media (min-width: 1360px) {
   .featured-product .product__outer--thumbs-aside .product__media-sublist-outer {
     max-width: 12.2rem;
+  }
+}
+@media screen and (min-width: 750px) {
+  .featured-product .product__outer--full-screen .product__media-sublist-outer {
+    display: none;
+  }
+}
+@media screen and (min-width: 750px) {
+  .featured-product .product__outer--multiple-top .product__media-sublist-outer {
+    display: none;
   }
 }
 .featured-product .product__info-container {
@@ -102,16 +112,16 @@
     max-width: 59.2rem;
   }
 }
-.featured-product .product__media-list .product__media {
+.featured-product .product__media-list .product__media--recommended {
   padding-top: 78%;
 }
 @media (min-width: 750px) {
-  .featured-product .product__media-list .product__media {
+  .featured-product .product__media-list .product__media--recommended {
     padding-top: 50%;
   }
 }
 @media (min-width: 1200px) {
-  .featured-product .product__media-list .product__media {
+  .featured-product .product__media-list .product__media--recommended {
     padding-top: 0;
   }
 }

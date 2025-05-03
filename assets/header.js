@@ -27,7 +27,7 @@
 				document.documentElement.style.setProperty("--ann-height", `0px`);
 			}
 		});
-		annBarObserver.observe(annBar);
+		if (annBar) annBarObserver.observe(annBar);
 
 		menuLinks.forEach((link) => {
 			link.addEventListener("mouseenter", (e) => {
@@ -58,23 +58,57 @@
 			});
 		});
 
-		header.addEventListener("mouseenter", (e) => {
-			if (
-				header.classList.contains("color-background-3") &&
-				!header.classList.contains("shopify-section-header-sticky")
-			) {
-				header.classList.remove("color-background-3");
-			}
+		document.body.addEventListener('mousedown', function() {
+			document.body.classList.add('mouse-focus');
 		});
 
-		header.addEventListener("mouseleave", (e) => {
-			if (
-				header.classList.contains("color-background-1") &&
-				!header.classList.contains("shopify-section-header-sticky")
-			) {
-				header.classList.add("color-background-3");
-			}
+		document.body.addEventListener('keydown', function(e) {
+				if (e.key === 'Tab') {
+					document.body.classList.remove('mouse-focus');
+				}
 		});
+
+		const addBackground = () => {
+			const headerObserver = new ResizeObserver((entries) => {
+				const [entry] = entries;
+				if (entry.contentRect.width >= 1200) {
+					if (
+						header.classList.contains("color-background-3") &&
+						!header.classList.contains("shopify-section-header-sticky")
+					) {
+						header.classList.remove("color-background-3");
+					}
+				}
+			});
+
+			headerObserver.observe(header);
+		};
+
+		const removeBackground = () => {
+			const headerObserver = new ResizeObserver((entries) => {
+				const [entry] = entries;
+				if (entry.contentRect.width >= 1200) {
+					if (
+						header.classList.contains("color-background-1") &&
+						!header.classList.contains("shopify-section-header-sticky")
+					) {
+						header.classList.add("color-background-3");
+					}
+				}
+			});
+
+			headerObserver.observe(header);
+		};
+
+		header.addEventListener("mouseenter", addBackground);
+
+		header.addEventListener("focus", addBackground);
+
+		header.addEventListener("focusin", addBackground);
+
+		header.addEventListener("mouseleave", removeBackground);
+
+		header.addEventListener("focusout", removeBackground);
 
 		const megaMenuListLinks = () => {
 			const megaMenuLinkWithSubmenu = document.querySelector(
@@ -91,6 +125,18 @@
 				megaMenuLinkWithSubmenu.classList.add("mega-menu__list-item--visible");
 			}
 			$(".mega-menu__list-item").mouseenter(function (event) {
+				if (megaMenuLinkWithSubmenu) {
+					megaMenuLinkWithSubmenu.classList.remove(
+						"mega-menu__list-item--visible",
+					);
+				}
+				$(this).removeClass("mega-menu__list-item--opacity");
+				$(this).siblings().addClass("mega-menu__list-item--opacity");
+				$(this).mouseleave(() => {
+					$(this).siblings().removeClass("mega-menu__list-item--opacity");
+				});
+			});
+			$(".mega-menu__list-item").focus(function (event) {
 				if (megaMenuLinkWithSubmenu) {
 					megaMenuLinkWithSubmenu.classList.remove(
 						"mega-menu__list-item--visible",
@@ -122,6 +168,21 @@
 						.removeClass("mega-menu__submenu-item--opacity");
 				});
 			});
+			$(".mega-menu--list .mega-menu__submenu-item").focusin(function (event) {
+				$(this).removeClass("mega-menu__submenu-item--opacity");
+				$(this)
+					.parent()
+					.siblings()
+					.find(".mega-menu__submenu-item")
+					.addClass("mega-menu__submenu-item--opacity");
+				$(this).focusout(() => {
+					$(this)
+						.parent()
+						.siblings()
+						.find(".mega-menu__submenu-item")
+						.removeClass("mega-menu__submenu-item--opacity");
+				});
+			});
 		};
 		megaMenuListLinks();
 		megaMenuSublinks();
@@ -130,8 +191,9 @@
 		const breadcrumbs = document.querySelector(".breadcrumbs-wrapper");
 		if (
 			main
-				.querySelectorAll(".shopify-section")[0]
-				.classList.contains("section--has-overlay")
+				.querySelectorAll(".shopify-section")[0]?.classList.contains("section--has-overlay") &&
+			!main
+				.querySelectorAll(".shopify-section")[0]?.classList.contains("not-margin")
 		) {
 			header.classList.add("color-background-1", "color-background-3");
 			if (breadcrumbs) {
@@ -140,7 +202,9 @@
 		}
 	};
 
-	document.addEventListener("shopify:section:load", header);
-
 	header();
+
+	document.addEventListener("shopify:section:load", header);
+	document.addEventListener("shopify:section:unload", header);
+	document.addEventListener("shopify:section:reorder", header);
 })();

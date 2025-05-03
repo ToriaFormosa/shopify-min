@@ -6,7 +6,7 @@
 {{ 'component-badge.css' | asset_url | stylesheet_tag }}
 
 
-{%- if settings.quickview_show or settings.show_on_mobile or settings.show_color_swatch -%}
+{%- if settings.quickview_show or settings.show_on_mobile or settings.type_color_swatch == 'custom' -%}
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
 {% endif %}
 
@@ -78,7 +78,6 @@
                       show_secondary_image: settings.predictive_search_show_secondary_image,
                       show_vendor: settings.predictive_search_show_vendor,
                       show_collection: settings.predictive_search_show_collection,
-                      show_rating: settings.predictive_search_show_rating,
                       show_desc: settings.predictive_search_show_desc
                     %}
                   </li>
@@ -167,6 +166,7 @@
                       <a
                         href="{{ collection.url | default: '#' }}"
                         class="link link--overlay card-wrapper__link--overlay"
+                        aria-label="{{ collection.tittle }}"
                       ></a>
                     </div>
                   </li>
@@ -258,10 +258,7 @@
   <span class="hidden" data-predictive-search-live-region-count-value>
     {% liquid
       assign total_results = predictive_search.resources.products.size
-      echo 'templates.search.results_with_count' | t: count: total_results | append: ': '
-      if predictive_search.resources.products.size > 0
-        echo 'templates.search.results_products_with_count' | t: count: predictive_search.resources.products.size
-      endif
+      echo 'templates.search.results_with_count_and_term' | t: count: total_results, terms: predictive_search.terms
     %}
   </span>
 {%- endif -%}
