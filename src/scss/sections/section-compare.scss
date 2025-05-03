@@ -1,0 +1,218 @@
+@import "../base/components/grid";
+
+.compare {
+	color: #F9F9F9;
+
+	&__content {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 2.4rem;
+
+		@media screen and (min-width: $md) {
+			gap: 3.2rem;
+		}
+
+		@media screen and (min-width: $xl) {
+			gap: 4.8rem;
+		}
+
+		&_no-heading {
+			@media screen and (min-width: $xl) {
+				gap: 4rem;
+			}
+		}
+	}
+
+	&__top {
+		align-self: center;
+	}
+
+	&__subtitle {
+		margin: 0;
+
+		+.compare__content {
+			margin-top: 1rem;
+		}
+	}
+
+	&__button {
+		grid-row: 2;
+		grid-column: span 2;
+
+		@media screen and (min-width: $sm) {
+			grid-row: unset;
+			grid-column: 2;
+			margin-left: auto;
+			align-self: flex-end;
+		}
+	}
+
+	@media screen and (max-width: 575px) {
+		&__top+&__button {
+			grid-row: 3;
+		}
+	}
+
+	&__default {
+		grid-column: span 2;
+		display: flex;
+		gap: 0.5rem;
+		max-height: 64rem;
+		border-radius: 0.4rem;
+		overflow: hidden;
+
+		svg {
+			width: 100%;
+			object-fit: cover;
+
+			@media screen and (max-width: $lg) {
+				height: 20rem;
+			}
+		}
+	}
+
+	&__title {
+		width: 100%;
+		margin: 0;
+	}
+
+	&__container {
+		grid-column: span 2;
+		position: relative;
+		max-height: 28rem;
+		overflow: hidden;
+
+		@media screen and (min-width: $md) {
+			max-height: 35rem;
+		}
+
+		@media screen and (min-width: $lg) {
+			max-height: 45rem;
+		}
+
+		@media screen and (min-width: $xxl) {
+			max-height: 64rem;
+		}
+
+		@media screen and (min-width: $xxxl) {
+			max-height: 84rem;
+		}
+	}
+
+	img-comparison-slider.rendered {
+		border-radius: 0.4rem;
+		outline: none;
+		width: 100%;
+	}
+
+
+	&__figure {
+		display: block;
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		height: 100%;
+
+		img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			height: 28rem;
+			object-fit: cover;
+
+			@media screen and (min-width: $md) {
+				height: auto;
+				max-height: 35rem;
+			}
+
+			@media screen and (min-width: $lg) {
+				max-height: 45rem;
+			}
+
+			@media screen and (min-width: $xxl) {
+				max-height: 64rem;
+			}
+
+			@media screen and (min-width: $xxxl) {
+				max-height: 84rem;
+			}
+		}
+	}
+
+	&__text {
+		position: absolute;
+		max-width: min-content;
+		color: #F9F9F9;
+		word-wrap: break-word;
+
+		@media screen and (min-width: $xl) {
+			max-width: 28.5rem;
+		}
+
+		&--left {
+			left: 2rem;
+			bottom: 2rem;
+
+			@media screen and (min-width: $xl) {
+				left: 4rem;
+				bottom: 4rem;
+			}
+		}
+
+		&--right {
+			right: 2rem;
+			bottom: 2rem;
+
+			@media screen and (min-width: $xl) {
+				right: 4rem;
+				bottom: 4rem;
+			}
+		}
+	}
+
+	.icon-handle {
+		width: 3rem;
+		overflow: visible;
+
+		path {
+			transition: transform var(--duration-default);
+		}
+
+		&--active {
+			path {
+
+				&:first-child {
+					transform: translateX(-0.5rem);
+				}
+
+				&:last-child {
+					transform: translateX(0.5rem);
+				}
+			}
+		}
+
+		&:hover {
+			path {
+
+				&:first-child {
+					transform: translateX(-0.5rem);
+				}
+
+				&:last-child {
+					transform: translateX(0.5rem);
+				}
+			}
+		}
+
+		@media screen and (min-width: $lg) {
+			width: auto;
+		}
+	}
+
+}
+
+.divider {
+	&:hover {
+		opacity: 0.5;
+	}
+}

@@ -1,0 +1,33 @@
+$xs: 0;
+$sm: 576px;
+$md: 750px;
+$lg: 990px;
+$xl: 1200px;
+$xxl: 1360px;
+$xxxl: 1600px;
+
+$sm-w: 100%;
+$md-w: 100%;
+$lg-w: 100%;
+$xl-w: 100%;
+$xxl-w: 1920px;
+
+$grid-breakpoints: (
+	xs: 0,
+	sm: $sm,
+	md: $md,
+	lg: $lg,
+	xl: $xl,
+	xxl: $xxl
+) !default;
+
+$container-max-widths: (
+	sm: $sm-w,
+	md: $md-w,
+	lg: $lg-w,
+	xl: $xl-w,
+	xxl: $xxl-w
+) !default;
+
+$container-padding-x: 6.4rem !default;
+$container-padding-x-small: 2rem !default;

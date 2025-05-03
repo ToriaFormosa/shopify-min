@@ -1,0 +1,245 @@
+@import '../base/components/grid';
+
+.carousel {
+  --opacity-slide: 0.2;
+	--opacity-slide-hover: 0.3;
+  --padding-bottom: 130%; 
+
+  overflow: hidden;
+  
+  &__wrapper {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2.4rem;
+
+    @media screen and (min-width: $md) {
+      gap: 3.2rem;
+    }
+
+    @media screen and (min-width: $xl) {
+      gap: 4.8rem;
+    }
+
+    &_no-heading {
+      @media screen and (min-width: $xl) {
+        gap: 4rem;
+      }
+    }
+  }
+
+  &__subtitle {
+    margin: 0;
+
+    + .carousel__wrapper  {
+			margin-top: 1rem;
+		}
+  }
+
+  &__title {
+    margin: 0;
+  }
+
+  &__button {
+    grid-row: 2;
+    grid-column: span 2;
+
+    @media screen and (min-width: $sm) {
+      grid-row: unset;
+      grid-column: 2;
+      margin-left: auto;
+    }
+  }
+
+  @media screen and (max-width: 575px) {
+		&__top + &__button {
+			grid-row: 3;
+		}
+	}
+
+  &__content {
+    grid-column: span 2;
+  }
+
+  &__slider {
+		position: relative;
+
+		@media screen and (min-width: $sm) {
+			overflow: visible;
+		}
+
+    .swiper-wrapper {
+      padding-bottom: 6.4rem;
+
+      @media screen and (min-width: $sm) {
+        padding-bottom: 0;
+      }
+    }
+
+		&:not(.swiper-initialized) {
+			.swiper-wrapper {
+				display: flex;
+				gap: 0.8rem;
+
+				.carousel__slide {
+
+          &--5 {
+            @media screen and (min-width: $sm) {
+              width: calc(100% / 2 - 0.4rem);
+            }
+  
+            @media screen and (min-width: $lg) {
+              width: calc(100% / 3 - 0.8rem*3/2);
+            }
+
+            @media screen and (min-width: $xl) {
+              width: calc(100% / 4 - 0.8rem*4/3);
+            }
+  
+            @media screen and (min-width: $xxl) {
+              width: calc(100% / 5 - 0.8rem*5/4);
+            }
+          }
+
+          &--4 {
+            @media screen and (min-width: $sm) {
+              width: calc(100% / 2 - 0.4rem);
+            }
+  
+            @media screen and (min-width: $lg) {
+              width: calc(100% / 3 - 0.8rem*3/2);
+            }
+  
+            @media screen and (min-width: $xxl) {
+              width: calc(100% / 4 - 0.8rem*4/3);
+            }
+          }
+
+          &--3 {
+            @media screen and (min-width: $sm) {
+              width: calc(100% / 2 - 0.4rem);
+            }
+  
+            @media screen and (min-width: $lg) {
+              width: calc(100% / 3 - 0.8rem*3/2);
+            }
+          }
+
+          &--2 {
+            @media screen and (min-width: $sm) {
+              width: calc(100% / 2 - 0.4rem);
+            }
+          }
+				}
+			}
+		}
+
+		&-nav {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			z-index: 1;
+			display: flex;
+      column-gap: 1.6rem;
+			justify-content: space-between;
+			pointer-events: none;
+
+			.swiper-button-prev, .swiper-button-next {
+				pointer-events: all;
+			}
+
+			@media screen and (min-width: $sm) {
+        top: 50%;
+        bottom: auto;
+				left: 1.5rem;
+				right: 1.5rem;
+        transform: translateY(-50%);
+
+				.swiper-button-prev {
+					transform: translateX(-50%);
+				}
+	
+				.swiper-button-next {
+					transform: translateX(50%);
+				}
+			}
+
+			@media screen and (min-width: $xl) {
+				left: -0.4rem;
+				right: -0.4rem;
+				width: calc(100% + 0.8rem);
+			}
+
+			.swiper-button-disabled {
+        opacity: 0.2;
+        pointer-events: none;
+
+        @media screen and (min-width: $sm) {
+          opacity: 0;
+        }
+			}
+		}
+	}
+
+  &__slide {
+    position: relative;
+    display: flex;
+    height: auto;
+    border-radius: 0.4rem;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      display: block;
+      padding-bottom: var(--padding-bottom);
+    }
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 3.2rem;
+    }
+
+    &-image {  
+      position: absolute;
+      inset: 0;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background-color: rgba(var(--color-overlay), var(--opacity-slide));
+        transition: background-color var(--duration-default);
+      }
+    }
+
+    &-title {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+    }
+
+    &--light {
+			* {
+        color: rgb(var(--color-foreground-secondary));
+      }
+		}
+
+    &:hover {
+      .carousel__slide-image::before {
+        background-color: rgba(var(--color-overlay), var(--opacity-slide-hover));
+      }
+    }
+  }
+}
+
+.no-js .carousel__slider .swiper-wrapper {
+	overflow-x: auto;
+}

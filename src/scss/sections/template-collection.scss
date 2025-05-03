@@ -1,0 +1,540 @@
+@import '../base/components/grid';
+
+.section-list-collections {
+	.page-header {
+		margin-bottom: 2.4rem;
+
+		@media screen and (min-width: $md) {
+			margin-bottom: 3.2rem;
+		}
+
+		@media screen and (min-width: $xl) {
+			margin-bottom: 4.8rem;
+		}
+	}
+}
+
+.collection-wrapper {
+	position: relative;
+	//row-gap: 3.2rem;
+
+	&--vertical {
+		@media screen and (min-width: $md) {
+			display: grid;
+			align-items: flex-start;
+			column-gap: 0.8rem;
+			grid-template-columns: 1fr 2fr;
+			grid-template-rows: 4rem auto 1fr;
+		}
+
+		@media screen and (min-width: $xl) {
+			grid-template-columns: 1fr 3fr;
+		}
+
+		&--empty {
+			grid-template-columns: 1;
+		}
+	}
+
+	&_no-facets {
+		grid-template-rows: auto;
+
+		.products-grid {
+			margin-top: 0;
+		}
+	}
+
+	&--horizontal,
+	&--horizontal_united {
+		display: flex;
+		flex-direction: column;
+
+		.facets-container {
+			order: 1;
+		}
+
+		.facets__top {
+			order: 2;
+		}
+
+		.products-grid {
+			order: 3;
+		}
+	}
+
+	&--empty {
+		display: block;
+	}
+}
+
+.products-grid {
+	margin-top: 2.4rem;
+	transition: margin-left var(--duration-default);
+
+	@media screen and (min-width: $sm) {
+		margin-top: 3.2rem;
+	}
+
+	@media screen and (min-width: $md) {
+		grid-row: 3;
+	}
+
+	&_no-filter,
+	&.full-width,
+	&:only-child {
+		grid-column: span 2;
+
+		.collection-product-list .collection-product-card {
+			@media screen and (min-width: $sm) {
+				width: calc(100% / 2 - 0.4rem);
+			}
+
+			@media screen and (min-width: $lg) {
+				width: calc(100% / 3 - (0.8rem*2/3));
+			}
+
+			@media screen and (min-width: $xl) {
+				width: calc(100% / 4 - (0.8rem*3/4));
+			}
+		}
+	}
+
+	&.full-width {
+		.collection-product-list .collection-product-card {
+			@media screen and (min-width: $md) {
+				width: calc(100% / 3 - (0.8rem*2/3));
+			}
+
+			@media screen and (min-width: $xl) {
+				width: calc(100% / 4 - (0.8rem*3/4));
+			}
+		}
+	}
+}
+
+.collection {
+	position: relative;
+
+	&-filters {
+		display: flex;
+		flex-direction: column;
+
+		@media screen and (min-width: $lg) {
+			display: block;
+		}
+	}
+
+	&-product-list {
+		list-style: none;
+		padding: 0;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	&--empty {
+		.title-wrapper {
+			margin-top: 10rem;
+			margin-bottom: 15rem;
+		}
+	}
+}
+
+.collection-product {
+	position: relative;
+
+	.loading-overlay {
+		inset: 0;
+		z-index: 6;
+		display: none;
+		width: 100%;
+		padding: 0 5rem;
+		background-color: rgba(var(--color-background), 0.7);
+	}
+
+	&.loading {
+		>.loading-overlay {
+			display: block;
+
+			.loading-overlay__spinner {
+				top: 15rem;
+			}
+		}
+	}
+}
+
+.collection-product-list {
+	/*display: grid;
+	grid-template-columns: 1fr;*/
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2.4rem 0.8rem;
+
+	/*@media screen and (min-width: $sm) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	@media screen and (min-width: $xl) {
+		grid-template-columns: repeat(3, 1fr);
+	} */
+
+	.collection-product-card {
+		height: 100%;
+		width: 100%;
+
+		@media screen and (min-width: $sm) {
+			width: calc(100% / 2 - 0.4rem);
+		}
+
+		@media screen and (min-width: $xl) {
+			width: calc(100% / 3 - (0.8rem*2/3));
+		}
+	}
+
+	&--2-mobile {
+		.collection-product-card {
+			width: calc(100% / 2 - 0.4rem);
+
+			@media screen and (min-width: $xl) {
+				width: calc(100% / 3 - (0.8rem*2/3));
+			}
+
+			@media screen and (max-width: 575px) {
+				.card-information__group {
+					flex-direction: column;
+					row-gap: 0.8rem;
+				}
+
+				.rating {
+					margin-bottom: 0;
+	
+					&__stars {
+						margin: 0 0.3rem 0 0;
+					}
+	
+					&-star {
+						&::before {
+							font-size: 1.5rem;
+						}
+					}
+	
+					&-text {
+						font-size: 1.2rem;
+					}
+	
+					&-count {
+						font-size: 1rem;
+					}
+				}
+
+				.card__title {
+					font-size: calc(var(--font-heading-card-scale) * 0.9rem);
+				}
+
+				.card__description {
+					font-size: 1rem;
+				}
+
+				.card__information-top {
+					position: static;
+					padding: 1rem 0 0.2rem 0;
+				}
+
+				.card__badge {
+					position: absolute;
+					top: 0.8rem;
+					left: 0.8rem;
+					right: 0.8rem;
+					max-width: 100%;
+				}
+
+				.badge {
+					font-size: 1.1rem;
+				}
+
+				.card__subtitle,
+				.card__vendor::after {
+					font-size: 0.8rem;
+				}
+
+				.card-information {
+					padding: 0;
+				}
+
+				.price {
+					font-size: 1.2rem;
+				}
+
+				.price--on-sale .price__sale {
+					flex-direction: row;
+					align-items: flex-start;
+					column-gap: 0.4rem;
+
+					dt {
+						order: 1;
+					}
+				}
+			}
+		}
+	}
+
+	img.img-scale {
+		transition: transform var(--duration-default) ease;
+	}
+
+	.collections-grid__card:hover img.img-scale {
+		transform: scale(1.05);
+	}
+
+
+	.collection-product-card--portrait {
+		@media screen and (min-width: $xl) {
+			min-height: 70rem;
+		}
+
+		@media screen and (min-width: $xxl) {
+			min-height: 78rem;
+		}
+	}
+
+	@media screen and (min-width: $xl) {
+		.collection-product-card {
+			height: 100%;
+
+			&--portrait {
+				.card-wrapper::before {
+					padding-bottom: 130%;
+				}
+			}
+
+			&--square {
+				.card-wrapper::before {
+					padding-bottom: 100%;
+				}
+			}
+
+			&--landscape {
+				.card-wrapper::before {
+					padding-bottom: 70%;
+				}
+			}
+		}
+	}
+}
+
+.collection-product-image {
+	position: relative;
+	display: none;
+	grid-column-start: 3;
+	grid-row: 2 / span 2;
+	margin: -1px -1px 0;
+	overflow: hidden;
+	z-index: 2;
+
+	@media screen and (min-width: $lg) {
+		display: block;
+	}
+
+	&--left {
+		grid-column-start: 1;
+	}
+
+	&__wrapper {
+		width: 100%;
+		height: 100%;
+	}
+
+	&__media {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		height: 115%;
+		object-fit: cover;
+	}
+}
+
+.title-wrapper-empty .title {
+	.link {
+		font-size: inherit;
+		letter-spacing: 0;
+		//transition: var(--duration-default);
+	}
+}
+
+.collection-product .pagination-wrapper {
+	@media screen and (min-width: $lg) {
+		margin-top: 8.8rem;
+	}
+}
+
+.collections-grid {
+	display: grid;
+	gap: 0.8rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	@media screen and (min-width: $md) {
+
+		&--2,
+		&--3,
+		&--4 {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media screen and (min-width: $lg) {
+
+		&--3,
+		&--4 {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media screen and (min-width: $xxl) {
+		&--4 {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
+	&--3,
+	&--4 {
+		.collections-grid__information {
+			padding: 2.4rem;
+		}
+	}
+
+	&__overlay {
+		position: absolute;
+		inset: 0;
+		background-color: rgba(var(--color-overlay), var(--opacity));
+		transition: background-color var(--duration-default);
+		z-index: 1;
+	}
+
+	&__item {
+		position: relative;
+		display: flex;
+		border-radius: 0.4rem;
+		overflow: hidden;
+
+		&:hover {
+			.collections-grid__overlay {
+				background-color: rgba(var(--color-overlay), var(--opacity-hover));
+			}
+
+			.button {
+				opacity: 1;
+			}
+		}
+
+		&::after {
+			content: '';
+		}
+
+		&--landscape {
+			min-height: 32rem;
+
+			@media screen and (min-width: $sm) {
+				min-height: unset;
+			}
+
+			&::after {
+				padding-bottom: 38%;
+			}
+		}
+
+		&--portrait {
+			&::after {
+				padding-bottom: 130%;
+			}
+		}
+
+		&--square {
+			&::after {
+				padding-bottom: 100%;
+			}
+		}
+	}
+
+	&__information {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		padding: 2.4rem;
+		width: 100%;
+
+		@media screen and (min-width: $sm) {
+			padding: 4rem;
+		}
+
+		@media screen and (min-width: $xl) {
+			padding: 6.4rem;
+		}
+
+		*:not(.button) {
+			position: relative;
+			z-index: 1;
+			pointer-events: none;
+		}
+
+		.button {
+			position: relative;
+			z-index: 2;
+
+			@media screen and (min-width: $md) {
+				opacity: 0;
+				transition: background-color var(--duration-default), color var(--duration-default), opacity var(--duration-default);
+			}
+		}
+	}
+
+	&__image {
+		position: absolute;
+		inset: 0;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		&--contain {
+			img {
+				object-fit: contain;
+			}
+		}
+	}
+
+	&__title {
+		margin: 0;
+	}
+
+	&__desc {
+		margin-top: 0.8rem;
+		margin-bottom: 0;
+		max-width: 38rem;
+
+		@media screen and (min-width: $sm) {
+			margin-top: 2.4rem;
+		}
+	}
+
+	&__link {
+		margin-top: 1.6rem;
+
+		@media screen and (min-width: $sm) {
+			margin-top: 3.2rem;
+		}
+
+		&_overlay {
+			display: block;
+			position: absolute;
+			inset: 0;
+			z-index: 1;
+		}
+	}
+}

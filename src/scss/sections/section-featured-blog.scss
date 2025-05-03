@@ -1,0 +1,357 @@
+@import "../base/components/grid";
+
+.blog {
+	overflow: hidden;
+
+	&__content {
+		display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2.4rem;
+
+    @media screen and (min-width: $md) {
+      gap: 3.2rem;
+    }
+
+    @media screen and (min-width: $xl) {
+      gap: 4.8rem;
+    }
+
+    &_no-heading {
+      @media screen and (min-width: $xl) {
+        gap: 4rem;
+      }
+    }
+	}
+
+	&__top {
+		/*display: flex;
+		flex-direction: column;
+		row-gap: 1rem;
+		grid-row: 1; */
+		align-self: center;
+	}
+
+	&__subtitle {
+		margin-bottom: 0;
+
+		+ .blog__content {
+			margin-top: 1rem;
+		}
+	}
+
+	&__title {
+		margin: 0;
+
+		&.h2 {
+			max-width: 45.7rem;
+		}
+	}
+
+	&__button-wrapper {
+		grid-row: 2;
+    grid-column: span 2;
+		align-self: center;
+
+    @media screen and (min-width: $sm) {
+      grid-row: unset;
+      grid-column: 2;
+      margin-left: auto;
+    }
+
+		/*grid-row: 2;
+		grid-column: span 2;
+		align-self: center;*/
+
+		.button {
+			width: 100%;
+		}
+
+		@media screen and (min-width: $sm) {
+			/*grid-row: 1;
+			grid-column: unset;
+			text-align: end;*/
+
+			.button {
+				width: auto;
+			}
+		}
+
+		&_desktop {
+			display: none;
+
+			@media screen and (min-width: $sm) {
+				display: block;
+			}
+		}
+
+		&_mobile {
+			display: block;
+
+			@media screen and (min-width: $sm) {
+				display: none;
+			}
+		}
+	}
+
+	@media screen and (max-width: 575px) {
+		&__top + &__button-wrapper {
+			grid-row: 3;
+		}
+	}
+
+	&__slider {
+		position: relative;
+
+		@media screen and (min-width: $sm) {
+			overflow: visible;
+		}
+
+		&:not(.swiper-initialized) {
+			.swiper-wrapper {
+				display: flex;
+				gap: 0.8rem;
+
+				.swiper-slide {
+
+					@media screen and (min-width: $sm) {
+						width: calc(100% / 2 - 0.8rem);
+					}
+
+					@media screen and (min-width: $lg) {
+						width: calc(100% / 3 - 0.4rem);
+					}
+				}
+			}
+		}
+
+		&-nav {
+			position: absolute;
+			top: 50%;
+			left: 0.8rem;
+			right: 0.8rem;
+			z-index: 1;
+			display: flex;
+			justify-content: space-between;
+			transform: translateY(-50%);
+			pointer-events: none;
+
+			.swiper-button-prev,
+			.swiper-button-next {
+				pointer-events: all;
+			}
+
+			@media screen and (min-width: $sm) {
+				left: 1.5rem;
+				right: 1.5rem;
+
+				.swiper-button-prev {
+					transform: translateX(-50%);
+				}
+
+				.swiper-button-next {
+					transform: translateX(50%);
+				}
+			}
+
+			@media screen and (min-width: $xl) {
+				left: -0.4rem;
+				right: -0.4rem;
+				width: calc(100% + 0.8rem);
+			}
+
+			.swiper-button-disabled {
+				opacity: 0;
+				pointer-events: none;
+			}
+		}
+	}
+
+	&__posts {
+		grid-column: span 2;
+		//display: grid;
+		padding: 0;
+		margin: 0;
+
+		&--column {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 0.8rem;
+		}
+
+		&--grid {
+			display: grid;
+			gap: 0.8rem;
+
+			@media screen and (min-width: $lg) {
+				grid-template-columns: repeat(2, 1fr);
+			}
+
+			@media screen and (min-width: $xxl) {
+				grid-template-columns: repeat(4, 1fr);
+				gap: 0;
+			}
+
+			&.blog__posts {
+				gap: 4rem;
+
+				@media screen and (min-width: $sm) {
+					gap: 0.8rem;
+				}
+
+				.article-card-row__content {
+					z-index: 1;
+				}
+
+				&--4-items,
+				&--8-items,
+				&--6-items {
+					@media screen and (min-width: $xxl) {
+						.article {
+							grid-column: span 2;
+
+							&:first-child {
+								grid-row: span 3;
+							}
+						}
+					}
+
+					@media screen and (min-width: $xxl) {
+						.article:first-child {
+							.article-card-row__content {
+								padding: 4rem;
+								width: 100%;
+								max-width: 72rem;
+							}
+
+							&::after {
+								content: '';
+								position: absolute;
+								inset: 0;
+								width: 100%;
+								height: 100%;
+								border-radius: 0.4rem;
+								background-color: rgb(var(--color-overlay), 0.2);
+							}
+
+							.article-card-row__image-wrapper {
+								position: absolute;
+								inset: 0;
+								width: 100%;
+							}
+
+							.card__subtitle {
+								color: rgba(249, 249, 249, 0.7);
+							}
+
+							.article-card-row__title {
+								font-size: calc(var(--font-heading-h3-scale) * 4rem);
+								color: rgb(249, 249, 249);
+							}
+
+							.article-card-row__excerpt {
+								font-size: 1.8rem;
+								color: rgba(249, 249, 249);
+							}
+						}
+					}
+				}
+
+				&--3-items,
+				&--7-items,
+				&--5-items {
+					@media screen and (min-width: $lg) {
+						.article:first-child {
+							//grid-column: span 2;
+
+							.article-card-row__content {
+								padding: 4rem;
+								width: 100%;
+								max-width: 72rem;
+							}
+
+							&::after {
+								content: '';
+								position: absolute;
+								inset: 0;
+								width: 100%;
+								height: 100%;
+								background-color: rgb(var(--color-overlay), 0.12);
+							}
+
+							.article-card-row__image-wrapper {
+								position: absolute;
+								inset: 0;
+								width: 100%;
+							}
+
+							.card__subtitle {
+								color: rgb(var(--color-foreground-secondary));
+							}
+
+							.article-card-row__title {
+								font-size: calc(var(--font-heading-h3-scale) * 4rem);
+								color: rgb(var(--color-foreground-secondary));
+							}
+
+							.article-card-row__excerpt {
+								font-size: 1.8rem;
+								color: rgb(var(--color-foreground-secondary));
+							}
+						}
+					}
+
+					.article {
+						@media screen and (min-width: $lg) {
+							grid-column: span 1;
+
+							&:first-child {
+								grid-column: span 2;
+
+								.article-card-row {
+									display: flex;
+
+									&::before {
+										content: '';
+										display: block;
+										padding-bottom: 50%;
+									}
+								}
+							}
+						}
+
+						@media screen and (min-width: $xl) {
+							&:first-child {
+								grid-column: span 1;
+								grid-row: span 2;
+							}
+						}
+
+						@media screen and (min-width: $xxl) {
+							grid-column: span 2;
+
+							&:first-child {
+								grid-column: span 2;
+							}
+						}
+					}
+				}
+
+				&--2-items {
+					@media screen and (min-width: $xxl) {
+						grid-template-columns: repeat(2, 1fr);
+					}
+				}
+
+				&--1-items {
+					.article {
+						grid-column: span 2;
+					}
+				}
+			}
+		}
+	}
+}
+
+.no-js .blog__slider .swiper-wrapper {
+	overflow-x: auto;
+}

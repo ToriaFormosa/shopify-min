@@ -1,0 +1,26 @@
+{
+	"type": "header",
+	"name": "t:sections.header.settings.header-group.label",
+	"sections": {
+		"header": {
+			"type": "header",
+			"settings": {
+				"logo_width": 90,
+				"header_type": "left-logo",
+				"menu": "main-menu",
+				"small-menu": "main-menu",
+				"enable_country_selector": true,
+				"enable_sticky_header": true,
+				"enable_search": true
+			}
+		},
+
+		"announcement-bar": {
+			"type": "announcement-bar",
+			"settings": {
+				"text": "For example, a test of the announcement of some news"
+			}
+		}
+	},
+	"order": ["announcement-bar", "header"]
+}

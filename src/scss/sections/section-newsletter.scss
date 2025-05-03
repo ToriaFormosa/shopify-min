@@ -1,0 +1,157 @@
+@import '../base/components/grid';
+
+.newsletter {
+	$parent: &;
+
+	&__inner {
+		position: relative;
+		display: flex;
+		justify-content: flex-start;
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 3.2rem;
+		flex-wrap: wrap;
+		width: 100%;
+
+		@media (min-width: $lg) {
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: nowrap;
+			gap: 6.4rem;
+		}
+
+		&--right {
+			flex-direction: column-reverse;
+			align-items: flex-start;
+
+			@media (min-width: $lg) {
+				flex-direction: row-reverse;
+				align-items: center;
+			}
+
+			#{$parent}__image {
+				margin: 0;
+				border-radius: 0.4rem;
+
+				@media (min-width: $lg) {
+					margin-left: 0;
+					margin-right: -6.4rem;
+					border-radius: 0.4rem 0 0 0.4rem;
+				}
+			}
+		}
+	}
+
+	&__image {
+		width: 100%;
+		height: auto;
+		margin: 0;
+		border-radius: 0.4rem;
+
+		@media (min-width: $lg) {
+			width: 54%;
+			margin-left: -6.4rem;
+			border-radius: 0 0.4rem 0.4rem 0;
+		}
+	}
+
+	&__button {
+		width: 100%;
+
+		@media (min-width: $lg) {
+			width: auto;
+		}
+	}
+
+	.newsletter-form {
+		flex-basis: 50%;
+
+		&__inner {
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.8rem;
+			flex-wrap: wrap;
+			width: 100%;
+			position: relative;
+
+			@media (min-width: $lg) {
+				flex-direction: row;
+			}
+		}
+
+		&__field-wrapper {
+			flex: 1;
+			width: 100%;
+			position: relative;
+
+			@media (min-width: $lg) {
+				width: auto;
+			}
+		}
+
+		&__message {
+			margin-bottom: 0;
+
+			@media (min-width: $md) {
+				justify-content: flex-start;
+			}
+
+			&--success {
+				margin-top: 2rem;
+
+				@media (min-width: $md) {
+					width: 100%;
+				}
+			}
+		}
+	}
+}
+
+
+.newsletter {
+	&__form {
+		width: 100%;
+
+		.rte {
+			color: rgba(var(--color-foreground), 0.6);
+
+			p {
+				margin-bottom: 0;
+				font-size: 1.4rem;
+			}
+
+			a {
+				color: rgb(var(--color-foreground), 1);
+				transition: color var(--duration-default);
+
+				&:hover {
+					color: rgba(var(--color-foreground), 0.8);
+				}
+			}
+		}
+	}
+
+	&__title {
+		margin: 0;
+		margin-bottom: 2.4rem;
+
+		@media screen and (min-width: $md) {
+			margin-bottom: 3.2rem;
+		}
+
+		@media screen and (min-width: $xl) {
+			margin-bottom: 4.8rem;
+		}
+	}
+
+	&__text {
+		margin-top: 1.6rem;
+
+		p {
+			font-size: 1.4rem;
+		}
+	}
+}

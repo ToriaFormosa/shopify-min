@@ -1,0 +1,17 @@
+/* Color custom properties */
+:root {
+	--color-error: 217, 76, 76;
+	--color-error-border: 199, 38, 27;
+	--color-error-background: 255, 245, 245;
+	--duration-short: 100ms;
+	--duration-default: 250ms;
+	--duration-long: 500ms;
+}
+
+:root {
+	--alpha-link: 0.5;
+	--alpha-button-background: 1;
+	--alpha-button-border: 1;
+	--color-placeholder-input: 0, 0, 0;
+	--alpha-placeholder-input: 0.5;
+}

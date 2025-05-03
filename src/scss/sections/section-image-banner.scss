@@ -1,0 +1,330 @@
+@import '../base/components/grid';
+
+.image-banner {
+
+	$parent: &;
+
+	&.container {
+		.banner__media {
+			border-radius: 0.4rem;
+
+			@media screen and (min-width: $lg) {
+				border-radius: none;
+			}
+		}
+
+		#{$parent}__wrapper {
+			padding-top: 2.4rem;
+			padding-bottom: 0;
+
+			@media screen and (min-width: $md) {
+				padding: 4rem;
+			}
+
+			@media screen and (min-width: $xxl) {
+				padding: 6.4rem;
+			}
+		}
+	}
+
+	.banner>.banner__media {
+		height: 25rem;
+
+		@media screen and (min-width: $md) {
+			height: 100%;
+		}
+	}
+
+	&__heading {
+		position: relative;
+		margin-bottom: 1.6rem;
+		z-index: 3;
+
+		@media screen and (min-width: $lg) {
+			margin-bottom: 2.4rem;
+		}
+
+		p {
+			margin-top: 0;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	&__wrapper {
+		display: flex;
+		flex-direction: column;
+		padding-block: 2.4rem;
+		height: 100%;
+
+		@media screen and (min-width: $md) {
+			padding-block: 4rem;
+		}
+
+		@media screen and (min-width: $xxl) {
+			padding-block: 6.4rem;
+		}
+
+		&--full {
+			width: 100%;
+		}
+
+		&--small {
+
+			#{$parent}__subheading,
+			#{$parent}__heading {
+				max-width: 30rem;
+
+				@media screen and (min-width: $xl) {
+					max-width: 56.9rem;
+				}
+
+				@media screen and (min-width: $xxl) {
+					max-width: 61.7rem;
+				}
+			}
+
+			#{$parent}__information {
+				max-width: 38.3rem;
+			}
+		}
+
+		&--medium {
+
+			#{$parent}__subheading,
+			#{$parent}__heading,
+			#{$parent}__information {
+				max-width: 40rem;
+
+				@media screen and (min-width: $xl) {
+					max-width: 65rem;
+				}
+
+				@media screen and (min-width: $xxl) {
+					max-width: 69.8rem;
+				}
+			}
+		}
+
+		&--large {
+
+			#{$parent}__subheading,
+			#{$parent}__heading,
+			#{$parent}__information {
+				max-width: 50rem;
+
+				@media screen and (min-width: $xl) {
+					max-width: 69.8rem;
+				}
+
+				@media screen and (min-width: $xxl) {
+					max-width: 133rem;
+				}
+			}
+
+		}
+	}
+
+	.subtitle {
+		color: rgba(var(--color-foreground), 0.7)
+	}
+
+	&__button {
+		margin-top: 2.4rem;
+
+		@media screen and (min-width: $xl) {
+			margin-top: 3.2rem;
+		}
+	}
+
+	&__information {
+		&-additional {
+			margin-top: 3.2rem;
+
+			@media screen and (min-width: $xxl) {
+				margin-top: 4.8rem;
+			}
+		}
+	}
+
+	&__text {
+		position: relative;
+		margin: 0;
+		z-index: 3;
+
+		p {
+			&:first-child {
+				margin-top: 0;
+			}
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	&__subheading {
+		position: relative;
+		z-index: 3;
+
+		&--additional {
+			margin-bottom: 0.8rem;
+			color: rgb(var(--color-foreground));
+		}
+	}
+
+	&__image {
+		&-additional {
+			position: relative;
+			display: block;
+			z-index: 3;
+		}
+	}
+
+	.banner {
+		display: flex;
+		position: relative;
+		flex-direction: column;
+		min-height: initial;
+
+		@media screen and (min-width: $md) {
+			min-height: 28rem;
+			flex-direction: row;
+			border-radius: 0.4rem;
+			overflow: hidden;
+
+			&--container {
+				padding-inline: 0;
+				border-radius: 0;
+			}
+		}
+
+		&--container {
+			padding-inline: 0;
+		}
+
+		&.color-background-1 {
+			.image-banner__wrapper {
+				@media screen and (max-width: $md) {
+					padding-bottom: 0;
+				}
+			}
+		}
+
+		&.color-background-2:not(.banner--container),
+		&.color-background-3:not(.banner--container),
+		&.color-background-4:not(.banner--container) {
+			border-radius: 0.4rem;
+
+			.image-banner__wrapper {
+				@media screen and (max-width: $md) {
+					padding: 2rem;
+				}
+			}
+		}
+
+		&:not(:last-child) {
+			margin-bottom: 2.4rem;
+		}
+
+		&--left {
+
+			@media screen and (min-width: $md) {
+				align-items: center;
+				justify-content: flex-start;
+
+			}
+		}
+
+		&--top-left {
+			@media screen and (min-width: $md) {
+				align-items: flex-start;
+
+			}
+		}
+
+		&--bottom-left {
+			@media screen and (min-width: $md) {
+				align-items: flex-end;
+
+			}
+		}
+
+		&--center {
+			@media screen and (min-width: $md) {
+
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+
+				#{$parent}__subheading,
+				#{$parent}__heading,
+				#{$parent}__information {
+					margin-inline: auto;
+				}
+
+				#{$parent}__column {
+					margin: 0 auto;
+				}
+			}
+		}
+
+		&--right {
+			@media screen and (min-width: $md) {
+
+				justify-content: flex-end;
+				align-items: center;
+				text-align: right;
+
+				#{$parent}__subheading,
+				#{$parent}__heading,
+				#{$parent}__information {
+					margin-inline-start: auto;
+				}
+			}
+		}
+
+		&--top-right {
+			justify-content: flex-end;
+			align-items: flex-start;
+			text-align: right;
+
+			#{$parent}__subheading,
+			#{$parent}__heading,
+			#{$parent}__information {
+				margin-inline-start: auto;
+			}
+		}
+
+		&--bottom-right {
+			justify-content: flex-end;
+			align-items: flex-end;
+			text-align: right;
+
+			#{$parent}__subheading,
+			#{$parent}__heading,
+			#{$parent}__information {
+				margin-inline-start: auto;
+			}
+		}
+
+		&__media {
+			height: 100%;
+			left: 0;
+			top: 0;
+			width: 100%;
+			position: relative;
+
+			@media screen and (min-width: $md) {
+				position: absolute;
+				height: 100%;
+			}
+		}
+
+		&--adapt {
+			height: auto;
+		}
+	}
+}

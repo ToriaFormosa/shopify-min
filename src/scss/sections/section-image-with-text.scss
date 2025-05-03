@@ -1,0 +1,267 @@
+@import '../base/components/grid';
+
+.image-with-text {
+	$parent: &;
+
+	&__grid {
+		display: flex;
+		flex-direction: column;
+		gap: 2.4rem;
+
+		@media screen and (min-width: $xl) {
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: flex-start;
+			gap: 4rem;
+		}
+
+		@media screen and (min-width: $xl) {
+			gap: 5.6rem;
+		}
+
+		&--top {
+			@media screen and (min-width: $xl) {
+				align-items: flex-start;
+			}
+		}
+
+		&--center {
+			@media screen and (min-width: $xl) {
+				align-items: center;
+			}
+		}
+
+		&--bottom {
+			@media screen and (min-width: $xl) {
+				align-items: flex-end;
+			}
+		}
+
+		&:not(.image-with-text__grid--reverse) {
+			#{$parent}__left--outside {
+				@media screen and (min-width: $md) {
+					margin-left: -6.4rem;
+					margin-right: 0;
+				}
+
+				img {
+					&:first-child {
+						@media screen and (min-width: $md) {
+							border-top-left-radius: 0;
+							border-bottom-left-radius: 0;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	&__left {
+		flex: auto;
+		transition: top var(--duration-default);
+		overflow: hidden;
+
+		@media screen and (min-width: $xl) {
+			position: sticky;
+			top: 1rem;
+		}
+	}
+
+	&__content {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		flex: 1;
+
+		&--medium {
+			@media screen and (min-width: $xl) {
+				flex: none;
+				max-width: 38%;
+			}
+		}
+
+		&--small {
+			@media screen and (min-width: $xl) {
+				flex: none;
+				max-width: 30.35%;
+			}
+		}
+	}
+
+	&__media {
+		display: flex;
+		align-items: stretch;
+		justify-content: space-between;
+		gap: 0.8rem;
+		overflow: hidden;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+			object-fit: cover;
+			border-radius: 0.4rem;
+
+			&:first-child:not(:last-child) {
+				width: calc(54% - 0.6rem);
+			}
+
+			&:last-child:not(:first-child) {
+				width: calc(46% - 0.2rem);
+			}
+		}
+
+		&--adapt {
+			@media screen and (min-width: $lg) {
+				height: auto;
+			}
+		}
+
+		&--all-height {
+			height: 30rem;
+
+			@media screen and (min-width: $sm) {
+				height: 40rem;
+			}
+
+			@media screen and (min-width: $lg) {
+				height: 100%;
+			}
+		}
+
+		&--small {
+			img {
+				height: 35vh;
+
+				@media screen and (min-width: $lg) {
+					height: 40.8vh;
+				}
+			}
+		}
+
+		&--medium {
+			height: 40vh;
+
+			@media screen and (min-width: $lg) {
+				height: 55.6vh;
+			}
+		}
+
+		&--large {
+			height: 45vh;
+
+			@media screen and (min-width: $lg) {
+				height: 63vh;
+			}
+		}
+	}
+
+	&__subheading {
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	&__heading {
+		margin-top: 0;
+		margin-bottom: 1.6rem;
+		max-width: 69.4rem;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		@media screen and (min-width: $xl) {
+			margin-bottom: 2.4rem;
+		}
+	}
+
+	&__text {
+		max-width: 43rem;
+
+		@media screen and (min-width: $md) {
+			max-width: 47rem;
+		}
+
+		@media screen and (min-width: $xl) {
+			max-width: 56rem;
+		}
+
+		p {
+			margin-top: 0;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+
+		}
+	}
+
+	&__heading+&__button {
+		margin-top: 0.8rem;
+	}
+
+	&__button {
+		margin-top: 2.4rem;
+
+		@media screen and (min-width: $xl) {
+			margin-top: 3.2rem;
+		}
+
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+
+	.placeholder-svg {
+		width: 100%;
+		height: 100%;
+		border-radius: 0.4rem;
+		overflow: hidden;
+	}
+
+}
+
+@media screen and (min-width: $xl) {
+	.image-with-text__grid--reverse {
+		flex-direction: row-reverse;
+
+		.image-with-text__left {
+			&--outside {
+				margin-right: -6.4rem;
+				margin-left: 0;
+
+				img {
+					&:last-child {
+						border-top-right-radius: 0;
+						border-bottom-right-radius: 0;
+					}
+				}
+			}
+		}
+	}
+}
+
+.image-with-text__media--placeholder {
+	background-color: transparent;
+	position: relative;
+	height: 35rem;
+	border-radius: 0.4rem;
+	overflow: hidden;
+
+	@media screen and (min-width: $xxl) {
+		height: 45rem;
+	}
+}
+
+.image-with-text__content> :first-child:is(.image-with-text__heading) {
+	margin-top: 0;
+}
+
+.image-with-text__content :last-child:is(.image-with-text__heading) {
+	margin-bottom: 0;
+}
+
+.shopify-section-header-sticky:not(.shopify-section-header-hidden)~main .image-with-text__left {
+	top: calc(var(--header-height) + 1rem);
+}

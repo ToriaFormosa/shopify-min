@@ -1,0 +1,454 @@
+/* Form */
+.field {
+	position: relative;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+
+	label {
+		position: relative;
+		transition: var(--duration-short);
+		order: -1;
+	}
+
+	input[type='text'],
+	input[type='email'],
+	input[type='tel'],
+	input[type='search'],
+	input[type='password'],
+	select,
+	.field__input {
+		width: 100%;
+		min-height: 5.4rem;
+		font-family: var(--font-body-family);
+		font-style: var(--font-body-style);
+		font-size: 1.6rem;
+		-webkit-appearance: none;
+		appearance: none;
+		color: rgb(var(--color-foreground-title));
+		background-color: rgb(var(--color-background-input));
+		border: 0.1rem solid rgb(var(--color-border-input));
+		border-radius: 0.4rem;
+		box-sizing: border-box;
+		transition: border var(--duration-default), background-color var(--duration-default);
+		overflow: hidden;
+
+		&::placeholder {
+			transition: color var(--duration-default);
+			color: rgba(var(--color-foreground-secondary));
+		}
+
+		&:hover:not(:focus) {
+			background-color: rgb(var(--color-background-input-hover));
+			border: 0.1rem solid rgb(var(--color-border-input-hover));
+
+			&::placeholder {
+				color: rgba(var(--color-foreground-secondary), 0.7);
+			}
+		}
+
+		&:focus-visible,
+		&:focus {
+			outline: none;
+		}
+	}
+
+	input[type='search'] {
+		&::-webkit-search-cancel-button {
+			display: none;
+		}
+
+		&::placeholder {
+			color: rgb(var(--color-foreground-secondary));
+		}
+	}
+
+	input[type='text'],
+	input[type='email'],
+	input[type='tel'],
+	input[type='password'],
+	.field__input {
+		flex-grow: 1;
+		padding: 1.6rem 2.4rem;
+		text-align: left;
+
+		&::-webkit-search-cancel-button {
+			display: none;
+		}
+
+		&::placeholder {
+			font-size: 1.5rem;
+			color: rgb(147, 147, 147);
+		}
+
+		&:focus::placeholder {
+			opacity: 0;
+		}
+
+		&[required]+label {
+			&::after {
+				content: '*';
+				position: relative;
+				top: 0;
+				left: 0.5rem;
+				color: rgb(var(--color-error));
+			}
+		}
+
+		&+label {
+			font-size: 1.5rem;
+			font-weight: 500;
+			text-transform: none;
+			color: rgb(var(--color-foreground));
+			padding-bottom: 1rem;
+		}
+	}
+
+	textarea.field__input {
+		padding: 1.8rem 2rem;
+	}
+
+	.select {
+		width: 100%;
+
+		.placeholder-select {
+			font-size: 1.6rem;
+			font-weight: 500;
+			text-transform: none;
+			color: rgba(var(--color-foreground-secondary));
+			position: absolute;
+			top: 50%;
+			left: 1.8rem;
+			transform: translateY(-50%);
+			pointer-events: none;
+
+			span {
+				color: rgb(var(--color-error));
+			}
+		}
+	}
+
+	select {
+		cursor: pointer;
+		padding: 0.8rem 3.6rem 0.8rem 1.6rem;
+		min-height: 4rem;
+		line-height: 1.4;
+
+		&:focus {
+			border-color: rgb(var(--color-border-input));
+		}
+
+		+svg {
+			width: 1.6rem;
+			height: 1.6rem;
+			pointer-events: none;
+			position: absolute;
+			top: calc(50% - 0.8rem);
+			right: 1.2rem;
+			color: rgb(var(--color-foreground));
+			transform: rotate(90deg);
+		}
+
+		option {
+			background-color: rgb(var(--color-background-input));
+		}
+	}
+
+	&--checkbox {
+		input[type='checkbox'] {
+			position: absolute;
+			opacity: 1;
+			width: 1.6rem;
+			height: 1.6rem;
+			top: 0;
+			left: 0;
+			z-index: -1;
+			appearance: none;
+
+			&:checked {
+				&+label {
+					&::before {
+						border-color: rgb(var(--color-button));
+						background-color: rgb(var(--color-button));
+					}
+
+					.icon-checkmark {
+						visibility: visible;
+					}
+				}
+			}
+
+			&+label {
+				display: inline-flex;
+				align-items: center;
+				gap: 1.6rem;
+				font-size: 1.4rem;
+				color: rgb(var(--color-foreground));
+				position: relative;
+				cursor: pointer;
+
+				&:hover::before {
+					border-color: rgb(var(--color-button));
+				}
+
+				&::before {
+					content: '';
+					display: block;
+					flex-shrink: 0;
+					width: 1.6rem;
+					height: 1.6rem;
+					border-radius: 0.2rem;
+					border: 0.1rem solid rgb(var(--color-border));
+					background-color: rgb(var(--color-background));
+					transition: border-color var(--duration-default);
+				}
+
+				.icon-checkmark {
+					position: absolute;
+					left: 0.4rem;
+					top: calc(50% - 0.4rem);
+					z-index: 5;
+					visibility: hidden;
+					color: rgb(var(--color-button-text));
+				}
+
+				a {
+					text-decoration: none;
+					transition: var(--duration-default);
+
+					&:hover {
+						opacity: 0.8;
+					}
+				}
+			}
+
+			&[required]+label span {
+				&::after {
+					content: '*';
+					position: relative;
+					top: 0;
+					left: 0;
+					color: rgb(var(--color-error));
+				}
+			}
+		}
+	}
+
+	&--pass {
+		position: relative;
+
+		.button-pass-visibility {
+			display: none;
+			width: 2.4rem;
+			height: 2.4rem;
+			position: absolute;
+			bottom: 1.4rem;
+			right: 2.4rem;
+			cursor: pointer;
+
+			svg {
+				color: rgba(var(--color-foreground), 0.5);
+
+				&.icon-eye {
+					display: none;
+				}
+			}
+		}
+	}
+
+	&--dark {
+
+		input[type='text'],
+		input[type='email'],
+		input[type='tel'],
+		input[type='password'],
+		input[type='search'] {
+			border-color: rgba(255, 255, 255, 0.4);
+			color: rgb(255, 255, 255);
+			background-color: transparent;
+
+			&:hover,
+			&:focus {
+				border-color: rgb(255, 255, 255);
+			}
+
+			+label::before {
+				color: rgba(255, 255, 255, 0.5);
+			}
+		}
+	}
+}
+
+/* Text area */
+
+.text-area {
+	font-family: var(--font-body-family);
+	font-style: var(--font-body-style);
+	font-weight: var(--font-body-weight);
+	padding: 1.2rem;
+	min-height: 10rem;
+	resize: none;
+}
+
+.text-area--resize-vertical {
+	resize: vertical;
+}
+
+/* Form global */
+
+.form__label {
+	display: block;
+}
+
+.form__message {
+	align-items: center;
+	display: flex;
+	font-size: 1.4rem;
+	line-height: 1;
+	margin-top: 1rem;
+}
+
+.form__message--large {
+	font-size: 1.4rem;
+}
+
+.form__message .icon {
+	flex-shrink: 0;
+	height: 1.3rem;
+	margin-right: 0.5rem;
+	width: 1.3rem;
+}
+
+.form__message--large .icon {
+	height: 1.5rem;
+	width: 1.5rem;
+	margin-right: 1rem;
+}
+
+.form-status {
+	margin: 0;
+	font-size: 1.4rem;
+}
+
+.form-status-list {
+	padding: 0;
+	margin: 2rem 0 4rem;
+}
+
+.form-status-list li {
+	list-style-position: inside;
+}
+
+.form-status-list .link::first-letter {
+	text-transform: capitalize;
+}
+
+/* Quantity */
+.quantity {
+	position: relative;
+	width: 14.5rem;
+	height: 5.6rem;
+	display: flex;
+	//padding: 0 1rem;
+	border: 0.1rem solid rgb(var(--color-border-input));
+	background-color: rgb(var(--color-background-input));
+	border-radius: var(--border-radius-button);
+}
+
+.quantity__input {
+	font-family: var(--font-body-family);
+	font-size: 1.6rem;
+	color: rgb(var(--color-foreground-title));
+	text-align: center;
+	background-color: transparent;
+	border: 0;
+	padding: 0 0.5rem;
+	width: 100%;
+	flex-grow: 1;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.quantity__button {
+	width: 5rem;
+	padding: 0;
+	flex-shrink: 0;
+	font-size: 1.8rem;
+	border: 0;
+	background-color: transparent;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: rgb(var(--color-foreground));
+	transition: opacity var(--duration-default);
+
+	&:hover {
+		opacity: 0.7;
+	}
+
+	&.disabled {
+		pointer-events: none;
+	}
+
+	svg {
+		width: 2rem;
+		pointer-events: none;
+	}
+}
+
+.quantity__input:-webkit-autofill,
+.quantity__input:-webkit-autofill:hover,
+.quantity__input:-webkit-autofill:active {
+	box-shadow: 0 0 0 10rem rgb(var(--color-background)) inset !important;
+	-webkit-box-shadow: 0 0 0 10rem rgb(var(--color-background)) inset !important;
+}
+
+.quantity__input::-webkit-outer-spin-button,
+.quantity__input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.quantity__input[type='number'] {
+	-moz-appearance: textfield;
+}
+
+/* Negate the fallback side-effect for browsers that support :focus-visible */
+*:focus:not(:focus-visible):not(.button--secondary):not(.localization-selector.link) {
+	outline: 0;
+	box-shadow: none;
+}
+
+/*
+  Focus ring - inset
+*/
+
+.focus-inset:focus-visible {
+	outline: 0.1rem solid rgba(var(--color-foreground), 0.5);
+	outline-offset: 0.2rem;
+	box-shadow: 0 0 0.2rem 0 rgba(var(--color-foreground), 0.3);
+}
+
+/* Fallback */
+.focus-inset:focus {
+	outline: 0.1rem solid rgba(var(--color-foreground), 0.5);
+	outline-offset: 0.2rem;
+	box-shadow: 0 0 0.2rem 0 rgba(var(--color-foreground), 0.3);
+}
+
+.focus-inset:focus:not(:focus-visible) {
+	outline: 0;
+	box-shadow: none;
+}
+
+/*
+  Focus ring - none
+*/
+
+/* Dangerous for a11y - Use with care */
+.focus-none {
+	box-shadow: none !important;
+	outline: 0 !important;
+}

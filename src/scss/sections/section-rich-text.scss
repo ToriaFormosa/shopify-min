@@ -1,0 +1,89 @@
+@import '../base/components/grid';
+
+.rich-text {
+	margin: auto;
+	text-align: center;
+
+	&--align {
+		&-left {
+			text-align: left;
+
+			.rich-text__heading,
+			.rich-text__text {
+				margin-right: auto;
+			}
+		}
+
+		&-right {
+			text-align: right;
+
+			.rich-text__heading,
+			.rich-text__text {
+				margin-left: auto;
+			}
+		}
+
+		&-center {
+			text-align: center;
+
+			.rich-text__heading,
+			.rich-text__text {
+				margin-inline: auto;
+			}
+		}
+	}
+
+	&__heading {
+		max-width: 60rem;
+	}
+
+	&__text {
+		max-width: 45rem;
+
+		p {
+			margin: 0;
+		}
+
+		h1, h2, h3, h4, h5, h6 {
+			margin-block: 1.6rem;
+		}
+	}
+
+	&--full-width {
+		max-width: initial;
+		width: 100%;
+	}
+
+	&:not(.rich-text--full-width) {
+
+		.rich-text__blocks {
+			border-radius: 0.4rem;
+			padding-inline: 2rem;
+
+			@media screen and (min-width: $xl) {
+				padding-inline: 4rem;
+			}
+		}
+	}
+
+	&__blocks {
+		margin: auto;
+
+		&>* {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		* {
+			overflow-wrap: break-word;
+		}
+
+		&>*+* {
+			margin-top: 1.6rem;
+		}
+
+		&>*+a {
+			margin-top: 2.4rem;
+		}
+	}
+}

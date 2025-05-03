@@ -1,0 +1,58 @@
+/* Modal */
+.modal__toggle {
+	list-style-type: none;
+}
+
+.no-js details[open] .modal__toggle {
+	z-index: 2;
+}
+
+.modal__toggle-close {
+	display: none;
+}
+
+.no-js details[open] svg.modal__toggle-close {
+	display: flex;
+	z-index: 1;
+	height: 1.4rem;
+	width: 1.4rem;
+}
+
+.modal__toggle-open {
+	display: flex;
+}
+
+.no-js details[open] .modal__toggle-open {
+	display: none;
+}
+
+.no-js .modal__close-button.link {
+	display: none;
+}
+
+.modal__close-button.link {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0rem;
+	background-color: transparent;
+}
+
+.modal__close-button .icon {
+	width: 1.4rem;
+	height: 1.4rem;
+}
+
+.modal__content {
+	position: absolute;
+	inset: 0;
+	background: rgb(var(--color-background));
+	z-index: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.fancybox-skin {
+	padding: 0 !important;
+}

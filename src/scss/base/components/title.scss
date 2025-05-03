@@ -1,0 +1,125 @@
+/* Component-title */
+@import '../base/components/grid';
+
+.title {
+	margin: 3rem 0 2rem;
+}
+
+.title-wrapper {
+	margin-bottom: 3rem;
+}
+
+.title--primary {
+	margin: 4rem 0;
+}
+
+.title--page {
+	text-align: left;
+}
+
+.title--section>* {
+	margin: 0;
+}
+
+.title--section-mt-none {
+	margin: 0 0 3rem 0;
+}
+
+.title--section-m-none {
+	margin: 0;
+}
+
+@media screen and (min-width: 990px) {
+	.title {
+		margin: 5rem 0 3rem;
+	}
+
+	.title--primary {
+		margin: 2rem 0;
+	}
+}
+
+.page-header {
+	margin-top: 1.6rem;
+	margin-bottom: 1.6rem;
+	text-align: center;
+
+	@media screen and (min-width: 750px) {
+		margin-top: 3.2rem;
+		margin-bottom: 2.4rem;
+	}
+}
+
+.page-header .title--page {
+	margin-bottom: 0;
+	margin-top: 0;
+}
+
+.page-header .title--page:not(:first-child) {
+	margin-bottom: 1.5rem;
+}
+
+.subtitle {
+	font-family: var(--font-subtitle-family);
+	font-weight: var(--font-subtitle-weight);
+	font-style: var(--font-subtitle-style);
+	letter-spacing: var(--font-subtitle-letter-spacing);
+	text-transform: var(--font-subtitle-text-transform);
+	color: rgb(var(--color-foreground-secondary));
+	font-size: calc(var(--font-subtitle-scale) * 1rem - 0.1rem);
+	line-height: 140%;
+	margin-bottom: 1rem;
+
+	@media screen and (min-width: $xl) {
+		font-size: calc(var(--font-subtitle-scale) * 1rem);
+	}
+}
+
+.card__subtitle {
+	position: relative;
+	margin: 0;
+	font-size: 1.1rem;
+	letter-spacing: 0.08em;
+	line-height: 1.4;
+	font-family: var(--font-subtitle-family);
+	font-weight: var(--font-subtitle-weight);
+	font-style: var(--font-subtitle-style);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: rgb(var(--color-foreground-secondary));
+}
+
+.titles {
+	.subtitle {
+		margin: 0;
+
+		+ .heading {
+			margin-top: 1rem;
+		}
+
+		&:only-child {
+			margin-bottom: 2.4rem;
+
+			@media screen and (min-width: $md) {
+				margin-bottom: 3.2rem;
+			}
+
+			@media screen and (min-width: $xl) {
+				margin-bottom: 4rem;
+			}
+		}
+	}
+
+	.heading {
+		margin: 0;
+		margin-bottom: 2.4rem;
+
+		@media screen and (min-width: $md) {
+			margin-bottom: 3.2rem;
+		}
+
+		@media screen and (min-width: $xl) {
+			margin-bottom: 4.8rem;
+		}
+	}
+}

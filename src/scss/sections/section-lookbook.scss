@@ -1,0 +1,333 @@
+@import '../base/components/grid';
+
+.lookbook {
+	overflow: hidden;
+
+	$parent: &;
+
+	&__wrapper {
+
+		#{$parent}__heading+&,
+		#{$parent}__subheading+& {
+			margin-top: 3.2rem;
+		}
+	}
+
+	&__slides {
+		display: flex;
+		align-items: stretch;
+		justify-content: flex-start;
+		min-height: 30rem;
+		height: 100vh;
+		max-height: 65rem;
+
+		@media screen and (min-width: $md) {
+			max-height: 108rem;
+		}
+
+		@media screen and (min-width: $xl) {
+			height: 100vh;
+			max-height: 108rem;
+			padding-right: 20rem;
+		}
+	}
+
+	&__slide {
+		flex: none;
+		min-height: 30rem;
+		height: 100vh;
+		max-height: 65rem;
+
+		@media screen and (min-width: $md) {
+			max-height: 108rem;
+		}
+
+		@media screen and (min-width: $xl) {
+			height: 100vh;
+			max-height: 108rem;
+		}
+
+		.placeholder-svg {
+			width: 100%;
+			height: 100%;
+			filter: grayscale(1);
+		}
+
+		&-content {
+			width: 100%;
+			height: 100%;
+		}
+
+		&-image {
+			flex: none;
+			width: 100%;
+			height: 100%;
+		}
+
+		&--slide {
+			position: relative;
+			width: calc(100% + 10rem);
+
+			@media screen and (min-width: $sm) {
+				width: 50rem;
+			}
+
+			@media screen and (min-width: $xl) {
+				width: 72.6rem;
+			}
+
+			#{$parent} {
+				&__overlay {
+					position: absolute;
+					inset: 0;
+					background-color: rgba(var(--color-overlay), 0.16);
+					transition: opacity var(--duration-default);
+					z-index: 2;
+
+					@media screen and (min-width: $xl) {
+						opacity: 0;
+					}
+				}
+
+				&__button {
+					position: absolute;
+					left: 3.2rem;
+					bottom: 3.2rem;
+					transition: all var(--duration-default);
+					z-index: 3;
+
+					@media screen and (min-width: $xl) {
+						opacity: 0;
+					}
+				}
+
+				&__link-overlay:empty {
+					position: absolute;
+					inset: 0;
+					display: block;
+					z-index: 2;
+
+
+				}
+			}
+
+			&:hover {
+				#{$parent} {
+
+					&__overlay,
+					&__button {
+						opacity: 1;
+					}
+				}
+			}
+
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+
+		}
+
+		&--text {
+			display: flex;
+			padding-inline: 3.2rem;
+			width: 85%;
+
+			&::-webkit-scrollbar {
+				width: 0.4rem;
+			}
+
+			&::-webkit-scrollbar-thumb {
+				background-color: rgb(var(--color-border));
+				border-radius: 2rem;
+			}
+
+			@media screen and (min-width: $sm) {
+				min-width: 50.6rem;
+				width: auto;
+			}
+
+			@media screen and (min-width: $xl) {
+				padding-inline: 6.4rem;
+				min-width: 80.6rem;
+			}
+
+			&#{$parent}__slide--top {
+				align-items: flex-start;
+			}
+
+			&#{$parent}__slide--center {
+				align-items: center;
+			}
+
+			&#{$parent}__slide--bottom {
+				align-items: flex-end;
+			}
+
+			&.color-background-1 {
+				&:first-child {
+					padding-left: 0;
+
+					#{$parent}__image-wrapper {
+						left: 0;
+					}
+				}
+			}
+
+			#{$parent} {
+				&__subheading {
+					max-width: 53.2rem;
+				}
+
+				&__heading {
+					max-width: 61.8rem;
+
+					&+#{$parent}__text {
+						margin-top: 2.4rem;
+					}
+
+					&+#{$parent}__button {
+						margin-top: 2.4rem;
+
+						@media screen and (min-width: $xl) {
+							margin-top: 3.2rem;
+						}
+					}
+				}
+
+				&__text {
+					max-width: 53.2rem;
+
+					&__bottom {
+						padding-top: 1.6rem;
+					}
+
+					&+#{$parent}__button {
+						margin-top: 2.4rem;
+
+						@media screen and (min-width: $xl) {
+							margin-top: 3.2rem;
+						}
+					}
+				}
+
+				&__slide-content {
+					padding-block: calc(var(--header-height) + 3.2rem);
+					height: auto;
+
+					@media screen and (min-width: $xl) {
+						padding-block: calc(var(--header-height) + 3.2rem);
+					}
+				}
+
+			}
+		}
+
+		&--image {
+			width: 75rem;
+
+			@media screen and (min-width: $xl) {
+				width: 125.6rem;
+			}
+
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+		}
+	}
+
+	&__image {
+		&-wrapper {
+			position: absolute;
+			left: 3.2rem;
+			bottom: 3.2rem;
+
+			@media screen and (min-width: $xl) {
+				left: 6.4rem;
+				bottom: 6.4rem;
+			}
+		}
+
+		&--bottom {
+			max-width: 12rem;
+
+			@media screen and (min-width: $xl) {
+				max-width: unset;
+			}
+		}
+	}
+}
+
+.shopify-section-header-always-sticky:not(.shopify-section-header-hidden)~main .lookbook__slides {
+	top: var(--header-height) !important;
+}
+
+.shopify-section-header-always-sticky:not(.shopify-section-header-hidden)~main .lookbook__slide {
+	@media screen and (min-width: $xl) {
+		height: calc(100vh - var(--header-height));
+	}
+}
+
+.no-js .lookbook__slides {
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+@media (prefers-color-scheme: light) {
+	.lookbook__image--bottom {
+		display: block;
+
+		&-dark {
+			display: none;
+		}
+
+		&:only-child {
+			display: block !important;
+		}
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	.lookbook__image--bottom {
+		display: none;
+
+		&-dark {
+			display: block;
+		}
+
+		&:only-child {
+			display: block !important;
+		}
+	}
+}
+
+[data-scheme="light"] {
+	.lookbook__image--bottom {
+		display: block;
+
+		&-dark {
+			display: none;
+		}
+
+		&:only-child {
+			display: block !important;
+		}
+	}
+}
+
+[data-scheme="dark"] {
+	.lookbook__image--bottom {
+		display: none;
+
+		&-dark {
+			display: block;
+		}
+
+		&:only-child {
+			display: block !important;
+		}
+	}
+}

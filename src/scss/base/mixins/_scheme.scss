@@ -1,0 +1,46 @@
+@mixin media-scheme($scheme) {
+	@if & {
+		@if $scheme == 'dark' {
+			@media (prefers-color-scheme: #{$scheme}) {
+				:root [data-scheme="auto"] & {
+					@content;
+				}
+			}
+		}
+
+		@if $scheme == 'light' {
+			:root,
+			[data-scheme="light"] & {
+				@content;
+			}
+			@media (prefers-color-scheme: #{$scheme}) {
+				:root [data-scheme="auto"] & {
+					@content;
+				}
+			}
+		} @else {
+			[data-scheme="#{$scheme}"] & {
+				@content;
+			}
+		}
+	} @else {
+		@if $scheme == 'dark' {
+			@media (prefers-color-scheme: #{$scheme}) {
+				:root [data-scheme="auto"] {
+					@content;
+				}
+			}
+		}
+
+		@if $scheme == 'light' {
+			:root,
+			[data-scheme="light"] {
+				@content;
+			}
+		} @else {
+			[data-scheme="#{$scheme}"] {
+				@content;
+			}
+		}
+	}
+}
