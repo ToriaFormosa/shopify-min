@@ -21,7 +21,7 @@
         assign collections = collections | sort: 'all_products_count'
       when 'date', 'date_reversed'
         assign collections = collections | sort: 'published_at'
-      when 'alphabetical'. 'alphabetical_reversed'
+      when 'alphabetical'
           assign collections = collections | sort: 'title'
     endcase
 
@@ -396,3 +396,13 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "      when 'alphabetical'. 'alphabetical_reversed'"
+  to: "      when 'alphabetical'"
+  position: 952..977
+{% endcomment %}
